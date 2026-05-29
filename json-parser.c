@@ -1,8 +1,42 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define READ_FILE_PATH "test_parse.json"
 #define MAX_BUFFER_SIZE 256
+
+#include <ctype.h>
+#include <string.h>
+
+void trim(char *str)
+{
+    if (!str)
+    {
+        printf("Error: empty or null string\n");
+        return;
+    }
+
+    char *start = str;
+
+    while (*start && isspace((unsigned char)*start))
+    {
+        start++;
+    }
+
+    if (start != str)
+    {
+        memmove(str, start, strlen(start) + 1);
+    }
+
+    char *end = str + strlen(str);
+
+    while (end > str && isspace((unsigned char)*(end - 1)))
+    {
+        end--;
+    }
+
+    *end = '\0';
+}
 
 int main()
 {
@@ -22,6 +56,7 @@ int main()
         exit(1);
     }
 
+    int line_count = 0;
     while (!feof(file))
     {
         if (ferror(file))
@@ -31,8 +66,21 @@ int main()
         }
 
         fgets(buffer, MAX_BUFFER_SIZE, file);
+        if (line_count == 0 && *buffer != '{')
+        {
+            printf("Missing expected open bracked '{', got value: %s", buffer);
+            exit(1);
+        }
 
-        printf("%s", buffer);
+        trim(buffer);
+        printf("%s\n", buffer);
+        line_count++;
+    }
+
+    if (*buffer != '}')
+    {
+        printf("Missing expected closing bracked '}', got value: %s", buffer);
+        exit(1);
     }
 
     free(buffer);
