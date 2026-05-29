@@ -35,5 +35,8 @@ int main()
         printf("%s", buffer);
     }
 
+    free(buffer);
+    fclose(file);
+
     return 0;
 }
