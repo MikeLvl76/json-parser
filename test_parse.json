@@ -1,0 +1,90 @@
+{
+  "string": "hello world",
+  "empty_string": "",
+  "number_integer": 42,
+  "number_float": 3.14159,
+  "number_negative": -123,
+  "number_zero": 0,
+  "number_exponential": 1.23e4,
+  "boolean_true": true,
+  "boolean_false": false,
+  "null_value": null,
+
+  "array_empty": [],
+  "array_strings": ["a", "b", "c"],
+  "array_numbers": [1, 2, 3.5, -7],
+  "array_booleans": [true, false],
+  "array_mixed": [
+    "text",
+    99,
+    false,
+    null,
+    {
+      "nested_key": "nested_value"
+    }
+  ],
+
+  "object_empty": {},
+
+  "object_simple": {
+    "name": "Alice",
+    "age": 30,
+    "active": true
+  },
+
+  "object_nested": {
+    "level1": {
+      "level2": {
+        "message": "nested object",
+        "value": 123
+      }
+    }
+  },
+
+  "object_with_array": {
+    "items": [
+      {
+        "id": 1,
+        "label": "first"
+      },
+      {
+        "id": 2,
+        "label": "second"
+      }
+    ]
+  },
+
+  "special_characters": {
+    "quotes": "He said \"Hello\"",
+    "backslash": "C:\\\\temp\\\\file.txt",
+    "unicode": "こんにちは 🌍",
+    "escaped_chars": "line1\nline2\tTabbed"
+  },
+
+  "deepish_structure": {
+    "users": [
+      {
+        "id": 1,
+        "profile": {
+          "username": "john_doe",
+          "roles": ["admin", "editor"],
+          "settings": {
+            "theme": "dark",
+            "notifications": true
+          }
+        }
+      },
+      {
+        "id": 2,
+        "profile": {
+          "username": "jane_smith",
+          "roles": [],
+          "settings": {
+            "theme": "light",
+            "notifications": false
+          }
+        }
+      }
+    ]
+  }
+}
