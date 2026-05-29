@@ -36,6 +36,33 @@ void trim(char *str)
     *end = '\0';
 }
 
+char *getkey(char *pair)
+{
+    char *copy = strdup(pair);
+    if (!copy || strlen(copy) < 6 || !strpbrk(copy, ":"))
+        return NULL;
+
+    char *str_key = strtok(copy, ":");
+    str_key[strlen(str_key) - 1] = '\0';
+
+    char *key = str_key + 1;
+    return key;
+}
+
+// TODO: retrieve value type
+// Value type can be number, string, array (mixed values or not), object or boolean
+void *getvalue(char *pair)
+{
+    char *copy = strdup(pair);
+    if (!copy || strlen(copy) < 6 || !strpbrk(copy, ":"))
+        return NULL;
+
+    char *value = strtok(copy, ":");
+    value = strtok(NULL, ":");
+
+    return value;
+}
+
 void read_json(char *filepath)
 {
 
@@ -48,7 +75,7 @@ void read_json(char *filepath)
     }
 
     char *buffer = (char *)malloc(MAX_BUFFER_SIZE);
-
+    
     if (!buffer)
     {
         printf("Error: cannot allocate memory\n");
@@ -70,18 +97,22 @@ void read_json(char *filepath)
             printf("Missing expected open bracked '{', got value: %s", buffer);
             exit(1);
         }
-
+        
         trim(buffer);
         printf("%s\n", buffer);
+        
+        getkey(buffer);
+        getvalue(buffer);
         line_count++;
     }
-
+    
     if (*buffer != '}')
     {
         printf("Missing expected closing bracked '}', got value: %s", buffer);
         exit(1);
     }
-
+    
     free(buffer);
     fclose(file);
+    printf("--- %d line(s) ---\n", line_count);
 }
