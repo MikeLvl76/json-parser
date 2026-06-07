@@ -3,30 +3,28 @@
 
 #define READ_TEST_FILE_PATH "test_parse.json"
 #define MAX_BUFFER_SIZE 256
+#define MAX_FILE_LINES 1024
 
 char *getkey(char *pair)
 {
-    char *copy = strdup(pair);
-    if (!copy || strlen(copy) < 6 || !strpbrk(copy, ":"))
+    if (!pair || !strpbrk(pair, ":"))
         return NULL;
 
+    char *copy = strdup(pair);
     char *key = strtok(copy, ":");
+    if (!key)
+        return NULL;
     key = sub(key, 1, strlen(key) - 1);
 
     return key;
 }
 
-// TODO: retrieve value type
-// Value type can be number, string, array (mixed values or not), object or boolean
-JsonValue getvalue(char *pair)
+char *getvalue(char *pair)
 {
-    char *copy = strdup(pair);
-    if (!copy || strlen(copy) < 6 || !strpbrk(copy, ":"))
-    {
-        return (JsonValue){
-            .type = NULL_VALUE};
-    }
+    if (!pair || !strpbrk(pair, ":"))
+        return pair;
 
+    char *copy = strdup(pair);
     char *value = strtok(copy, ":");
     value = strtok(NULL, ":");
     if (strchr(value, (unsigned char)','))
@@ -34,6 +32,20 @@ JsonValue getvalue(char *pair)
         value = sub(value, 0, strlen(value) - 1);
     }
     trim(value);
+
+    return value;
+}
+
+// TODO: retrieve value type
+// Value type can be number, string, array (mixed values or not), object or boolean
+JsonValue parse_value(char *pair)
+{
+    char *value = getvalue(pair);
+    if (!value)
+    {
+        return (JsonValue){
+            .type = NULL_VALUE};
+    }
 
     /* Case 1: string */
     if (value[0] == '\"' && value[strlen(value) - 1] == '\"')
@@ -87,10 +99,65 @@ JsonValue getvalue(char *pair)
     return (JsonValue){0};
 }
 
+void parse_structure(char *str, char open_c, char closing_c)
+{
+    char *p = str;
+    long long int obj_start = -1;
+    int depth = 0, in_str = 0, escaped = 0;
+
+    while (*p)
+    {
+        if (escaped)
+        {
+            escaped = 0;
+            p++;
+        }
+
+        if (*p == '\n')
+        {
+            escaped = 1;
+            p++;
+        }
+
+        if (*p == '"')
+        {
+            in_str = !in_str;
+        }
+
+        if (!in_str)
+        {
+            if (*p == open_c)
+            {
+                if (depth == 0)
+                {
+                    obj_start = p - str;
+                }
+                depth++;
+            }
+            else if (*p == closing_c)
+            {
+                depth--;
+
+                if (depth == 0 && obj_start > -1)
+                {
+                    for (long long i = obj_start; i < (p - str) + 1; ++i)
+                    {
+                        printf("%c", str[i]);
+                    }
+                }
+            }
+        }
+
+        p++;
+    }
+
+    printf("\n");
+}
+
 void read_json(char *filepath)
 {
 
-    FILE *file = fopen(filepath, "r");
+    FILE *file = fopen(filepath, "rb");
 
     if (!file)
     {
@@ -99,14 +166,18 @@ void read_json(char *filepath)
     }
 
     char *buffer = (char *)malloc(MAX_BUFFER_SIZE);
+    char *str = (char *)malloc(MAX_BUFFER_SIZE * MAX_FILE_LINES);
 
-    if (!buffer)
+    if (!buffer || !str)
     {
         printf("Error: cannot allocate memory\n");
         exit(1);
     }
 
-    int line_count = 0;
+    *buffer = '\0';
+    *str = '\0';
+
+    int count = 0;
     while (!feof(file))
     {
         if (ferror(file))
@@ -115,30 +186,31 @@ void read_json(char *filepath)
             exit(1);
         }
 
-        fgets(buffer, MAX_BUFFER_SIZE, file);
-        if (line_count == 0 && *buffer != '{')
+        char *line = fgets(buffer, MAX_BUFFER_SIZE, file);
+        if (!line)
         {
-            printf("Missing expected open bracked '{', got value: %s", buffer);
-            exit(1);
+            count++;
+            continue;
         }
 
         trim(buffer);
-        // printf("%s\n", buffer);
+        strncat(str, buffer, strlen(buffer));
 
-        char *key = getkey(buffer);
-        JsonValue value = getvalue(buffer);
-        printf("%s: ", key);
-        dump_json_value(&value);
-        line_count++;
+        count++;
     }
+    printf("%s\n", str);
 
-    if (*buffer != '}')
+    if (*str != '{' && str[strlen(str) - 1] != '}')
     {
-        printf("Missing expected closing bracked '}', got value: %s", buffer);
+        printf("Missing object brackets in file\n");
         exit(1);
     }
 
+    parse_structure(str, '{', '}');
+    parse_structure(str, '[', ']'),
+
     free(buffer);
+    free(str);
     fclose(file);
-    printf("--- %d line(s) ---\n", line_count);
+    printf("--- %d line(s) ---\n", count);
 }
