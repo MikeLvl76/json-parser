@@ -99,11 +99,11 @@ JsonValue parse_value(char *pair)
     return (JsonValue){0};
 }
 
-void parse_structure(char *str, char open_c, char closing_c)
+void parse(char *str, char open_c, char closing_c)
 {
     char *p = str;
     long long int obj_start = -1;
-    int depth = 0, in_str = 0, escaped = 0;
+    int depth = 0, in_str = 0, escaped = 0, is_data_structure = 0;
 
     while (*p)
     {
@@ -121,7 +121,72 @@ void parse_structure(char *str, char open_c, char closing_c)
 
         if (*p == '"')
         {
+
             in_str = !in_str;
+
+            if (!in_str && !is_data_structure)
+            {
+                if (*(p + 1) == ':')
+                {
+                    char *k = p, *v = p;
+                    char key[128], value[1024];
+                    int in_quotes = 0;
+
+                    while (*k)
+                    {
+                        if ((*k == ',' || *k == '{') && !in_quotes)
+                        {
+                            key[p - k] = *k;
+                            break;
+                        }
+
+                        if (*k == '"')
+                        {
+                            in_quotes = !in_quotes;
+                        }
+
+                        key[p - k] = *k;
+                        k--;
+                    }
+                    key[p - k] = '\0';
+
+                    printf("Key: %s\n", strrev(key));
+
+                    size_t count = 0;
+                    // Skip end of key ('"' character) and ":" character
+                    v = p + 2;
+                    while (*v)
+                    {
+                        if ((*v == '\n' || *v == '\0' || *v == ',' || *v == ']' || *v == '}') && !in_quotes)
+                        {
+                            break;
+                        }
+
+                        if ((*v == '{' || *v == '[') && !in_quotes)
+                        {
+                            is_data_structure = 1;
+                            break;
+                        }
+
+                        if (*v == '"')
+                        {
+                            in_quotes = !in_quotes;
+                        }
+
+                        if (isspace(*v) && !in_quotes)
+                        {
+                            v++;
+                            continue;
+                        }
+
+                        value[count++] = *v;
+                        v++;
+                    }
+                    value[count] = '\0';
+                    is_data_structure = 0;
+                    printf("Value: %s\n", value);
+                }
+            }
         }
 
         if (!in_str)
@@ -140,18 +205,21 @@ void parse_structure(char *str, char open_c, char closing_c)
 
                 if (depth == 0 && obj_start > -1)
                 {
+                    char value[1024];
+                    size_t count = 0;
+
                     for (long long i = obj_start; i < (p - str) + 1; ++i)
                     {
-                        printf("%c", str[i]);
+                        value[count++] = str[i];
                     }
+                    value[count] = '\0';
+                    printf("Structure: %s\n", value);
                 }
             }
         }
 
         p++;
     }
-
-    printf("\n");
 }
 
 void read_json(char *filepath)
@@ -198,7 +266,7 @@ void read_json(char *filepath)
 
         count++;
     }
-    printf("%s\n", str);
+    // printf("%s\n", str);
 
     if (*str != '{' && str[strlen(str) - 1] != '}')
     {
@@ -206,8 +274,8 @@ void read_json(char *filepath)
         exit(1);
     }
 
-    parse_structure(str, '{', '}');
-    parse_structure(str, '[', ']'),
+    // parse_structure(str, '{', '}');
+    parse(str, '[', ']');
 
     free(buffer);
     free(str);
