@@ -1,109 +1,111 @@
 #include "json_utils.h"
 #include "json_types.h"
 
-#define READ_TEST_FILE_PATH "test_parse.json"
+#define READ_TEST_FILE_PATH "default_data.json"
 #define MAX_BUFFER_SIZE 256
 #define MAX_FILE_LINES 1024
-
-char *getkey(char *pair)
-{
-    if (!pair || !strpbrk(pair, ":"))
-        return NULL;
-
-    char *copy = strdup(pair);
-    char *key = strtok(copy, ":");
-    if (!key)
-        return NULL;
-    key = sub(key, 1, strlen(key) - 1);
-
-    return key;
-}
-
-char *getvalue(char *pair)
-{
-    if (!pair || !strpbrk(pair, ":"))
-        return pair;
-
-    char *copy = strdup(pair);
-    char *value = strtok(copy, ":");
-    value = strtok(NULL, ":");
-    if (strchr(value, (unsigned char)','))
-    {
-        value = sub(value, 0, strlen(value) - 1);
-    }
-    trim(value);
-
-    return value;
-}
+#define MAX_SCOPE_DEPTH 128
+#define MAX_VALUE_LENGTH 4096
 
 // TODO: retrieve value type
 // Value type can be number, string, array (mixed values or not), object or boolean
-JsonValue parse_value(char *pair)
+// JsonValue parse_value(char *pair)
+// {
+//     char *value = getvalue(pair);
+//     if (!value)
+//     {
+//         return (JsonValue){
+//             .type = NULL_VALUE};
+//     }
+
+//     /* Case 1: string */
+//     if (value[0] == '\"' && value[strlen(value) - 1] == '\"')
+//     {
+//         return (JsonValue){
+//             .type = STRING,
+//             .as.str = strdup(value)};
+//     }
+
+//     /* Case 2: integer */
+//     if (isint(value))
+//     {
+//         return (JsonValue){
+//             .type = INTEGER,
+//             .as.integer = atoi(value)};
+//     }
+
+//     /* Case 3: double */
+//     if (isdouble(value))
+//     {
+//         return (JsonValue){
+//             .type = DOUBLE,
+//             .as.double_value = atof(value)};
+//     }
+
+//     /* Case 4: array */
+
+//     /* Case 5: object */
+
+//     /* Case 6: boolean */
+//     if (strcmp(value, "true") == 0)
+//     {
+//         return (JsonValue){
+//             .type = BOOLEAN,
+//             .as.boolean = 1};
+//     }
+//     else if (strcmp(value, "false") == 0)
+//     {
+//         return (JsonValue){
+//             .type = BOOLEAN,
+//             .as.boolean = 0};
+//     }
+
+//     /* Case 7: null */
+//     if (strcmp(value, "null"))
+//     {
+//         return (JsonValue){
+//             .type = NULL_VALUE};
+//     }
+
+//     return (JsonValue){0};
+// }
+
+
+typedef struct
 {
-    char *value = getvalue(pair);
-    if (!value)
+    char type; // '{' or '['
+    char *start;
+} Scope;
+
+static void extract_key(char *end_quote, char *begin, char *out)
+{
+    char *k = end_quote - 1;
+    size_t len = 0;
+
+    while (k >= begin && *k != '"')
     {
-        return (JsonValue){
-            .type = NULL_VALUE};
+        out[len++] = *k--;
     }
 
-    /* Case 1: string */
-    if (value[0] == '\"' && value[strlen(value) - 1] == '\"')
+    out[len] = '\0';
+
+    for (size_t i = 0; i < len / 2; ++i)
     {
-        return (JsonValue){
-            .type = STRING,
-            .as.str = strdup(value)};
+        char tmp = out[i];
+        out[i] = out[len - i - 1];
+        out[len - i - 1] = tmp;
     }
-
-    /* Case 2: integer */
-    if (isint(value))
-    {
-        return (JsonValue){
-            .type = INTEGER,
-            .as.integer = atoi(value)};
-    }
-
-    /* Case 3: double */
-    if (isdouble(value))
-    {
-        return (JsonValue){
-            .type = DOUBLE,
-            .as.double_value = atof(value)};
-    }
-
-    /* Case 4: array */
-
-    /* Case 5: object */
-
-    /* Case 6: boolean */
-    if (strcmp(value, "true") == 0)
-    {
-        return (JsonValue){
-            .type = BOOLEAN,
-            .as.boolean = 1};
-    }
-    else if (strcmp(value, "false") == 0)
-    {
-        return (JsonValue){
-            .type = BOOLEAN,
-            .as.boolean = 0};
-    }
-
-    /* Case 7: null */
-    if (strcmp(value, "null"))
-    {
-        return (JsonValue){
-            .type = NULL_VALUE};
-    }
-
-    return (JsonValue){0};
 }
 
-void parse(char *str, char open_c, char closing_c)
+void parse(char *str)
 {
     char *p = str;
-    long long int obj_start = -1;
-    int depth = 0, in_str = 0, escaped = 0, is_data_structure = 0;
+
+    int in_str = 0;
+    int escaped = 0;
+
+    Scope stack[MAX_SCOPE_DEPTH];
+    int top = -1;
 
     while (*p)
     {
@@ -111,79 +113,56 @@ void parse(char *str, char open_c, char closing_c)
         {
             escaped = 0;
             p++;
+            continue;
         }
 
         if (*p == '\n')
         {
             escaped = 1;
             p++;
+            continue;
         }
 
         if (*p == '"')
         {
-
             in_str = !in_str;
 
-            if (!in_str && !is_data_structure)
+            if (!in_str && *(p + 1) == ':')
             {
-                if (*(p + 1) == ':')
+                char key[128];
+
+                extract_key(p, str, key);
+
+                printf("Key: %s\n", key);
+
+                char *v = p + 2;
+
+                while (*v && isspace((unsigned char)*v))
+                    v++;
+
+                // Primitive value
+                if (*v != '{' && *v != '[')
                 {
-                    char *k = p, *v = p;
-                    char key[128], value[1024];
-                    int in_quotes = 0;
-
-                    while (*k)
-                    {
-                        if ((*k == ',' || *k == '{') && !in_quotes)
-                        {
-                            key[p - k] = *k;
-                            break;
-                        }
-
-                        if (*k == '"')
-                        {
-                            in_quotes = !in_quotes;
-                        }
-
-                        key[p - k] = *k;
-                        k--;
-                    }
-                    key[p - k] = '\0';
-
-                    printf("Key: %s\n", strrev(key));
-
+                    char value[1024];
                     size_t count = 0;
-                    // Skip end of key ('"' character) and ":" character
-                    v = p + 2;
+                    int value_in_quotes = 0;
+
                     while (*v)
                     {
-                        if ((*v == '\n' || *v == '\0' || *v == ',' || *v == ']' || *v == '}') && !in_quotes)
-                        {
-                            break;
-                        }
-
-                        if ((*v == '{' || *v == '[') && !in_quotes)
-                        {
-                            is_data_structure = 1;
-                            break;
-                        }
-
                         if (*v == '"')
+                            value_in_quotes = !value_in_quotes;
+
+                        if (!value_in_quotes &&
+                            (*v == ',' || *v == '}' || *v == ']'))
                         {
-                            in_quotes = !in_quotes;
+                            break;
                         }
 
-                        if (isspace(*v) && !in_quotes)
-                        {
-                            v++;
-                            continue;
-                        }
-
-                        value[count++] = *v;
-                        v++;
+                        value[count++] = *v++;
                     }
+
                     value[count] = '\0';
-                    is_data_structure = 0;
+
                     printf("Value: %s\n", value);
                 }
             }
@@ -191,29 +170,42 @@ void parse(char *str, char open_c, char closing_c)
 
         if (!in_str)
         {
-            if (*p == open_c)
+            if (*p == '{' || *p == '[')
             {
-                if (depth == 0)
+                if (top + 1 < MAX_SCOPE_DEPTH)
                 {
-                    obj_start = p - str;
+                    stack[++top].type = *p;
+                    stack[top].start = p;
                 }
-                depth++;
             }
-            else if (*p == closing_c)
+            else if (*p == '}' || *p == ']')
             {
-                depth--;
-
-                if (depth == 0 && obj_start > -1)
+                if (top >= 0)
                 {
-                    char value[1024];
-                    size_t count = 0;
+                    char expected =
+                        stack[top].type == '{'
+                            ? '}'
+                            : ']';
 
-                    for (long long i = obj_start; i < (p - str) + 1; ++i)
+                    if (*p == expected)
                     {
-                        value[count++] = str[i];
+                        Scope scope = stack[top--];
+
+                        size_t len =
+                            (size_t)(p - scope.start + 1);
+
+                        char value[MAX_VALUE_LENGTH];
+
+                        if (len >= sizeof(value))
+                            len = sizeof(value) - 1;
+
+                        memcpy(value, scope.start, len);
+                        value[len] = '\0';
+
+                        printf("Structure (%c): %s\n",
+                               scope.type,
+                               value);
                     }
-                    value[count] = '\0';
-                    printf("Structure: %s\n", value);
                 }
             }
         }
@@ -275,10 +267,10 @@ void read_json(char *filepath)
     }
 
     // parse_structure(str, '{', '}');
-    parse(str, '[', ']');
+    parse(str);
 
     free(buffer);
     free(str);
     fclose(file);
-    printf("--- %d line(s) ---\n", count);
+    printf("--- Read %d line(s) ---\n", count);
 }
