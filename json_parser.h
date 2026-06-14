@@ -1,5 +1,6 @@
 #include "json_utils.h"
 #include "json_types.h"
+#include <stdlib.h>
 
 #define READ_TEST_FILE_PATH "default_data.json"
 #define MAX_BUFFER_SIZE 256
@@ -9,67 +10,118 @@
 
 // TODO: retrieve value type
 // Value type can be number, string, array (mixed values or not), object or boolean
-// JsonValue parse_value(char *pair)
-// {
-//     char *value = getvalue(pair);
-//     if (!value)
-//     {
-//         return (JsonValue){
-//             .type = NULL_VALUE};
-//     }
+JsonValue parse_value(char *str)
+{
+    if (!str)
+        return (JsonValue){
+            .type = NULL_VALUE};
 
-//     /* Case 1: string */
-//     if (value[0] == '\"' && value[strlen(value) - 1] == '\"')
-//     {
-//         return (JsonValue){
-//             .type = STRING,
-//             .as.str = strdup(value)};
-//     }
+    /* Case 1: string */
+    if (str[0] == '\"' && str[strlen(str) - 1] == '\"')
+        return (JsonValue){
+            .type = STRING,
+            .as.str = strdup(str)};
 
-//     /* Case 2: integer */
-//     if (isint(value))
-//     {
-//         return (JsonValue){
-//             .type = INTEGER,
-//             .as.integer = atoi(value)};
-//     }
+    /* Case 2: integer */
+    if (isint(str))
+        return (JsonValue){
+            .type = INTEGER,
+            .as.integer = atoi(str)};
 
-//     /* Case 3: double */
-//     if (isdouble(value))
-//     {
-//         return (JsonValue){
-//             .type = DOUBLE,
-//             .as.double_value = atof(value)};
-//     }
+    /* Case 3: double */
+    if (isdouble(str))
+        return (JsonValue){
+            .type = DOUBLE,
+            .as.double_value = atof(str)};
 
-//     /* Case 4: array */
+    /* Case 4: array */
+    if (str[0] == '[' && str[strlen(str) - 1] == ']')
+    {
+        char *items = sub(str, 1, strlen(str) - 1);
+        if (!items)
+        {
+            return (JsonValue){0};
+        }
 
-//     /* Case 5: object */
+        JsonValue *value = malloc(sizeof(JsonValue));
+        value->type = ARRAY;
+        value->as.array.capacity = 256;
+        value->as.array.length = 0;
+        value->as.array.items = malloc(sizeof(JsonValue) * value->as.array.capacity);
 
-//     /* Case 6: boolean */
-//     if (strcmp(value, "true") == 0)
-//     {
-//         return (JsonValue){
-//             .type = BOOLEAN,
-//             .as.boolean = 1};
-//     }
-//     else if (strcmp(value, "false") == 0)
-//     {
-//         return (JsonValue){
-//             .type = BOOLEAN,
-//             .as.boolean = 0};
-//     }
+        char *delimiter = ",";
+        char *token = strtok(items, delimiter);
+        while (token)
+        {
+            value->as.array.items[value->as.array.length++] = parse_value(token);
+            token = strtok(NULL, delimiter);
+        }
 
-//     /* Case 7: null */
-//     if (strcmp(value, "null"))
-//     {
-//         return (JsonValue){
-//             .type = NULL_VALUE};
-//     }
+        free(items);
 
-//     return (JsonValue){0};
-// }
+        return *value;
+    }
 
+    /* Case 5: object */
+    if (str[0] == '{' && str[strlen(str) - 1] == '}')
+    {
+        char *entries = sub(str, 1, strlen(str) - 1);
+        if (!entries)
+        {
+            return (JsonValue){0};
+        }
+
+        JsonValue *value = malloc(sizeof(JsonValue));
+        value->type = OBJECT;
+        value->as.object.capacity = 256;
+        value->as.object.count = 0;
+        value->as.object.entries = malloc(sizeof(JsonValueObjectEntry) * value->as.object.capacity);
+
+        char *delimiter = ",";
+        char *token = strtok(entries, delimiter);
+        while (token)
+        {
+            char copy[256];
+            strcpy(copy, token);
+
+            char *colon = strchr(copy, ':');
+            if (colon)
+            {
+                *colon = '\0';
+
+                char *key = copy;
+                char *v = colon + 1;
+
+                trim(key);
+                trim(v);
+                value->as.object.entries[value->as.object.count++] = (JsonValueObjectEntry){
+                    .key = strdup(key),
+                    .value = parse_value(v)};
+            }
+
+            token = strtok(NULL, delimiter);
+        }
+
+        free(entries);
+
+        return *value;
+    }
+
+    /* Case 6: boolean */
+    if (strcmp(str, "true") == 0 || strcmp(str, "false") == 0)
+    {
+        return (JsonValue){
+            .type = BOOLEAN,
+            .as.boolean = strcmp(str, "true") == 0};
+    }
+
+    /* Case 7: null */
+    if (strcmp(str, "null"))
+        return (JsonValue){
+            .type = NULL_VALUE};
+
+    return (JsonValue){0};
+}
 
 typedef struct
 {

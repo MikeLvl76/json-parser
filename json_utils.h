@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdlib.h>
 
 int isint(char *str)
 {
@@ -106,13 +107,19 @@ void trim(char *str)
     *end = '\0';
 }
 
-char *sub(char *str, size_t start, size_t end)
+char *sub(const char *str, size_t start, size_t end)
 {
-    if (!str)
-        return str;
+    if (!str || end < start)
+        return NULL;
 
-    str[end] = '\0';
-    char *key = str + (int)start;
+    size_t len = end - start;
 
-    return key;
+    char *out = malloc(len + 1);
+    if (!out)
+        return NULL;
+
+    memcpy(out, str + start, len);
+    out[len] = '\0';
+
+    return out;
 }

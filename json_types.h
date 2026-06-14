@@ -20,6 +20,7 @@ struct JsonValueObject
 {
     JsonValueObjectEntry *entries;
     size_t count;
+    size_t capacity;
 };
 
 struct JsonValue
@@ -35,6 +36,7 @@ struct JsonValue
         {
             JsonValue *items;
             size_t length;
+            size_t capacity;
         } array;
 
         JsonValueObject object;
