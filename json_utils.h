@@ -3,6 +3,98 @@
 #include <ctype.h>
 #include <stdlib.h>
 
+typedef struct
+{
+    char *start;
+    size_t len;
+} Slice;
+
+typedef struct
+{
+    char type; // '{' or '['
+    char *start;
+} Scope;
+
+static void extract_key(char *end_quote, char *begin, char *out)
+{
+    char *k = end_quote - 1;
+    size_t len = 0;
+
+    while (k >= begin && *k != '"')
+    {
+        out[len++] = *k--;
+    }
+
+    out[len] = '\0';
+
+    for (size_t i = 0; i < len / 2; ++i)
+    {
+        char tmp = out[i];
+        out[i] = out[len - i - 1];
+        out[len - i - 1] = tmp;
+    }
+}
+
+size_t split_top_level(char *str, char sep, Slice *out, size_t max)
+{
+    size_t count = 0;
+
+    int in_str = 0;
+    int escaped = 0;
+    int depth = 0;
+
+    char *start = str;
+
+    for (char *p = str; *p; p++)
+    {
+        if (escaped)
+        {
+            escaped = 0;
+            continue;
+        }
+
+        if (*p == '\\')
+        {
+            escaped = 1;
+            continue;
+        }
+
+        if (*p == '"')
+            in_str = !in_str;
+
+        if (!in_str)
+        {
+            if (*p == '{' || *p == '[')
+                depth++;
+
+            if (*p == '}' || *p == ']')
+                depth--;
+
+            if (depth == 0 && *p == sep)
+            {
+                if (count < max)
+                {
+                    out[count].start = start;
+                    out[count].len = (size_t)(p - start);
+                    count++;
+                }
+
+                start = p + 1;
+            }
+        }
+    }
+
+    /* last token */
+    if (*start)
+    {
+        out[count].start = start;
+        out[count].len = strlen(start);
+        count++;
+    }
+
+    return count;
+}
+
 int isint(char *str)
 {
     if (*str == '\0')

@@ -1,5 +1,5 @@
 #include "json_utils.h"
-#include "json_types.h"
+#include "json_functions.h"
 #include <stdlib.h>
 
 #define READ_TEST_FILE_PATH "default_data.json"
@@ -8,149 +8,216 @@
 #define MAX_SCOPE_DEPTH 128
 #define MAX_VALUE_LENGTH 4096
 
-// TODO: retrieve value type
-// Value type can be number, string, array (mixed values or not), object or boolean
+JsonValue parse_array(char *str);
+JsonValue parse_object(char *str);
+JsonValue parse_value(char *str);
+JsonValue *parse(char *str);
+void read_json(char *filepath);
+
+JsonValue parse_array(char *str)
+{
+    JsonValue v = (JsonValue){
+        .type = ARRAY,
+        .as.array.capacity = 256,
+        .as.array.length = 0,
+        .as.array.items = malloc(sizeof(JsonValue) * 256)};
+
+    if (!v.as.array.items)
+    {
+        fprintf(stderr, "Failed to parse: %s\n", str);
+        return (JsonValue){0};
+    }
+
+    char *inner = sub(str, 1, strlen(str) - 1);
+
+    Slice parts[256];
+    size_t n = split_top_level(inner, ',', parts, 256);
+
+    for (size_t i = 0; i < n; ++i)
+    {
+        char buf[1024];
+        memcpy(buf, parts[i].start, parts[i].len);
+        buf[parts[i].len] = '\0';
+
+        trim(buf);
+
+        if (v.as.array.length == v.as.array.capacity)
+        {
+            v.as.array.capacity *= 2;
+
+            v.as.array.items =
+                realloc(
+                    v.as.array.items,
+                    sizeof(JsonValue) *
+                        v.as.array.capacity);
+
+            if (!v.as.array.items)
+            {
+                fprintf(stderr, "Failed to parse: %s\n", str);
+                return (JsonValue){0};
+            }
+        }
+
+        v.as.array.items[v.as.array.length++] =
+            parse_value(buf);
+    }
+
+    free(inner);
+    return v;
+}
+
+JsonValue parse_object(char *str)
+{
+    JsonValue v = (JsonValue){
+        .type = OBJECT,
+        .as.object.capacity = 256,
+        .as.object.count = 0,
+        .as.object.entries = malloc(sizeof(JsonValueObjectEntry) * 256)};
+
+    if (!v.as.object.entries)
+    {
+        fprintf(stderr, "Failed to parse: %s\n", str);
+        return (JsonValue){0};
+    }
+
+    char *inner = sub(str, 1, strlen(str) - 1);
+
+    Slice parts[256];
+    size_t n = split_top_level(inner, ',', parts, 256);
+
+    for (size_t i = 0; i < n; ++i)
+    {
+        char buf[1024];
+        if (parts[i].len >= sizeof(buf))
+        {
+            fprintf(stderr, "Token too large\n");
+            continue;
+        }
+        memcpy(buf, parts[i].start, parts[i].len);
+        buf[parts[i].len] = '\0';
+
+        char *colon = strchr(buf, ':');
+        if (!colon)
+            continue;
+
+        *colon = '\0';
+
+        char *key = buf;
+        char *val = colon + 1;
+
+        trim(key);
+        trim(val);
+
+        if (!key || !val || *key == '\0' || *val == '\0')
+            continue;
+
+        if (v.as.object.count == v.as.object.capacity)
+        {
+            v.as.object.capacity *= 2;
+
+            v.as.object.entries =
+                realloc(
+                    v.as.object.entries,
+                    sizeof(JsonValueObjectEntry) *
+                        v.as.object.capacity);
+
+            if (!v.as.object.entries)
+            {
+                fprintf(stderr, "Failed to parse: %s\n", str);
+                return (JsonValue){0};
+            }
+        }
+
+        v.as.object.entries[v.as.object.count++] =
+            (JsonValueObjectEntry){
+                .key = strdup(key),
+                .value = parse_value(val)};
+    }
+
+    free(inner);
+    return v;
+}
+
 JsonValue parse_value(char *str)
 {
+    JsonValue value = {0};
+
     if (!str)
-        return (JsonValue){
-            .type = NULL_VALUE};
+    {
+        value.type = NULL_VALUE;
+        return value;
+    }
 
-    /* Case 1: string */
-    if (str[0] == '\"' && str[strlen(str) - 1] == '\"')
-        return (JsonValue){
-            .type = STRING,
-            .as.str = strdup(str)};
+    trim(str);
 
-    /* Case 2: integer */
+    size_t len = strlen(str);
+
+    /* STRING */
+    if (len >= 2 && str[0] == '"' && str[len - 1] == '"')
+    {
+        str[len - 1] = '\0';
+
+        value.type = STRING;
+        value.as.str = strdup(str + 1);
+
+        return value;
+    }
+
+    /* INTEGER */
     if (isint(str))
-        return (JsonValue){
-            .type = INTEGER,
-            .as.integer = atoi(str)};
+    {
+        value.type = INTEGER;
+        value.as.integer = atoi(str);
+        return value;
+    }
 
-    /* Case 3: double */
+    /* DOUBLE */
     if (isdouble(str))
-        return (JsonValue){
-            .type = DOUBLE,
-            .as.double_value = atof(str)};
-
-    /* Case 4: array */
-    if (str[0] == '[' && str[strlen(str) - 1] == ']')
     {
-        char *items = sub(str, 1, strlen(str) - 1);
-        if (!items)
-        {
-            return (JsonValue){0};
-        }
-
-        JsonValue *value = malloc(sizeof(JsonValue));
-        value->type = ARRAY;
-        value->as.array.capacity = 256;
-        value->as.array.length = 0;
-        value->as.array.items = malloc(sizeof(JsonValue) * value->as.array.capacity);
-
-        char *delimiter = ",";
-        char *token = strtok(items, delimiter);
-        while (token)
-        {
-            value->as.array.items[value->as.array.length++] = parse_value(token);
-            token = strtok(NULL, delimiter);
-        }
-
-        free(items);
-
-        return *value;
+        value.type = DOUBLE;
+        value.as.double_value = atof(str);
+        return value;
     }
 
-    /* Case 5: object */
-    if (str[0] == '{' && str[strlen(str) - 1] == '}')
-    {
-        char *entries = sub(str, 1, strlen(str) - 1);
-        if (!entries)
-        {
-            return (JsonValue){0};
-        }
-
-        JsonValue *value = malloc(sizeof(JsonValue));
-        value->type = OBJECT;
-        value->as.object.capacity = 256;
-        value->as.object.count = 0;
-        value->as.object.entries = malloc(sizeof(JsonValueObjectEntry) * value->as.object.capacity);
-
-        char *delimiter = ",";
-        char *token = strtok(entries, delimiter);
-        while (token)
-        {
-            char copy[256];
-            strcpy(copy, token);
-
-            char *colon = strchr(copy, ':');
-            if (colon)
-            {
-                *colon = '\0';
-
-                char *key = copy;
-                char *v = colon + 1;
-
-                trim(key);
-                trim(v);
-                value->as.object.entries[value->as.object.count++] = (JsonValueObjectEntry){
-                    .key = strdup(key),
-                    .value = parse_value(v)};
-            }
-
-            token = strtok(NULL, delimiter);
-        }
-
-        free(entries);
-
-        return *value;
-    }
-
-    /* Case 6: boolean */
+    /* BOOLEAN */
     if (strcmp(str, "true") == 0 || strcmp(str, "false") == 0)
     {
-        return (JsonValue){
-            .type = BOOLEAN,
-            .as.boolean = strcmp(str, "true") == 0};
+        value.type = BOOLEAN;
+        value.as.boolean = strcmp(str, "true") == 0;
+        return value;
     }
 
-    /* Case 7: null */
-    if (strcmp(str, "null"))
-        return (JsonValue){
-            .type = NULL_VALUE};
+    /* NULL */
+    if (strcmp(str, "null") == 0)
+    {
+        value.type = NULL_VALUE;
+        return value;
+    }
 
-    return (JsonValue){0};
+    /* ARRAY */
+    if (len >= 2 && str[0] == '[' && str[len - 1] == ']')
+        return parse_array(str);
+
+    /* OBJECT */
+    if (len >= 2 && str[0] == '{' && str[len - 1] == '}')
+        return parse_object(str);
+
+    return value;
 }
 
-typedef struct
+JsonValue *parse(char *str)
 {
-    char type; // '{' or '['
-    char *start;
-} Scope;
-
-static void extract_key(char *end_quote, char *begin, char *out)
-{
-    char *k = end_quote - 1;
-    size_t len = 0;
-
-    while (k >= begin && *k != '"')
+    JsonValue *json = malloc(sizeof(JsonValue));
+    if (!json)
     {
-        out[len++] = *k--;
+        return NULL;
     }
 
-    out[len] = '\0';
+    json->type = OBJECT;
+    json->as.object.capacity = 256;
+    json->as.object.count = 0;
+    json->as.object.entries = malloc(sizeof(JsonValueObjectEntry) * json->as.object.capacity);
 
-    for (size_t i = 0; i < len / 2; ++i)
-    {
-        char tmp = out[i];
-        out[i] = out[len - i - 1];
-        out[len - i - 1] = tmp;
-    }
-}
-
-void parse(char *str)
-{
     char *p = str;
 
     int in_str = 0;
@@ -161,6 +228,19 @@ void parse(char *str)
 
     while (*p)
     {
+        if (json->as.object.count == json->as.object.capacity)
+        {
+            json->as.object.capacity *= 2;
+            json->as.object.entries = realloc(json->as.object.entries, sizeof(JsonValueObjectEntry) * json->as.object.capacity);
+            if (!json->as.object.entries)
+            {
+                printf("An error has occurred\n");
+                break;
+            }
+        }
+
+        JsonValueObjectEntry *entry = &json->as.object.entries[json->as.object.count++];
+
         if (escaped)
         {
             escaped = 0;
@@ -185,7 +265,8 @@ void parse(char *str)
 
                 extract_key(p, str, key);
 
-                printf("Key: %s\n", key);
+                // printf("Key: %s\n", key);
+                entry->key = strdup(key);
 
                 char *v = p + 2;
 
@@ -215,7 +296,9 @@ void parse(char *str)
 
                     value[count] = '\0';
 
-                    printf("Value: %s\n", value);
+                    entry->value = parse_value(value);
+
+                    // printf("Value: %s\n", value);
                 }
             }
         }
@@ -254,16 +337,17 @@ void parse(char *str)
                         memcpy(value, scope.start, len);
                         value[len] = '\0';
 
-                        printf("Structure (%c): %s\n",
-                               scope.type,
-                               value);
+                        entry->value = parse_value(value);
+
+                        // printf("Structure (%c): %s\n", scope.type, value);
                     }
                 }
             }
         }
-
         p++;
     }
+
+    return json;
 }
 
 void read_json(char *filepath)
@@ -310,7 +394,6 @@ void read_json(char *filepath)
 
         count++;
     }
-    // printf("%s\n", str);
 
     if (*str != '{' && str[strlen(str) - 1] != '}')
     {
@@ -318,11 +401,17 @@ void read_json(char *filepath)
         exit(1);
     }
 
-    // parse_structure(str, '{', '}');
-    parse(str);
+    JsonValue *json = parse(str);
+    if (!json)
+    {
+        printf("Error: cannot parse file\n");
+        return;
+    }
+    dump_json(json);
 
     free(buffer);
     free(str);
+    free(json);
     fclose(file);
     printf("--- Read %d line(s) ---\n", count);
 }
