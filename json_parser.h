@@ -27,7 +27,6 @@ void read_json(char *filepath)
     *buffer = '\0';
     *str = '\0';
 
-    int count = 0;
     while (!feof(file))
     {
         if (ferror(file))
@@ -39,14 +38,11 @@ void read_json(char *filepath)
         char *line = fgets(buffer, MAX_BUFFER_SIZE, file);
         if (!line)
         {
-            count++;
             continue;
         }
 
         trim(buffer);
         strncat(str, buffer, strlen(buffer));
-
-        count++;
     }
 
     if (*str != '{' && str[strlen(str) - 1] != '}')
@@ -62,5 +58,4 @@ void read_json(char *filepath)
     free(str);
     free(json);
     fclose(file);
-    printf("--- Read %d line(s) ---\n", count);
 }

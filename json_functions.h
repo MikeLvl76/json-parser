@@ -1,6 +1,7 @@
 #include "json_types.h"
 #include "json_utils.h"
 
+void dump_json(JsonValue *json);
 JsonValue *str_to_json_value(char *str);
 JsonValue *str_to_json_int(char *str);
 JsonValue *str_to_json_double(char *str);
@@ -8,7 +9,77 @@ JsonValue *str_to_json_str(char *str);
 JsonValue *str_to_json_bool(char *str);
 JsonValue *str_to_json_array(char *str_array);
 JsonValue *str_to_json_object(char *str_object);
-void dump_json(JsonValue *json);
+
+void dump_json(JsonValue *json)
+{
+    if (!json)
+    {
+        printf("JSON value does not exist\n");
+        return;
+    }
+
+    switch (json->type)
+    {
+
+    case INTEGER:
+        printf("%d", json->as.integer);
+        break;
+
+    case DOUBLE:
+        printf("%lf", json->as.double_value);
+        break;
+
+    case STRING:
+        printf("%s", json->as.str);
+        break;
+
+    case ARRAY:
+        printf("[");
+        for (size_t i = 0; i < json->as.array.length; ++i)
+        {
+            JsonValue *item = json->as.array.items[i];
+            if (item)
+            {
+                dump_json(item);
+            }
+            if (i < json->as.array.length - 1)
+            {
+                printf(", ");
+            }
+        }
+        printf("]");
+        break;
+
+    case OBJECT:
+        printf("{");
+        for (size_t i = 0; i < json->as.object.count; ++i)
+        {
+            JsonEntry *entry = json->as.object.entries[i];
+            if (entry)
+            {
+                printf("%s: ", entry->key);
+                dump_json(entry->value);
+            }
+            if (i < json->as.object.count - 1)
+            {
+                printf(",");
+            }
+        }
+        printf("}");
+        break;
+
+    case BOOLEAN:
+        printf(json->as.boolean ? "True" : "False");
+        break;
+
+    case NULL_VALUE:
+        printf("null");
+        break;
+
+    default:
+        break;
+    }
+}
 
 JsonValue *str_to_json_value(char *str)
 {
@@ -212,25 +283,6 @@ JsonValue *str_to_json_array(char *str_array)
         buffer[id++] = *p++;
     }
 
-    // last item
-    // buffer[id] = '\0';
-    // trim(buffer);
-
-    // if (id > 0)
-    // {
-    //     if (v->as.array.length == v->as.array.capacity)
-    //     {
-    //         v->as.array.capacity *= 2;
-    //         v->as.array.items = realloc(v->as.array.items, sizeof(JsonValue) * v->as.array.capacity);
-    //         if (!v->as.array.items)
-    //         {
-    //             printf("An error has occurred\n");
-    //             return v;
-    //         }
-    //     }
-    //     v->as.array.items[v->as.array.length++] = str_to_json_value(buffer);
-    // }
-
     return v;
 }
 
@@ -328,75 +380,4 @@ JsonValue *str_to_json_object(char *str_object)
     }
 
     return v;
-}
-
-void dump_json(JsonValue *json)
-{
-    if (!json)
-    {
-        printf("JSON value does not exist\n");
-        return;
-    }
-
-    switch (json->type)
-    {
-
-    case INTEGER:
-        printf("%d", json->as.integer);
-        break;
-
-    case DOUBLE:
-        printf("%lf", json->as.double_value);
-        break;
-
-    case STRING:
-        printf("%s", json->as.str);
-        break;
-
-    case ARRAY:
-        printf("[");
-        for (size_t i = 0; i < json->as.array.length; ++i)
-        {
-            JsonValue *item = json->as.array.items[i];
-            if (item)
-            {
-                dump_json(item);
-            }
-            if (i < json->as.array.length - 1)
-            {
-                printf(", ");
-            }
-        }
-        printf("]");
-        break;
-
-    case OBJECT:
-        printf("{");
-        for (size_t i = 0; i < json->as.object.count; ++i)
-        {
-            JsonEntry *entry = json->as.object.entries[i];
-            if (entry)
-            {
-                printf("  %s: ", entry->key);
-                dump_json(entry->value);
-            }
-            if (i < json->as.object.count - 1)
-            {
-                printf(",");
-            }
-        }
-        printf("}\n");
-        break;
-
-    case BOOLEAN:
-        printf(json->as.boolean ? "True" : "False");
-        break;
-
-    case NULL_VALUE:
-        printf("null");
-        break;
-
-    default:
-        break;
-    }
 }
