@@ -1,9 +1,9 @@
 #include <stdlib.h>
-#include <stdio.h>
 
 typedef struct JsonValue JsonValue;
-typedef struct JsonValueObjectEntry JsonValueObjectEntry;
-typedef struct JsonValueObject JsonValueObject;
+typedef struct JsonArray JsonArray;
+typedef struct JsonEntry JsonEntry;
+typedef struct JsonObject JsonObject;
 
 typedef enum
 {
@@ -16,9 +16,16 @@ typedef enum
     OBJECT
 } JsonValueType;
 
-struct JsonValueObject
+struct JsonArray
 {
-    JsonValueObjectEntry *entries;
+    JsonValue **items;
+    size_t length;
+    size_t capacity;
+};
+
+struct JsonObject
+{
+    JsonEntry **entries;
     size_t count;
     size_t capacity;
 };
@@ -32,19 +39,13 @@ struct JsonValue
         double double_value;
         char *str;
         int boolean;
-        struct
-        {
-            JsonValue *items;
-            size_t length;
-            size_t capacity;
-        } array;
-
-        JsonValueObject object;
+        JsonArray array;
+        JsonObject object;
     } as;
 };
 
-struct JsonValueObjectEntry
+struct JsonEntry
 {
     char *key;
-    JsonValue value;
+    JsonValue *value;
 };
