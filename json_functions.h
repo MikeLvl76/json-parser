@@ -445,6 +445,17 @@ JsonValue *str_to_json_object(char *str_object)
                         entry->key = strdup(key);
                         entry->value = str_to_json_value(value);
 
+                        if (v->as.object.count == v->as.object.capacity)
+                        {
+                            v->as.object.capacity *= 2;
+                            v->as.object.entries = realloc(v->as.object.entries, sizeof(JsonEntry) * v->as.object.capacity);
+                            if (!v->as.object.entries)
+                            {
+                                printf("An error has occurred\n");
+                                return v;
+                            }
+                        }
+
                         v->as.object.entries[v->as.object.count++] = entry;
                     }
                 }
@@ -465,6 +476,268 @@ JsonValue *str_to_json_object(char *str_object)
     }
 
     return v;
+}
+
+/* Manipulate struct */
+size_t count_elements(JsonValue json);
+size_t idxentry(JsonValue json, char *key);
+JsonEntry *getentry(JsonValue json, char *key);
+JsonEntry *entry_at(JsonValue json, size_t index);
+int addentry(JsonValue *dest, JsonEntry *entry, size_t position);
+int setentry(JsonValue *dest, char *key, JsonValue *value);
+int rementry(JsonValue *dest, char *key);
+char **getkeys(JsonValue json);
+JsonValue **getvalues(JsonValue json);
+JsonEntry **getentries(JsonValue json);
+
+size_t count_elements(JsonValue json)
+{
+    if (json.type == ARRAY)
+    {
+        return json.as.array.length;
+    }
+
+    if (json.type == OBJECT)
+    {
+        return json.as.object.count;
+    }
+
+    return 0;
+}
+
+size_t idxentry(JsonValue json, char *key)
+{
+    if (!key)
+    {
+        printf("Incorrect key");
+        return 0;
+    }
+
+    if (json.type != OBJECT)
+    {
+        printf("Target must be a JsonValue with OBJECT as type\n");
+        return 0;
+    }
+
+    if (count_elements(json) == 0)
+    {
+        printf("Object is empty\n");
+        return 0;
+    }
+
+    for (size_t i = 0; i < json.as.object.count; ++i)
+    {
+        if (strcmp(json.as.object.entries[i]->key, key) == 0)
+        {
+            return i;
+        }
+    }
+
+    return 0;
+}
+
+JsonEntry *getentry(JsonValue json, char *key)
+{
+    if (!key)
+    {
+        printf("Incorrect key");
+        return NULL;
+    }
+
+    if (json.type != OBJECT)
+    {
+        printf("Target must be a JsonValue with OBJECT as type\n");
+        return NULL;
+    }
+
+    if (count_elements(json) == 0)
+    {
+        printf("Object is empty\n");
+        return NULL;
+    }
+
+    for (size_t i = 0; i < json.as.object.count; ++i)
+    {
+        if (strcmp(json.as.object.entries[i]->key, key) == 0)
+        {
+            return json.as.object.entries[i];
+        }
+    }
+
+    printf("Unknown key\n");
+    return NULL;
+}
+
+JsonEntry *entry_at(JsonValue json, size_t index)
+{
+    if (index >= json.as.object.count)
+    {
+        printf("Index %zu out of bounds\n", index);
+        return NULL;
+    }
+
+    return json.as.object.entries[index];
+}
+
+int addentry(JsonValue *dest, JsonEntry *entry, size_t position)
+{
+    if (!dest || dest->type != OBJECT)
+    {
+        printf("Unknown object\n");
+        return 0;
+    }
+
+    if (!entry)
+    {
+        printf("Unknown entry\n");
+        return 0;
+    }
+
+    if (position >= count_elements(*dest))
+    {
+        printf("Object cannot support new entry\n");
+        return 0;
+    }
+
+    if (getentry(*dest, entry->key))
+    {
+        printf("Cannot add entry with same key\n");
+        return 0;
+    }
+
+    if (dest->as.object.count == dest->as.object.capacity)
+    {
+        dest->as.object.capacity *= 2;
+        dest->as.object.entries = realloc(dest->as.object.entries, sizeof(JsonEntry) * dest->as.object.capacity);
+        if (!dest->as.object.entries)
+        {
+            printf("An error has occurred\n");
+            return 0;
+        }
+    }
+
+    for (size_t i = dest->as.object.count; i > position; --i)
+    {
+        dest->as.object.entries[i] = dest->as.object.entries[i - 1];
+    }
+    dest->as.object.count++;
+    dest->as.object.entries[position] = entry;
+    return 1;
+}
+
+int setentry(JsonValue *dest, char *key, JsonValue *value)
+{
+    if (!dest || dest->type != OBJECT)
+    {
+        printf("Unknown object\n");
+        return 0;
+    }
+
+    if (!key)
+    {
+        printf("Incorrect key");
+        return 0;
+    }
+
+    if (!value)
+    {
+        return 0;
+    }
+
+    if (count_elements(*dest) == 0)
+    {
+        printf("Object is empty\n");
+        return 0;
+    }
+
+    JsonEntry *entry = getentry(*dest, key);
+    if (!entry)
+    {
+        return 0;
+    }
+    entry->value = value;
+    return 1;
+}
+
+int rementry(JsonValue *dest, char *key)
+{
+    if (!dest || dest->type != OBJECT)
+    {
+        printf("Unknown object\n");
+        return 0;
+    }
+
+    if (!key)
+    {
+        printf("Incorrect key");
+        return 0;
+    }
+
+    if (!getentry(*dest, key))
+    {
+        printf("Cannot find entry with key:%s\n", key);
+        return 0;
+    }
+
+    size_t index = idxentry(*dest, key);
+    for (size_t i = index; i < dest->as.object.count - 1; ++i)
+    {
+        dest->as.object.entries[i] = dest->as.object.entries[i + 1];
+    }
+    dest->as.object.count--;
+    return 1;
+}
+
+/* Returns existing keys of json object without copy */
+char **getkeys(JsonValue json)
+{
+    if (json.type != OBJECT)
+    {
+        printf("Target must be a JsonValue with OBJECT as type\n");
+        return NULL;
+    }
+
+    char **keys = malloc(sizeof(char *) * json.as.object.count);
+    if (!keys)
+    {
+        return NULL;
+    }
+
+    for (size_t i = 0; i < json.as.object.count; ++i)
+    {
+        keys[i] = json.as.object.entries[i]->key;
+    }
+
+    return keys;
+}
+
+/* Returns existing values of json object without copy */
+JsonValue **getvalues(JsonValue json)
+{
+    if (json.type != OBJECT)
+    {
+        printf("Target must be a JsonValue with OBJECT as type\n");
+        return NULL;
+    }
+
+    JsonValue **values = malloc(sizeof(JsonValue *) * json.as.object.count);
+    if (!values)
+    {
+        return NULL;
+    }
+
+    for (size_t i = 0; i < json.as.object.count; ++i)
+    {
+        values[i] = json.as.object.entries[i]->value;
+    }
+
+    return values;
+}
+
+/* Returns existing entries of json object without copy */
+JsonEntry **getentries(JsonValue json)
+{
+    return json.as.object.entries;
 }
 
 /* Traverse struct with iterator */
@@ -610,243 +883,6 @@ JsonValue *str_to_json_object(char *str_object)
 //     }
 //     printf("]\n");
 // }
-
-/* Manipulate struct */
-size_t count_elements(JsonValue json);
-size_t idxentry(JsonValue json, char *key);
-JsonEntry *getentry(JsonValue json, char *key);
-int addentry(JsonValue *dest, JsonEntry *entry, size_t position);
-int setentry(JsonValue *dest, char *key, JsonValue *value);
-int rementry(JsonValue *dest, char *key);
-char **getkeys(JsonValue json);
-JsonValue **getvalues(JsonValue json);
-JsonEntry **getentries(JsonValue json);
-
-size_t count_elements(JsonValue json)
-{
-    if (json.type == ARRAY)
-    {
-        return json.as.array.length;
-    }
-
-    if (json.type == OBJECT)
-    {
-        return json.as.object.count;
-    }
-
-    return 0;
-}
-
-size_t idxentry(JsonValue json, char *key)
-{
-    if (!key)
-    {
-        printf("Incorrect key");
-        return 0;
-    }
-
-    if (json.type != OBJECT)
-    {
-        printf("Target must be a JsonValue with OBJECT as type\n");
-        return 0;
-    }
-
-    if (count_elements(json) == 0)
-    {
-        printf("Object is empty\n");
-        return 0;
-    }
-
-    for (size_t i = 0; i < json.as.object.count; ++i)
-    {
-        if (strcmp(json.as.object.entries[i]->key, key) == 0)
-        {
-            return i;
-        }
-    }
-
-    return 0;
-}
-
-JsonEntry *getentry(JsonValue json, char *key)
-{
-    if (!key)
-    {
-        printf("Incorrect key");
-        return NULL;
-    }
-
-    if (json.type != OBJECT)
-    {
-        printf("Target must be a JsonValue with OBJECT as type\n");
-        return NULL;
-    }
-
-    if (count_elements(json) == 0)
-    {
-        printf("Object is empty\n");
-        return NULL;
-    }
-
-    for (size_t i = 0; i < json.as.object.count; ++i)
-    {
-        if (strcmp(json.as.object.entries[i]->key, key) == 0)
-        {
-            return json.as.object.entries[i];
-        }
-    }
-
-    printf("Unknown key\n");
-    return NULL;
-}
-
-int addentry(JsonValue *dest, JsonEntry *entry, size_t position)
-{
-    if (!dest || dest->type != OBJECT)
-    {
-        printf("Unknown object\n");
-        return 0;
-    }
-
-    if (!entry)
-    {
-        printf("Unknown entry\n");
-        return 0;
-    }
-
-    if (position >= count_elements(*dest))
-    {
-        printf("Object cannot support new entry\n");
-        return 0;
-    }
-
-    if (getentry(*dest, entry->key))
-    {
-        printf("Cannot add entry with same key\n");
-        return 0;
-    }
-
-    for (size_t i = dest->as.object.count; i > position; --i)
-    {
-        dest->as.object.entries[i] = dest->as.object.entries[i - 1];
-    }
-    dest->as.object.count++;
-    dest->as.object.entries[position] = entry;
-    return 1;
-}
-
-int setentry(JsonValue *dest, char *key, JsonValue *value)
-{
-    if (!dest || dest->type != OBJECT)
-    {
-        printf("Unknown object\n");
-        return 0;
-    }
-
-    if (!key)
-    {
-        printf("Incorrect key");
-        return 0;
-    }
-
-    if (!value)
-    {
-        return 0;
-    }
-
-    if (count_elements(*dest) == 0)
-    {
-        printf("Object is empty\n");
-        return 0;
-    }
-
-    JsonEntry *entry = getentry(*dest, key);
-    if (!entry)
-    {
-        return 0;
-    }
-    entry->value = value;
-    return 1;
-}
-
-int rementry(JsonValue *dest, char *key)
-{
-    if (!dest || dest->type != OBJECT)
-    {
-        printf("Unknown object\n");
-        return 0;
-    }
-
-    if (!key)
-    {
-        printf("Incorrect key");
-        return 0;
-    }
-
-    if (!getentry(*dest, key))
-    {
-        printf("Cannot find entry with key:%s\n", key);
-        return 0;
-    }
-
-    size_t index = idxentry(*dest, key);
-    for (size_t i = index; i < dest->as.object.count - 1; ++i)
-    {
-        dest->as.object.entries[i] = dest->as.object.entries[i + 1];
-    }
-    dest->as.object.count--;
-    return 1;
-}
-
-/* Returns existing keys of json object without copy */
-char **getkeys(JsonValue json)
-{
-    if (json.type != OBJECT)
-    {
-        printf("Target must be a JsonValue with OBJECT as type\n");
-        return NULL;
-    }
-
-    char **keys = malloc(sizeof(char *) * json.as.object.count);
-    if (!keys)
-    {
-        return NULL;
-    }
-
-    for (size_t i = 0; i < json.as.object.count; ++i)
-    {
-        keys[i] = json.as.object.entries[i]->key;
-    }
-
-    return keys;
-}
-
-JsonValue **getvalues(JsonValue json)
-{
-    if (json.type != OBJECT)
-    {
-        printf("Target must be a JsonValue with OBJECT as type\n");
-        return NULL;
-    }
-
-    JsonValue **values = malloc(sizeof(JsonValue *) * json.as.object.count);
-    if (!values)
-    {
-        return NULL;
-    }
-
-    for (size_t i = 0; i < json.as.object.count; ++i)
-    {
-        values[i] = json.as.object.entries[i]->value;
-    }
-
-    return values;
-}
-
-JsonEntry **getentries(JsonValue json)
-{
-    return json.as.object.entries;
-}
 
 // Including iterator
 
