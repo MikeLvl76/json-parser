@@ -4,7 +4,7 @@
 #define MAX_BUFFER_SIZE 256
 #define MAX_FILE_LINES 1024
 
-void read_json(char *filepath)
+JsonValue *read_json(char *filepath)
 {
 
     FILE *file = fopen(filepath, "rb");
@@ -52,37 +52,10 @@ void read_json(char *filepath)
     }
 
     JsonValue *json = str_to_json_value(str);
-    JsonIterator *iterator = malloc(sizeof(JsonIterator));
-    if (!iterator)
-    {
-        printf("Error on iterator\n");
-        exit(1);
-    }
-    iterator->pos = 0;
-    iterator->value = json;
-    iterator->current.item = NULL;
-    iterator->current.entry = NULL;
-
-    printf("Has next ? %d\n", has_next(iterator));
-    next(iterator);
-    dump_json(iterator->current.entry->value);
-    printf("\n");
-    next(iterator);
-    dump_json(iterator->current.entry->value);
-    printf("\n");
-    next(iterator);
-    dump_json(iterator->current.entry->value);
-    printf("\n");
-
-    dump_iterator(iterator);
-    reset(iterator);
-    printf("### RESET ITERATOR ###\n");
-    dump_iterator(iterator);
 
     free(buffer);
     free(str);
-    free(json);
-    free(iterator);
-
     fclose(file);
+
+    return json;
 }

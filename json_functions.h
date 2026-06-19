@@ -2,6 +2,89 @@
 #include "json_utils.h"
 
 void dump_json(JsonValue *json);
+JsonValue *alloc_value(JsonValueType type, JsonValueAs as);
+JsonEntry *alloc_entry(char *key, JsonValue *value);
+
+/* Init */
+JsonValue *alloc_value(JsonValueType type, JsonValueAs as)
+{
+    JsonValue *value = malloc(sizeof(JsonValue));
+    if (!value)
+    {
+        printf("Cannot allocate memory for JsonValue\n");
+        return NULL;
+    }
+
+    switch (type)
+    {
+    case INTEGER:
+        value->type = INTEGER;
+        value->as.integer = as.integer;
+        return value;
+
+    case DOUBLE:
+        value->type = DOUBLE;
+        value->as.double_value = as.double_value;
+        return value;
+
+    case STRING:
+        value->type = STRING;
+        value->as.str = as.str;
+        return value;
+
+    case ARRAY:
+        value->type = ARRAY;
+        value->as.array = as.array;
+        return value;
+
+    case OBJECT:
+        value->type = OBJECT;
+        value->as.object = as.object;
+        return value;
+
+    case BOOLEAN:
+        value->type = BOOLEAN;
+        value->as.boolean = as.boolean;
+        return value;
+
+    case NULL_VALUE:
+        value->type = NULL_VALUE;
+        break;
+
+    default:
+        return NULL;
+        break;
+    }
+
+    return NULL;
+}
+
+JsonEntry *alloc_entry(char *key, JsonValue *value)
+{
+    if (!key)
+    {
+        printf("No key set\n");
+        return NULL;
+    }
+
+    if (!value)
+    {
+        printf("No value set\n");
+        return NULL;
+    }
+
+    JsonEntry *entry = malloc(sizeof(JsonEntry));
+    if (!entry)
+    {
+        printf("Cannot allocate JsonEntry\n");
+        return NULL;
+    }
+
+    entry->key = strdup(key);
+    entry->value = value;
+
+    return entry;
+}
 
 /* Parse JSON file */
 JsonValue *str_to_json_value(char *str);
@@ -385,10 +468,34 @@ JsonValue *str_to_json_object(char *str_object)
 }
 
 /* Traverse struct with iterator */
+JsonIterator *alloc_iterator(size_t default_position, JsonValue *default_value);
 int has_next(JsonIterator *iterator);
 void next(JsonIterator *iterator);
 void reset(JsonIterator *iterator);
 void dump_iterator(JsonIterator *iterator);
+
+JsonIterator *alloc_iterator(size_t default_position, JsonValue *default_value)
+{
+    JsonIterator *iterator = malloc(sizeof(JsonIterator));
+    if (!iterator)
+    {
+        printf("Cannot allocate iterator\n");
+        return NULL;
+    }
+
+    if (default_value && default_value->type != ARRAY && default_value->type != OBJECT)
+    {
+        printf("Default JsonValue type must be ARRAY or OBJECT\n");
+        return NULL;
+    }
+
+    iterator->pos = default_position;
+    iterator->value = default_value;
+    iterator->current.item = NULL;
+    iterator->current.entry = NULL;
+
+    return iterator;
+}
 
 int has_next(JsonIterator *iterator)
 {
@@ -505,7 +612,207 @@ void dump_iterator(JsonIterator *iterator)
 }
 
 /* Manipulate struct */
-size_t count_items(JsonValue json);
-JsonValue *getitem(JsonValue json, char *key);
-JsonValue *setitem(JsonValue *dest, char *key, JsonValue *value);
-JsonValue *remitem(JsonValue *dest, char *key);
+size_t count_elements(JsonValue json);
+JsonEntry *getentry(JsonValue json, char *key);
+int addentry(JsonValue *dest, JsonEntry *entry, size_t position);
+int setentry(JsonValue *dest, char *key, JsonValue *value);
+int rementry(JsonValue *dest, char *key);
+
+size_t count_elements(JsonValue json)
+{
+    JsonIterator *iterator = alloc_iterator(0, &json);
+    if (!iterator)
+    {
+        printf("Cannot count items\n");
+        return 0;
+    }
+
+    size_t count = 0;
+
+    while (has_next(iterator))
+    {
+        next(iterator);
+        count++;
+    }
+
+    free(iterator);
+
+    return count;
+}
+
+JsonEntry *getentry(JsonValue json, char *key)
+{
+    if (!key)
+    {
+        printf("Incorrect key");
+        return NULL;
+    }
+
+    if (json.type != OBJECT)
+    {
+        printf("Target must be a JsonValue with OBJECT as type\n");
+        return NULL;
+    }
+
+    if (count_elements(json) == 0)
+    {
+        printf("Object is empty\n");
+        return NULL;
+    }
+
+    JsonIterator *iterator = alloc_iterator(0, &json);
+    if (!iterator)
+    {
+        printf("Cannot iterate over object\n");
+        return 0;
+    }
+
+    while (has_next(iterator))
+    {
+        next(iterator);
+        if (strcmp(iterator->current.entry->key, key) == 0)
+        {
+            return iterator->current.entry;
+        }
+    }
+
+    free(iterator);
+
+    printf("Unknown key\n");
+    return NULL;
+}
+
+int addentry(JsonValue *dest, JsonEntry *entry, size_t position)
+{
+    if (!dest || dest->type != OBJECT)
+    {
+        printf("Unknown object\n");
+        return 0;
+    }
+
+    if (!entry)
+    {
+        printf("Unknown entry\n");
+        return 0;
+    }
+
+    if (position >= count_elements(*dest))
+    {
+        printf("Object cannot support new entry\n");
+        return 0;
+    }
+
+    if (getentry(*dest, entry->key))
+    {
+        printf("Cannot add entry with same key\n");
+        return 0;
+    }
+
+    JsonIterator *iterator = alloc_iterator(0, dest);
+    if (!iterator)
+    {
+        printf("Cannot iterate over object\n");
+        return 0;
+    }
+
+    while (has_next(iterator))
+    {
+        next(iterator);
+        if (iterator->pos == position)
+        {
+            for (size_t i = dest->as.object.count; i > iterator->pos; --i)
+            {
+                dest->as.object.entries[i] = dest->as.object.entries[i - 1];
+            }
+            dest->as.object.count++;
+            dest->as.object.entries[iterator->pos] = entry;
+            return 1;
+        }
+    }
+
+    free(iterator);
+
+    return 0;
+}
+
+int setentry(JsonValue *dest, char *key, JsonValue *value)
+{
+    if (!dest || dest->type != OBJECT)
+    {
+        printf("Unknown object\n");
+        return 0;
+    }
+
+    if (!key)
+    {
+        printf("Incorrect key");
+        return 0;
+    }
+
+    if (!value)
+    {
+        return 0;
+    }
+
+    if (count_elements(*dest) == 0)
+    {
+        printf("Object is empty\n");
+        return 0;
+    }
+
+    JsonEntry *entry = getentry(*dest, key);
+    if (!entry)
+    {
+        return 0;
+    }
+
+    entry->value = value;
+
+    return 1;
+}
+
+int rementry(JsonValue *dest, char *key)
+{
+    if (!dest || dest->type != OBJECT)
+    {
+        printf("Unknown object\n");
+        return 0;
+    }
+
+    if (!key)
+    {
+        printf("Incorrect key");
+        return 0;
+    }
+
+    if (!getentry(*dest, key))
+    {
+        printf("Cannot find entry with key:%s\n", key);
+        return 0;
+    }
+
+    JsonIterator *iterator = alloc_iterator(0, dest);
+    if (!iterator)
+    {
+        printf("Cannot iterate over object\n");
+        return 0;
+    }
+
+    while (has_next(iterator))
+    {
+        next(iterator);
+        if (strcmp(iterator->current.entry->key, key) == 0)
+        {
+            for (size_t i = iterator->pos - 1; i < dest->as.object.count - 1; ++i)
+            {
+                dest->as.object.entries[i] = dest->as.object.entries[i + 1];
+            }
+            dest->as.object.count--;
+            return 1;
+        }
+    }
+
+    free(iterator);
+
+    return 0;
+}

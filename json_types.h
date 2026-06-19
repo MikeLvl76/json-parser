@@ -31,18 +31,20 @@ struct JsonObject
     size_t capacity;
 };
 
+typedef union
+{
+    int integer;
+    double double_value;
+    char *str;
+    int boolean;
+    JsonArray array;
+    JsonObject object;
+} JsonValueAs;
+
 struct JsonValue
 {
     JsonValueType type;
-    union
-    {
-        int integer;
-        double double_value;
-        char *str;
-        int boolean;
-        JsonArray array;
-        JsonObject object;
-    } as;
+    JsonValueAs as;
 };
 
 struct JsonEntry
