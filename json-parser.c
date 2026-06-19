@@ -25,6 +25,7 @@ int main()
 
     addentry(json, added, 1);
     dump_json(json);
+    printf("\n");
 
     free(v);
     free(added);
