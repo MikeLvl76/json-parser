@@ -2,6 +2,8 @@
 #include "json_utils.h"
 
 void dump_json(JsonValue *json);
+
+/* Parse JSON file */
 JsonValue *str_to_json_value(char *str);
 JsonValue *str_to_json_int(char *str);
 JsonValue *str_to_json_double(char *str);
@@ -380,4 +382,78 @@ JsonValue *str_to_json_object(char *str_object)
     }
 
     return v;
+}
+
+/* Traverse struct */
+int has_next(JsonIterator *iterator);
+JsonValue *next(JsonIterator *iterator);
+void reset(JsonIterator *iterator);
+
+/* Manipulate struct */
+size_t count_items(JsonValue json);
+JsonValue *getitem(JsonValue *json, char *key);
+JsonValue *setitem(JsonValue *dest, char *key, JsonValue *value);
+JsonValue *remitem(JsonValue *dest, char *key);
+
+int has_next(JsonIterator *iterator)
+{
+    if (!iterator || !iterator->value)
+        return 0;
+
+    if (iterator->value->type == ARRAY)
+    {
+        if (iterator->value->as.array.length == 0 || iterator->pos >= iterator->value->as.array.length)
+            return 0;
+
+        if (iterator->value->as.array.items[iterator->pos])
+            return 1;
+    }
+
+    if (iterator->value->type == OBJECT)
+    {
+        if (iterator->value->as.object.count == 0 || iterator->pos >= iterator->value->as.object.count)
+            return 0;
+
+        if (iterator->value->as.object.entries[iterator->pos])
+            return 1;
+    }
+
+    return 0;
+}
+
+// TODO: handle entry
+JsonValue *next(JsonIterator *iterator)
+{
+    if (!has_next(iterator))
+        return NULL;
+
+    if (iterator->value->type == ARRAY)
+    {
+        if (iterator->value->as.array.length == 0 || iterator->pos >= iterator->value->as.array.length)
+            return NULL;
+
+        JsonValue *item = iterator->value->as.array.items[iterator->pos];
+        if (item)
+        {
+            iterator->pos++;
+            return item;
+        }
+
+        return NULL;
+    }
+
+    if (iterator->value->type == OBJECT)
+    {
+        if (iterator->value->as.object.count == 0 || iterator->pos >= iterator->value->as.object.count)
+            return NULL;
+
+        JsonEntry *entry = iterator->value->as.object.entries[iterator->pos];
+        if (entry && entry->value)
+        {
+            iterator->pos++;
+            return entry->value;
+        }
+    }
+
+    return NULL;
 }

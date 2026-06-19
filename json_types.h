@@ -4,6 +4,7 @@ typedef struct JsonValue JsonValue;
 typedef struct JsonArray JsonArray;
 typedef struct JsonEntry JsonEntry;
 typedef struct JsonObject JsonObject;
+typedef struct JsonIterator JsonIterator;
 
 typedef enum
 {
@@ -48,4 +49,10 @@ struct JsonEntry
 {
     char *key;
     JsonValue *value;
+};
+
+struct JsonIterator
+{
+    JsonValue *value;
+    size_t pos;
 };

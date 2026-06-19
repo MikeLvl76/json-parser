@@ -52,7 +52,24 @@ void read_json(char *filepath)
     }
 
     JsonValue *json = str_to_json_value(str);
-    dump_json(json);
+    JsonIterator *iterator = malloc(sizeof(JsonIterator));
+    if (!iterator)
+    {
+        printf("Error on iterator\n");
+        exit(1);
+    }
+    iterator->pos = 0;
+    iterator->value = json;
+    printf("Has next ? %d\n", has_next(iterator));
+    JsonValue *value = next(iterator);
+    dump_json(value);
+    printf("\n");
+    JsonValue *v2 = next(iterator);
+    dump_json(v2);
+    printf("\n");
+    JsonValue *v3 = next(iterator);
+    dump_json(v3);
+    // dump_json(json);
 
     free(buffer);
     free(str);
