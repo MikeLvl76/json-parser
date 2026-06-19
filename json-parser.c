@@ -39,6 +39,35 @@ int main()
 
     printf("New count: %zu\n", count_elements(*json));
 
+    printf("All keys: ");
+    char **keys = getkeys(*json);
+    keys[0] = "\"SIX-SEVEN\"";
+    printf("[");
+    for (size_t i = 0; i < json->as.object.count; ++i)
+    {
+        printf("%s", keys[i]);
+        if (i < json->as.object.count - 1)
+        {
+            printf(", ");
+        }
+    }
+    printf("]\n");
+    free(keys);
+
+    printf("All values: ");
+    JsonValue **values = getvalues(*json);
+    printf("[");
+    for (size_t i = 0; i < json->as.object.count; ++i)
+    {
+        dump_json(values[i]);
+        if (i < json->as.object.count - 1)
+        {
+            printf(", ");
+        }
+    }
+    printf("]\n");
+    free(values);
+
     free(json);
     return 0;
 }

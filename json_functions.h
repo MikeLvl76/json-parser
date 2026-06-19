@@ -618,6 +618,9 @@ JsonEntry *getentry(JsonValue json, char *key);
 int addentry(JsonValue *dest, JsonEntry *entry, size_t position);
 int setentry(JsonValue *dest, char *key, JsonValue *value);
 int rementry(JsonValue *dest, char *key);
+char **getkeys(JsonValue json);
+JsonValue **getvalues(JsonValue json);
+JsonEntry **getentries(JsonValue json);
 
 size_t count_elements(JsonValue json)
 {
@@ -793,6 +796,56 @@ int rementry(JsonValue *dest, char *key)
     }
     dest->as.object.count--;
     return 1;
+}
+
+/* Returns existing keys of json object without copy */
+char **getkeys(JsonValue json)
+{
+    if (json.type != OBJECT)
+    {
+        printf("Target must be a JsonValue with OBJECT as type\n");
+        return NULL;
+    }
+
+    char **keys = malloc(sizeof(char *) * json.as.object.count);
+    if (!keys)
+    {
+        return NULL;
+    }
+
+    for (size_t i = 0; i < json.as.object.count; ++i)
+    {
+        keys[i] = json.as.object.entries[i]->key;
+    }
+
+    return keys;
+}
+
+JsonValue **getvalues(JsonValue json)
+{
+    if (json.type != OBJECT)
+    {
+        printf("Target must be a JsonValue with OBJECT as type\n");
+        return NULL;
+    }
+
+    JsonValue **values = malloc(sizeof(JsonValue *) * json.as.object.count);
+    if (!values)
+    {
+        return NULL;
+    }
+
+    for (size_t i = 0; i < json.as.object.count; ++i)
+    {
+        values[i] = json.as.object.entries[i]->value;
+    }
+
+    return values;
+}
+
+JsonEntry **getentries(JsonValue json)
+{
+    return json.as.object.entries;
 }
 
 // Including iterator
