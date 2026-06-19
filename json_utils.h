@@ -123,3 +123,9 @@ char *sub(const char *str, size_t start, size_t end)
 
     return out;
 }
+
+void print_indent(int indent)
+{
+    for (int i = 0; i < indent; i++)
+        putchar(' ');
+}

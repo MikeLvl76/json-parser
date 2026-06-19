@@ -1,7 +1,6 @@
 #include "json_types.h"
 #include "json_utils.h"
 
-void dump_json(JsonValue *json);
 JsonValue *alloc_value(JsonValueType type, JsonValueAs as);
 JsonEntry *alloc_entry(char *key, JsonValue *value);
 
@@ -87,6 +86,7 @@ JsonEntry *alloc_entry(char *key, JsonValue *value)
 }
 
 /* Parse JSON file */
+void dump_json(JsonValue *json, int indent);
 JsonValue *str_to_json_value(char *str);
 JsonValue *str_to_json_int(char *str);
 JsonValue *str_to_json_double(char *str);
@@ -95,7 +95,7 @@ JsonValue *str_to_json_bool(char *str);
 JsonValue *str_to_json_array(char *str_array);
 JsonValue *str_to_json_object(char *str_object);
 
-void dump_json(JsonValue *json)
+void dump_json(JsonValue *json, int indent)
 {
     if (!json)
     {
@@ -119,37 +119,49 @@ void dump_json(JsonValue *json)
         break;
 
     case ARRAY:
-        printf("[");
+        if (json->as.array.length == 0)
+        {
+            printf("[]");
+            break;
+        }
+
+        printf("[\n");
+
         for (size_t i = 0; i < json->as.array.length; ++i)
         {
-            JsonValue *item = json->as.array.items[i];
-            if (item)
-            {
-                dump_json(item);
-            }
+            print_indent(indent + 4);
+            dump_json(json->as.array.items[i], indent + 4);
             if (i < json->as.array.length - 1)
-            {
                 printf(", ");
-            }
+
+            printf("\n");
         }
+
+        print_indent(indent);
         printf("]");
         break;
 
     case OBJECT:
-        printf("{");
+        if (json->as.object.count == 0)
+        {
+            printf("{}");
+            break;
+        }
+
+        printf("{\n");
+
         for (size_t i = 0; i < json->as.object.count; ++i)
         {
-            JsonEntry *entry = json->as.object.entries[i];
-            if (entry)
-            {
-                printf("%s: ", entry->key);
-                dump_json(entry->value);
-            }
+            print_indent(indent + 4);
+            printf("%s: ", json->as.object.entries[i]->key);
+            dump_json(json->as.object.entries[i]->value, indent + 4);
             if (i < json->as.object.count - 1)
-            {
                 printf(",");
-            }
+
+            printf("\n");
         }
+
+        print_indent(indent);
         printf("}");
         break;
 
