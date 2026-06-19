@@ -60,19 +60,29 @@ void read_json(char *filepath)
     }
     iterator->pos = 0;
     iterator->value = json;
+    iterator->current.item = NULL;
+    iterator->current.entry = NULL;
+
     printf("Has next ? %d\n", has_next(iterator));
-    JsonValue *value = next(iterator);
-    dump_json(value);
+    next(iterator);
+    dump_json(iterator->current.entry->value);
     printf("\n");
-    JsonValue *v2 = next(iterator);
-    dump_json(v2);
+    next(iterator);
+    dump_json(iterator->current.entry->value);
     printf("\n");
-    JsonValue *v3 = next(iterator);
-    dump_json(v3);
-    // dump_json(json);
+    next(iterator);
+    dump_json(iterator->current.entry->value);
+    printf("\n");
+
+    dump_iterator(iterator);
+    reset(iterator);
+    printf("### RESET ITERATOR ###\n");
+    dump_iterator(iterator);
 
     free(buffer);
     free(str);
     free(json);
+    free(iterator);
+
     fclose(file);
 }

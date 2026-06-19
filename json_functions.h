@@ -16,7 +16,7 @@ void dump_json(JsonValue *json)
 {
     if (!json)
     {
-        printf("JSON value does not exist\n");
+        printf("No value");
         return;
     }
 
@@ -384,16 +384,11 @@ JsonValue *str_to_json_object(char *str_object)
     return v;
 }
 
-/* Traverse struct */
+/* Traverse struct with iterator */
 int has_next(JsonIterator *iterator);
-JsonValue *next(JsonIterator *iterator);
+void next(JsonIterator *iterator);
 void reset(JsonIterator *iterator);
-
-/* Manipulate struct */
-size_t count_items(JsonValue json);
-JsonValue *getitem(JsonValue *json, char *key);
-JsonValue *setitem(JsonValue *dest, char *key, JsonValue *value);
-JsonValue *remitem(JsonValue *dest, char *key);
+void dump_iterator(JsonIterator *iterator);
 
 int has_next(JsonIterator *iterator)
 {
@@ -421,39 +416,96 @@ int has_next(JsonIterator *iterator)
     return 0;
 }
 
-// TODO: handle entry
-JsonValue *next(JsonIterator *iterator)
+void next(JsonIterator *iterator)
 {
     if (!has_next(iterator))
-        return NULL;
+        return;
 
     if (iterator->value->type == ARRAY)
     {
         if (iterator->value->as.array.length == 0 || iterator->pos >= iterator->value->as.array.length)
-            return NULL;
+            return;
 
         JsonValue *item = iterator->value->as.array.items[iterator->pos];
         if (item)
         {
             iterator->pos++;
-            return item;
+            iterator->current.item = item;
+            return;
         }
 
-        return NULL;
+        return;
     }
 
     if (iterator->value->type == OBJECT)
     {
         if (iterator->value->as.object.count == 0 || iterator->pos >= iterator->value->as.object.count)
-            return NULL;
+            return;
 
         JsonEntry *entry = iterator->value->as.object.entries[iterator->pos];
         if (entry && entry->value)
         {
             iterator->pos++;
-            return entry->value;
+            iterator->current.entry = entry;
+            return;
         }
     }
 
-    return NULL;
+    return;
 }
+
+void reset(JsonIterator *iterator)
+{
+    if (!iterator || !iterator->value || iterator->pos == 0)
+        return;
+
+    iterator->pos = 0;
+    iterator->value = NULL;
+    iterator->current.item = NULL;
+    iterator->current.entry = NULL;
+}
+
+void dump_iterator(JsonIterator *iterator)
+{
+    if (!iterator)
+    {
+        printf("No iterator\n");
+        return;
+    }
+
+    printf("[TARGET=");
+    dump_json(iterator->value);
+    printf("]\n");
+
+    printf("[CURRENT_POS=%zu]\n", iterator->pos);
+    printf("[CURRENT_ITEM=");
+    if (iterator->current.item)
+    {
+        dump_json(iterator->current.item);
+    }
+    else
+    {
+        printf("NULL");
+    }
+    printf("]\n");
+
+    printf("[CURRENT_ENTRY=");
+    if (iterator->current.entry)
+    {
+        printf("[key=%s, ", iterator->current.entry->key);
+        printf("value= ");
+        dump_json(iterator->current.entry->value);
+        printf("]");
+    }
+    else
+    {
+        printf("NULL");
+    }
+    printf("]\n");
+}
+
+/* Manipulate struct */
+size_t count_items(JsonValue json);
+JsonValue *getitem(JsonValue json, char *key);
+JsonValue *setitem(JsonValue *dest, char *key, JsonValue *value);
+JsonValue *remitem(JsonValue *dest, char *key);

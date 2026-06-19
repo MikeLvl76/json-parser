@@ -55,4 +55,9 @@ struct JsonIterator
 {
     JsonValue *value;
     size_t pos;
+    union
+    {
+        JsonValue *item;
+        JsonEntry *entry;
+    } current;
 };
