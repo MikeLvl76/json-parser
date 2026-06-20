@@ -65,10 +65,23 @@ JsonValue *read_json(char *filepath)
     free(buffer);
     fclose(file);
 
-    if (*str != '{' && str[str_len - 1] != '}')
+    char open = *str;
+
+    if (open == '{')
     {
-        printf("Missing object brackets in file\n");
-        exit(1);
+        if (str[str_len - 1] != '}')
+        {
+            fprintf(stderr, "Missing object brackets in file\n");
+            exit(1);
+        }
+    }
+    else if (open == '[')
+    {
+        if (str[str_len - 1] != ']')
+        {
+            fprintf(stderr, "Missing array brackets in file\n");
+            exit(1);
+        }
     }
 
     JsonValue *json = str_to_json_value(str);

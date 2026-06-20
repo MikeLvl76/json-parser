@@ -23,14 +23,14 @@ int main(int argc, char **argv)
 
     srand(time(NULL));
     char *paths[3] = {"default_dataset.json", "medium_dataset.json", "big_dataset.json"};
-    int id = (rand() % 3) + 1;
+    int id = rand() % 3;
 
-    printf("Read \"%s\" file", paths[id]);
+    printf("Read %s file\n", paths[id]);
     JsonValue *json = read_json(paths[id]);
-    printf("Count: %zu\n", count_elements(*json));
 
     dump_json(json, 0);
     printf("\n");
+    printf("Counted %zu item(s)\n", count_elements(*json));
 
     free(json);
 

@@ -1,3964 +1,2882 @@
-{
-  "dataset": [
-    {
-      "id": 1,
-      "uuid": "user-1",
-      "name": "User 1",
-      "active": false,
-      "metrics": {
-        "score": 20,
-        "rating": 3.49,
-        "flags": [
-          null,
-          false,
-          null
-        ]
-      },
-      "profile": {
-        "age": 28,
-        "address": {
-          "city": "City 1",
-          "zip": "75001",
-          "geo": {
-            "lat": 48.89714173830909,
-            "lng": 2.3941828692059786
-          }
-        },
-        "hobbies": [
-          "reading",
-          "coding",
-          "gaming",
-          null
-        ]
-      },
-      "notes": "inactive"
-    },
-    {
-      "id": 2,
-      "uuid": "user-2",
-      "name": "User 2",
-      "active": false,
-      "metrics": {
-        "score": 99,
-        "rating": 2.03,
-        "flags": [
-          null,
-          false,
-          true
-        ]
-      },
-      "profile": {
-        "age": 31,
-        "address": {
-          "city": "City 2",
-          "zip": "75002",
-          "geo": {
-            "lat": 48.83755936394963,
-            "lng": 2.4726228250084192
-          }
-        },
-        "hobbies": [
-          "gaming",
-          "cooking",
-          "reading",
-          null
-        ]
-      },
-      "notes": null
-    },
-    {
-      "id": 3,
-      "uuid": "user-3",
-      "name": "User 3",
-      "active": true,
-      "metrics": {
-        "score": 53,
-        "rating": 1.24,
-        "flags": [
-          false,
-          true,
-          false
-        ]
-      },
-      "profile": {
-        "age": 38,
-        "address": {
-          "city": "City 3",
-          "zip": "75003",
-          "geo": {
-            "lat": 48.91960862741241,
-            "lng": 2.413812671166557
-          }
-        },
-        "hobbies": [
-          "music",
-          "cooking",
-          "coding",
-          null
-        ]
-      },
-      "notes": "review"
-    },
-    {
-      "id": 4,
-      "uuid": "user-4",
-      "name": "User 4",
-      "active": true,
-      "metrics": {
-        "score": 95,
-        "rating": 2.01,
-        "flags": [
-          null,
-          true,
-          false
-        ]
-      },
-      "profile": {
-        "age": 20,
-        "address": {
-          "city": "City 4",
-          "zip": "75004",
-          "geo": {
-            "lat": 48.84584505775159,
-            "lng": 2.443955190985376
-          }
-        },
-        "hobbies": [
-          "art",
-          "cooking",
-          "reading",
-          null
-        ]
-      },
-      "notes": "review"
-    },
-    {
-      "id": 5,
-      "uuid": "user-5",
-      "name": "User 5",
-      "active": true,
-      "metrics": {
-        "score": 33,
-        "rating": 3.35,
-        "flags": [
-          true,
-          true,
-          false
-        ]
-      },
-      "profile": {
-        "age": 43,
-        "address": {
-          "city": "City 5",
-          "zip": "75005",
-          "geo": {
-            "lat": 48.957380508544205,
-            "lng": 2.491904991044505
-          }
-        },
-        "hobbies": [
-          "gaming",
-          "art",
-          "cooking",
-          null
-        ]
-      },
-      "notes": "pending"
-    },
-    {
-      "id": 6,
-      "uuid": "user-6",
-      "name": "User 6",
-      "active": false,
-      "metrics": {
-        "score": 71,
-        "rating": 1.84,
-        "flags": [
-          false,
-          null,
-          true
-        ]
-      },
-      "profile": {
-        "age": 29,
-        "address": {
-          "city": "City 6",
-          "zip": "75006",
-          "geo": {
-            "lat": 48.92558759895033,
-            "lng": 2.377316187183333
-          }
-        },
-        "hobbies": [
-          "reading",
-          "travel",
-          "art",
-          null
-        ]
-      },
-      "notes": "active"
-    },
-    {
-      "id": 7,
-      "uuid": "user-7",
-      "name": "User 7",
-      "active": true,
-      "metrics": {
-        "score": 64,
-        "rating": 1.72,
-        "flags": [
-          true,
-          true,
-          false
-        ]
-      },
-      "profile": {
-        "age": 51,
-        "address": {
-          "city": "City 7",
-          "zip": "75007",
-          "geo": {
-            "lat": 48.82081034026553,
-            "lng": 2.401371655204456
-          }
-        },
-        "hobbies": [
-          "gaming",
-          "music",
-          "art",
-          null
-        ]
-      },
-      "notes": null
-    },
-    {
-      "id": 8,
-      "uuid": "user-8",
-      "name": "User 8",
-      "active": false,
-      "metrics": {
-        "score": 23,
-        "rating": 3.29,
-        "flags": [
-          false,
-          false,
-          null
-        ]
-      },
-      "profile": {
-        "age": 59,
-        "address": {
-          "city": "City 8",
-          "zip": "75008",
-          "geo": {
-            "lat": 48.832858099917786,
-            "lng": 2.4076560233660054
-          }
-        },
-        "hobbies": [
-          "art",
-          "travel",
-          "cooking",
-          null
-        ]
-      },
-      "notes": "pending"
-    },
-    {
-      "id": 9,
-      "uuid": "user-9",
-      "name": "User 9",
-      "active": false,
-      "metrics": {
-        "score": 37,
-        "rating": 3.3,
-        "flags": [
-          false,
-          false,
-          true
-        ]
-      },
-      "profile": {
-        "age": 59,
-        "address": {
-          "city": "City 9",
-          "zip": "75009",
-          "geo": {
-            "lat": 48.85749952117569,
-            "lng": 2.4101914131302338
-          }
-        },
-        "hobbies": [
-          "cooking",
-          "music",
-          "art",
-          null
-        ]
-      },
-      "notes": "inactive"
-    },
-    {
-      "id": 10,
-      "uuid": "user-10",
-      "name": "User 10",
-      "active": false,
-      "metrics": {
-        "score": 11,
-        "rating": 2.65,
-        "flags": [
-          false,
-          false,
-          false
-        ]
-      },
-      "profile": {
-        "age": 70,
-        "address": {
-          "city": "City 10",
-          "zip": "75010",
-          "geo": {
-            "lat": 48.836306897164775,
-            "lng": 2.424402946014103
-          }
-        },
-        "hobbies": [
-          "music",
-          "reading",
-          "travel",
-          null
-        ]
-      },
-      "notes": "pending"
-    },
-    {
-      "id": 11,
-      "uuid": "user-11",
-      "name": "User 11",
-      "active": true,
-      "metrics": {
-        "score": 12,
-        "rating": 1.73,
-        "flags": [
-          false,
-          true,
-          null
-        ]
-      },
-      "profile": {
-        "age": 53,
-        "address": {
-          "city": "City 11",
-          "zip": "75011",
-          "geo": {
-            "lat": 48.8781754512214,
-            "lng": 2.3822587107124695
-          }
-        },
-        "hobbies": [
-          "gaming",
-          "cooking",
-          "art",
-          null
-        ]
-      },
-      "notes": "pending"
-    },
-    {
-      "id": 12,
-      "uuid": "user-12",
-      "name": "User 12",
-      "active": false,
-      "metrics": {
-        "score": 23,
-        "rating": 4.08,
-        "flags": [
-          true,
-          null,
-          true
-        ]
-      },
-      "profile": {
-        "age": 29,
-        "address": {
-          "city": "City 12",
-          "zip": "75012",
-          "geo": {
-            "lat": 48.991024522087876,
-            "lng": 2.3363142593701203
-          }
-        },
-        "hobbies": [
-          "music",
-          "gaming",
-          "cooking",
-          null
-        ]
-      },
-      "notes": "review"
-    },
-    {
-      "id": 13,
-      "uuid": "user-13",
-      "name": "User 13",
-      "active": false,
-      "metrics": {
-        "score": 24,
-        "rating": 1.83,
-        "flags": [
-          null,
-          false,
-          false
-        ]
-      },
-      "profile": {
-        "age": 65,
-        "address": {
-          "city": "City 13",
-          "zip": "75013",
-          "geo": {
-            "lat": 48.890590704976944,
-            "lng": 2.3885932859669756
-          }
-        },
-        "hobbies": [
-          "art",
-          "cooking",
-          "reading",
-          null
-        ]
-      },
-      "notes": "inactive"
-    },
-    {
-      "id": 14,
-      "uuid": "user-14",
-      "name": "User 14",
-      "active": true,
-      "metrics": {
-        "score": 94,
-        "rating": 3.54,
-        "flags": [
-          null,
-          false,
-          null
-        ]
-      },
-      "profile": {
-        "age": 69,
-        "address": {
-          "city": "City 14",
-          "zip": "75014",
-          "geo": {
-            "lat": 48.9182279164038,
-            "lng": 2.481268859337674
-          }
-        },
-        "hobbies": [
-          "sports",
-          "travel",
-          "art",
-          null
-        ]
-      },
-      "notes": "inactive"
-    },
-    {
-      "id": 15,
-      "uuid": "user-15",
-      "name": "User 15",
-      "active": true,
-      "metrics": {
-        "score": 76,
-        "rating": 1.79,
-        "flags": [
-          true,
-          false,
-          false
-        ]
-      },
-      "profile": {
-        "age": 52,
-        "address": {
-          "city": "City 15",
-          "zip": "75015",
-          "geo": {
-            "lat": 48.91754912230283,
-            "lng": 2.3281191034403474
-          }
-        },
-        "hobbies": [
-          "reading",
-          "art",
-          "cooking",
-          null
-        ]
-      },
-      "notes": "active"
-    },
-    {
-      "id": 16,
-      "uuid": "user-16",
-      "name": "User 16",
-      "active": true,
-      "metrics": {
-        "score": 84,
-        "rating": 4.57,
-        "flags": [
-          null,
-          null,
-          null
-        ]
-      },
-      "profile": {
-        "age": 41,
-        "address": {
-          "city": "City 16",
-          "zip": "75016",
-          "geo": {
-            "lat": 48.91898633433494,
-            "lng": 2.466028634610779
-          }
-        },
-        "hobbies": [
-          "coding",
-          "sports",
-          "reading",
-          null
-        ]
-      },
-      "notes": "review"
-    },
-    {
-      "id": 17,
-      "uuid": "user-17",
-      "name": "User 17",
-      "active": true,
-      "metrics": {
-        "score": 1,
-        "rating": 1.98,
-        "flags": [
-          null,
-          null,
-          null
-        ]
-      },
-      "profile": {
-        "age": 65,
-        "address": {
-          "city": "City 17",
-          "zip": "75017",
-          "geo": {
-            "lat": 48.93756764877208,
-            "lng": 2.482005948343731
-          }
-        },
-        "hobbies": [
-          "coding",
-          "music",
-          "sports",
-          null
-        ]
-      },
-      "notes": "inactive"
-    },
-    {
-      "id": 18,
-      "uuid": "user-18",
-      "name": "User 18",
-      "active": false,
-      "metrics": {
-        "score": 25,
-        "rating": 2.36,
-        "flags": [
-          true,
-          false,
-          false
-        ]
-      },
-      "profile": {
-        "age": 32,
-        "address": {
-          "city": "City 18",
-          "zip": "75018",
-          "geo": {
-            "lat": 48.84358459944943,
-            "lng": 2.4534899096627294
-          }
-        },
-        "hobbies": [
-          "cooking",
-          "travel",
-          "sports",
-          null
-        ]
-      },
-      "notes": null
-    },
-    {
-      "id": 19,
-      "uuid": "user-19",
-      "name": "User 19",
-      "active": true,
-      "metrics": {
-        "score": 25,
-        "rating": 4.67,
-        "flags": [
-          true,
-          true,
-          null
-        ]
-      },
-      "profile": {
-        "age": 44,
-        "address": {
-          "city": "City 19",
-          "zip": "75019",
-          "geo": {
-            "lat": 48.96105452646891,
-            "lng": 2.3099417266240208
-          }
-        },
-        "hobbies": [
-          "music",
-          "sports",
-          "travel",
-          null
-        ]
-      },
-      "notes": "active"
-    },
-    {
-      "id": 20,
-      "uuid": "user-20",
-      "name": "User 20",
-      "active": false,
-      "metrics": {
-        "score": 65,
-        "rating": 2.31,
-        "flags": [
-          false,
-          true,
-          true
-        ]
-      },
-      "profile": {
-        "age": 50,
-        "address": {
-          "city": "City 20",
-          "zip": "75020",
-          "geo": {
-            "lat": 48.908808774308206,
-            "lng": 2.313294282416157
-          }
-        },
-        "hobbies": [
-          "coding",
-          "art",
-          "music",
-          null
-        ]
-      },
-      "notes": "inactive"
-    },
-    {
-      "id": 21,
-      "uuid": "user-21",
-      "name": "User 21",
-      "active": true,
-      "metrics": {
-        "score": 35,
-        "rating": 2.49,
-        "flags": [
-          false,
-          false,
-          true
-        ]
-      },
-      "profile": {
-        "age": 51,
-        "address": {
-          "city": "City 21",
-          "zip": "75021",
-          "geo": {
-            "lat": 48.850629386836644,
-            "lng": 2.3624766105561417
-          }
-        },
-        "hobbies": [
-          "reading",
-          "sports",
-          "art",
-          null
-        ]
-      },
-      "notes": "pending"
-    },
-    {
-      "id": 22,
-      "uuid": "user-22",
-      "name": "User 22",
-      "active": false,
-      "metrics": {
-        "score": 10,
-        "rating": 3.97,
-        "flags": [
-          true,
-          true,
-          false
-        ]
-      },
-      "profile": {
-        "age": 32,
-        "address": {
-          "city": "City 22",
-          "zip": "75022",
-          "geo": {
-            "lat": 48.994280541264466,
-            "lng": 2.4671999395538844
-          }
-        },
-        "hobbies": [
-          "cooking",
-          "travel",
-          "coding",
-          null
-        ]
-      },
-      "notes": "active"
-    },
-    {
-      "id": 23,
-      "uuid": "user-23",
-      "name": "User 23",
-      "active": false,
-      "metrics": {
-        "score": 72,
-        "rating": 3.4,
-        "flags": [
-          true,
-          null,
-          null
-        ]
-      },
-      "profile": {
-        "age": 66,
-        "address": {
-          "city": "City 23",
-          "zip": "75023",
-          "geo": {
-            "lat": 48.86204229103748,
-            "lng": 2.462913159577365
-          }
-        },
-        "hobbies": [
-          "cooking",
-          "sports",
-          "art",
-          null
-        ]
-      },
-      "notes": "active"
-    },
-    {
-      "id": 24,
-      "uuid": "user-24",
-      "name": "User 24",
-      "active": false,
-      "metrics": {
-        "score": 40,
-        "rating": 2.88,
-        "flags": [
-          false,
-          false,
-          null
-        ]
-      },
-      "profile": {
-        "age": 61,
-        "address": {
-          "city": "City 24",
-          "zip": "75024",
-          "geo": {
-            "lat": 48.87528038002888,
-            "lng": 2.448513696068143
-          }
-        },
-        "hobbies": [
-          "reading",
-          "sports",
-          "art",
-          null
-        ]
-      },
-      "notes": "review"
-    },
-    {
-      "id": 25,
-      "uuid": "user-25",
-      "name": "User 25",
-      "active": false,
-      "metrics": {
-        "score": 50,
-        "rating": 4.23,
-        "flags": [
-          true,
-          false,
-          false
-        ]
-      },
-      "profile": {
-        "age": 58,
-        "address": {
-          "city": "City 25",
-          "zip": "75025",
-          "geo": {
-            "lat": 48.9221066131591,
-            "lng": 2.3241766364891743
-          }
-        },
-        "hobbies": [
-          "gaming",
-          "music",
-          "art",
-          null
-        ]
-      },
-      "notes": null
-    },
-    {
-      "id": 26,
-      "uuid": "user-26",
-      "name": "User 26",
-      "active": false,
-      "metrics": {
-        "score": 5,
-        "rating": 4.18,
-        "flags": [
-          null,
-          true,
-          false
-        ]
-      },
-      "profile": {
-        "age": 45,
-        "address": {
-          "city": "City 26",
-          "zip": "75026",
-          "geo": {
-            "lat": 48.90592375133158,
-            "lng": 2.490550052899669
-          }
-        },
-        "hobbies": [
-          "gaming",
-          "travel",
-          "art",
-          null
-        ]
-      },
-      "notes": "inactive"
-    },
-    {
-      "id": 27,
-      "uuid": "user-27",
-      "name": "User 27",
-      "active": false,
-      "metrics": {
-        "score": 56,
-        "rating": 4.3,
-        "flags": [
-          true,
-          null,
-          null
-        ]
-      },
-      "profile": {
-        "age": 63,
-        "address": {
-          "city": "City 27",
-          "zip": "75027",
-          "geo": {
-            "lat": 48.8770678710993,
-            "lng": 2.4166777879081187
-          }
-        },
-        "hobbies": [
-          "travel",
-          "music",
-          "coding",
-          null
-        ]
-      },
-      "notes": "active"
-    },
-    {
-      "id": 28,
-      "uuid": "user-28",
-      "name": "User 28",
-      "active": true,
-      "metrics": {
-        "score": 14,
-        "rating": 4.23,
-        "flags": [
-          null,
-          true,
-          false
-        ]
-      },
-      "profile": {
-        "age": 28,
-        "address": {
-          "city": "City 28",
-          "zip": "75028",
-          "geo": {
-            "lat": 48.93194623264114,
-            "lng": 2.4625858716312026
-          }
-        },
-        "hobbies": [
-          "reading",
-          "gaming",
-          "sports",
-          null
-        ]
-      },
-      "notes": "active"
-    },
-    {
-      "id": 29,
-      "uuid": "user-29",
-      "name": "User 29",
-      "active": true,
-      "metrics": {
-        "score": 81,
-        "rating": 1.29,
-        "flags": [
-          true,
-          false,
-          null
-        ]
-      },
-      "profile": {
-        "age": 55,
-        "address": {
-          "city": "City 29",
-          "zip": "75029",
-          "geo": {
-            "lat": 48.95016508574252,
-            "lng": 2.4236285780993274
-          }
-        },
-        "hobbies": [
-          "reading",
-          "coding",
-          "music",
-          null
-        ]
-      },
-      "notes": "review"
-    },
-    {
-      "id": 30,
-      "uuid": "user-30",
-      "name": "User 30",
-      "active": false,
-      "metrics": {
-        "score": 56,
-        "rating": 1.27,
-        "flags": [
-          false,
-          false,
-          true
-        ]
-      },
-      "profile": {
-        "age": 29,
-        "address": {
-          "city": "City 30",
-          "zip": "75030",
-          "geo": {
-            "lat": 48.81116095173668,
-            "lng": 2.3846961943311897
-          }
-        },
-        "hobbies": [
-          "music",
-          "reading",
-          "art",
-          null
-        ]
-      },
-      "notes": "pending"
-    },
-    {
-      "id": 31,
-      "uuid": "user-31",
-      "name": "User 31",
-      "active": false,
-      "metrics": {
-        "score": 48,
-        "rating": 1.24,
-        "flags": [
-          true,
-          true,
-          true
-        ]
-      },
-      "profile": {
-        "age": 30,
-        "address": {
-          "city": "City 31",
-          "zip": "75031",
-          "geo": {
-            "lat": 48.975827795104635,
-            "lng": 2.4702491215558666
-          }
-        },
-        "hobbies": [
-          "travel",
-          "cooking",
-          "sports",
-          null
-        ]
-      },
-      "notes": null
-    },
-    {
-      "id": 32,
-      "uuid": "user-32",
-      "name": "User 32",
-      "active": false,
-      "metrics": {
-        "score": 53,
-        "rating": 1.07,
-        "flags": [
-          true,
-          true,
-          null
-        ]
-      },
-      "profile": {
-        "age": 62,
-        "address": {
-          "city": "City 32",
-          "zip": "75032",
-          "geo": {
-            "lat": 48.86403771848997,
-            "lng": 2.483828061868078
-          }
-        },
-        "hobbies": [
-          "reading",
-          "travel",
-          "cooking",
-          null
-        ]
-      },
-      "notes": "inactive"
-    },
-    {
-      "id": 33,
-      "uuid": "user-33",
-      "name": "User 33",
-      "active": true,
-      "metrics": {
-        "score": 46,
-        "rating": 2.89,
-        "flags": [
-          null,
-          true,
-          null
-        ]
-      },
-      "profile": {
-        "age": 44,
-        "address": {
-          "city": "City 33",
-          "zip": "75033",
-          "geo": {
-            "lat": 48.953253830944746,
-            "lng": 2.3711946532515706
-          }
-        },
-        "hobbies": [
-          "music",
-          "art",
-          "sports",
-          null
-        ]
-      },
-      "notes": "active"
-    },
-    {
-      "id": 34,
-      "uuid": "user-34",
-      "name": "User 34",
-      "active": false,
-      "metrics": {
-        "score": 17,
-        "rating": 1.17,
-        "flags": [
-          false,
-          true,
-          false
-        ]
-      },
-      "profile": {
-        "age": 29,
-        "address": {
-          "city": "City 34",
-          "zip": "75034",
-          "geo": {
-            "lat": 48.81880582372987,
-            "lng": 2.328990551564046
-          }
-        },
-        "hobbies": [
-          "coding",
-          "sports",
-          "cooking",
-          null
-        ]
-      },
-      "notes": "review"
-    },
-    {
-      "id": 35,
-      "uuid": "user-35",
-      "name": "User 35",
-      "active": false,
-      "metrics": {
-        "score": 40,
-        "rating": 2.73,
-        "flags": [
-          null,
-          true,
-          false
-        ]
-      },
-      "profile": {
-        "age": 23,
-        "address": {
-          "city": "City 35",
-          "zip": "75035",
-          "geo": {
-            "lat": 48.988379843269016,
-            "lng": 2.311728721765012
-          }
-        },
-        "hobbies": [
-          "gaming",
-          "music",
-          "coding",
-          null
-        ]
-      },
-      "notes": "inactive"
-    },
-    {
-      "id": 36,
-      "uuid": "user-36",
-      "name": "User 36",
-      "active": false,
-      "metrics": {
-        "score": 43,
-        "rating": 2.48,
-        "flags": [
-          null,
-          null,
-          true
-        ]
-      },
-      "profile": {
-        "age": 67,
-        "address": {
-          "city": "City 36",
-          "zip": "75036",
-          "geo": {
-            "lat": 48.93908988706576,
-            "lng": 2.4769347732346123
-          }
-        },
-        "hobbies": [
-          "sports",
-          "cooking",
-          "gaming",
-          null
-        ]
-      },
-      "notes": null
-    },
-    {
-      "id": 37,
-      "uuid": "user-37",
-      "name": "User 37",
-      "active": false,
-      "metrics": {
-        "score": 64,
-        "rating": 2.95,
-        "flags": [
-          true,
-          null,
-          false
-        ]
-      },
-      "profile": {
-        "age": 58,
-        "address": {
-          "city": "City 37",
-          "zip": "75037",
-          "geo": {
-            "lat": 48.821551621434544,
-            "lng": 2.38507253322567
-          }
-        },
-        "hobbies": [
-          "music",
-          "art",
-          "coding",
-          null
-        ]
-      },
-      "notes": null
-    },
-    {
-      "id": 38,
-      "uuid": "user-38",
-      "name": "User 38",
-      "active": false,
-      "metrics": {
-        "score": 92,
-        "rating": 4.13,
-        "flags": [
-          true,
-          false,
-          false
-        ]
-      },
-      "profile": {
-        "age": 32,
-        "address": {
-          "city": "City 38",
-          "zip": "75038",
-          "geo": {
-            "lat": 48.958879266436924,
-            "lng": 2.474002011963699
-          }
-        },
-        "hobbies": [
-          "gaming",
-          "reading",
-          "sports",
-          null
-        ]
-      },
-      "notes": null
-    },
-    {
-      "id": 39,
-      "uuid": "user-39",
-      "name": "User 39",
-      "active": false,
-      "metrics": {
-        "score": 43,
-        "rating": 2.47,
-        "flags": [
-          true,
-          false,
-          false
-        ]
-      },
-      "profile": {
-        "age": 30,
-        "address": {
-          "city": "City 39",
-          "zip": "75039",
-          "geo": {
-            "lat": 48.89117725813649,
-            "lng": 2.4724567024904993
-          }
-        },
-        "hobbies": [
-          "travel",
-          "sports",
-          "coding",
-          null
-        ]
-      },
-      "notes": "pending"
-    },
-    {
-      "id": 40,
-      "uuid": "user-40",
-      "name": "User 40",
-      "active": false,
-      "metrics": {
-        "score": 80,
-        "rating": 3.68,
-        "flags": [
-          null,
-          null,
-          true
-        ]
-      },
-      "profile": {
-        "age": 51,
-        "address": {
-          "city": "City 40",
-          "zip": "75040",
-          "geo": {
-            "lat": 48.832829579003885,
-            "lng": 2.362298599940754
-          }
-        },
-        "hobbies": [
-          "gaming",
-          "cooking",
-          "coding",
-          null
-        ]
-      },
-      "notes": "inactive"
-    },
-    {
-      "id": 41,
-      "uuid": "user-41",
-      "name": "User 41",
-      "active": false,
-      "metrics": {
-        "score": 54,
-        "rating": 2.87,
-        "flags": [
-          true,
-          false,
-          null
-        ]
-      },
-      "profile": {
-        "age": 36,
-        "address": {
-          "city": "City 41",
-          "zip": "75041",
-          "geo": {
-            "lat": 48.80979977948709,
-            "lng": 2.419070769663291
-          }
-        },
-        "hobbies": [
-          "sports",
-          "music",
-          "art",
-          null
-        ]
-      },
-      "notes": "inactive"
-    },
-    {
-      "id": 42,
-      "uuid": "user-42",
-      "name": "User 42",
-      "active": true,
-      "metrics": {
-        "score": 12,
-        "rating": 3.7,
-        "flags": [
-          true,
-          true,
-          true
-        ]
-      },
-      "profile": {
-        "age": 21,
-        "address": {
-          "city": "City 42",
-          "zip": "75042",
-          "geo": {
-            "lat": 48.926546719712285,
-            "lng": 2.3372880636453517
-          }
-        },
-        "hobbies": [
-          "travel",
-          "gaming",
-          "coding",
-          null
-        ]
-      },
-      "notes": "pending"
-    },
-    {
-      "id": 43,
-      "uuid": "user-43",
-      "name": "User 43",
-      "active": false,
-      "metrics": {
-        "score": 78,
-        "rating": 1.35,
-        "flags": [
-          true,
-          null,
-          true
-        ]
-      },
-      "profile": {
-        "age": 24,
-        "address": {
-          "city": "City 43",
-          "zip": "75043",
-          "geo": {
-            "lat": 48.851077587488376,
-            "lng": 2.404973838577174
-          }
-        },
-        "hobbies": [
-          "art",
-          "cooking",
-          "music",
-          null
-        ]
-      },
-      "notes": null
-    },
-    {
-      "id": 44,
-      "uuid": "user-44",
-      "name": "User 44",
-      "active": true,
-      "metrics": {
-        "score": 67,
-        "rating": 2.3,
-        "flags": [
-          false,
-          true,
-          true
-        ]
-      },
-      "profile": {
-        "age": 21,
-        "address": {
-          "city": "City 44",
-          "zip": "75044",
-          "geo": {
-            "lat": 48.825278995691185,
-            "lng": 2.359471899521797
-          }
-        },
-        "hobbies": [
-          "travel",
-          "cooking",
-          "reading",
-          null
-        ]
-      },
-      "notes": "active"
-    },
-    {
-      "id": 45,
-      "uuid": "user-45",
-      "name": "User 45",
-      "active": true,
-      "metrics": {
-        "score": 75,
-        "rating": 4.16,
-        "flags": [
-          false,
-          true,
-          true
-        ]
-      },
-      "profile": {
-        "age": 63,
-        "address": {
-          "city": "City 45",
-          "zip": "75045",
-          "geo": {
-            "lat": 48.82512567219646,
-            "lng": 2.40933165628213
-          }
-        },
-        "hobbies": [
-          "music",
-          "sports",
-          "art",
-          null
-        ]
-      },
-      "notes": "pending"
-    },
-    {
-      "id": 46,
-      "uuid": "user-46",
-      "name": "User 46",
-      "active": false,
-      "metrics": {
-        "score": 60,
-        "rating": 2.26,
-        "flags": [
-          true,
-          false,
-          true
-        ]
-      },
-      "profile": {
-        "age": 53,
-        "address": {
-          "city": "City 46",
-          "zip": "75046",
-          "geo": {
-            "lat": 48.985383416571715,
-            "lng": 2.327744108794686
-          }
-        },
-        "hobbies": [
-          "reading",
-          "travel",
-          "sports",
-          null
-        ]
-      },
-      "notes": "review"
-    },
-    {
-      "id": 47,
-      "uuid": "user-47",
-      "name": "User 47",
-      "active": true,
-      "metrics": {
-        "score": 75,
-        "rating": 1.83,
-        "flags": [
-          null,
-          null,
-          null
-        ]
-      },
-      "profile": {
-        "age": 62,
-        "address": {
-          "city": "City 47",
-          "zip": "75047",
-          "geo": {
-            "lat": 48.94193772837965,
-            "lng": 2.446265451669933
-          }
-        },
-        "hobbies": [
-          "coding",
-          "travel",
-          "reading",
-          null
-        ]
-      },
-      "notes": "inactive"
-    },
-    {
-      "id": 48,
-      "uuid": "user-48",
-      "name": "User 48",
-      "active": false,
-      "metrics": {
-        "score": 52,
-        "rating": 3.57,
-        "flags": [
-          true,
-          true,
-          true
-        ]
-      },
-      "profile": {
-        "age": 30,
-        "address": {
-          "city": "City 48",
-          "zip": "75048",
-          "geo": {
-            "lat": 48.944459624193456,
-            "lng": 2.406757116233543
-          }
-        },
-        "hobbies": [
-          "gaming",
-          "music",
-          "sports",
-          null
-        ]
-      },
-      "notes": "pending"
-    },
-    {
-      "id": 49,
-      "uuid": "user-49",
-      "name": "User 49",
-      "active": true,
-      "metrics": {
-        "score": 71,
-        "rating": 4.5,
-        "flags": [
-          null,
-          false,
-          null
-        ]
-      },
-      "profile": {
-        "age": 28,
-        "address": {
-          "city": "City 49",
-          "zip": "75049",
-          "geo": {
-            "lat": 48.98526940570677,
-            "lng": 2.3182841275109696
-          }
-        },
-        "hobbies": [
-          "coding",
-          "cooking",
-          "sports",
-          null
-        ]
-      },
-      "notes": "pending"
-    },
-    {
-      "id": 50,
-      "uuid": "user-50",
-      "name": "User 50",
-      "active": true,
-      "metrics": {
-        "score": 87,
-        "rating": 3.04,
-        "flags": [
-          false,
-          true,
-          null
-        ]
-      },
-      "profile": {
-        "age": 64,
-        "address": {
-          "city": "City 0",
-          "zip": "75050",
-          "geo": {
-            "lat": 48.942171403828475,
-            "lng": 2.4071544134289216
-          }
-        },
-        "hobbies": [
-          "sports",
-          "travel",
-          "cooking",
-          null
-        ]
-      },
-      "notes": "pending"
-    },
-    {
-      "id": 51,
-      "uuid": "user-51",
-      "name": "User 51",
-      "active": false,
-      "metrics": {
-        "score": 21,
-        "rating": 4.51,
-        "flags": [
-          false,
-          false,
-          false
-        ]
-      },
-      "profile": {
-        "age": 25,
-        "address": {
-          "city": "City 1",
-          "zip": "75051",
-          "geo": {
-            "lat": 48.85182160799466,
-            "lng": 2.4576344899332865
-          }
-        },
-        "hobbies": [
-          "reading",
-          "coding",
-          "art",
-          null
-        ]
-      },
-      "notes": "active"
-    },
-    {
-      "id": 52,
-      "uuid": "user-52",
-      "name": "User 52",
-      "active": false,
-      "metrics": {
-        "score": 59,
-        "rating": 1.36,
-        "flags": [
-          null,
-          true,
-          false
-        ]
-      },
-      "profile": {
-        "age": 40,
-        "address": {
-          "city": "City 2",
-          "zip": "75052",
-          "geo": {
-            "lat": 48.968612676881556,
-            "lng": 2.3216360123670015
-          }
-        },
-        "hobbies": [
-          "travel",
-          "music",
-          "art",
-          null
-        ]
-      },
-      "notes": "pending"
-    },
-    {
-      "id": 53,
-      "uuid": "user-53",
-      "name": "User 53",
-      "active": false,
-      "metrics": {
-        "score": 27,
-        "rating": 3.88,
-        "flags": [
-          true,
-          null,
-          true
-        ]
-      },
-      "profile": {
-        "age": 34,
-        "address": {
-          "city": "City 3",
-          "zip": "75053",
-          "geo": {
-            "lat": 48.883186496201155,
-            "lng": 2.495781496494734
-          }
-        },
-        "hobbies": [
-          "reading",
-          "cooking",
-          "coding",
-          null
-        ]
-      },
-      "notes": "review"
-    },
-    {
-      "id": 54,
-      "uuid": "user-54",
-      "name": "User 54",
-      "active": true,
-      "metrics": {
-        "score": 72,
-        "rating": 4.13,
-        "flags": [
-          true,
-          null,
-          true
-        ]
-      },
-      "profile": {
-        "age": 66,
-        "address": {
-          "city": "City 4",
-          "zip": "75054",
-          "geo": {
-            "lat": 48.822168673213724,
-            "lng": 2.398736128856196
-          }
-        },
-        "hobbies": [
-          "coding",
-          "art",
-          "music",
-          null
-        ]
-      },
-      "notes": "review"
-    },
-    {
-      "id": 55,
-      "uuid": "user-55",
-      "name": "User 55",
-      "active": false,
-      "metrics": {
-        "score": 46,
-        "rating": 3.87,
-        "flags": [
-          false,
-          true,
-          false
-        ]
-      },
-      "profile": {
-        "age": 44,
-        "address": {
-          "city": "City 5",
-          "zip": "75055",
-          "geo": {
-            "lat": 48.94591509975173,
-            "lng": 2.4259475573867015
-          }
-        },
-        "hobbies": [
-          "coding",
-          "sports",
-          "cooking",
-          null
-        ]
-      },
-      "notes": "review"
-    },
-    {
-      "id": 56,
-      "uuid": "user-56",
-      "name": "User 56",
-      "active": false,
-      "metrics": {
-        "score": 86,
-        "rating": 2.46,
-        "flags": [
-          true,
-          false,
-          false
-        ]
-      },
-      "profile": {
-        "age": 62,
-        "address": {
-          "city": "City 6",
-          "zip": "75056",
-          "geo": {
-            "lat": 48.95117266350602,
-            "lng": 2.480024857166977
-          }
-        },
-        "hobbies": [
-          "reading",
-          "gaming",
-          "coding",
-          null
-        ]
-      },
-      "notes": "pending"
-    },
-    {
-      "id": 57,
-      "uuid": "user-57",
-      "name": "User 57",
-      "active": true,
-      "metrics": {
-        "score": 1,
-        "rating": 3.0,
-        "flags": [
-          null,
-          true,
-          false
-        ]
-      },
-      "profile": {
-        "age": 35,
-        "address": {
-          "city": "City 7",
-          "zip": "75057",
-          "geo": {
-            "lat": 48.90636436613287,
-            "lng": 2.346675808757136
-          }
-        },
-        "hobbies": [
-          "reading",
-          "cooking",
-          "gaming",
-          null
-        ]
-      },
-      "notes": "inactive"
-    },
-    {
-      "id": 58,
-      "uuid": "user-58",
-      "name": "User 58",
-      "active": false,
-      "metrics": {
-        "score": 6,
-        "rating": 3.97,
-        "flags": [
-          null,
-          null,
-          true
-        ]
-      },
-      "profile": {
-        "age": 64,
-        "address": {
-          "city": "City 8",
-          "zip": "75058",
-          "geo": {
-            "lat": 48.881302037497704,
-            "lng": 2.320475377957451
-          }
-        },
-        "hobbies": [
-          "travel",
-          "reading",
-          "art",
-          null
-        ]
-      },
-      "notes": "review"
-    },
-    {
-      "id": 59,
-      "uuid": "user-59",
-      "name": "User 59",
-      "active": false,
-      "metrics": {
-        "score": 46,
-        "rating": 1.16,
-        "flags": [
-          false,
-          null,
-          false
-        ]
-      },
-      "profile": {
-        "age": 50,
-        "address": {
-          "city": "City 9",
-          "zip": "75059",
-          "geo": {
-            "lat": 48.917942557857025,
-            "lng": 2.437977214605694
-          }
-        },
-        "hobbies": [
-          "gaming",
-          "sports",
-          "cooking",
-          null
-        ]
-      },
-      "notes": "inactive"
-    },
-    {
-      "id": 60,
-      "uuid": "user-60",
-      "name": "User 60",
-      "active": true,
-      "metrics": {
-        "score": 22,
-        "rating": 2.19,
-        "flags": [
-          null,
-          true,
-          false
-        ]
-      },
-      "profile": {
-        "age": 40,
-        "address": {
-          "city": "City 10",
-          "zip": "75060",
-          "geo": {
-            "lat": 48.85755804746319,
-            "lng": 2.3362593202978785
-          }
-        },
-        "hobbies": [
-          "travel",
-          "music",
-          "coding",
-          null
-        ]
-      },
-      "notes": "inactive"
-    },
-    {
-      "id": 61,
-      "uuid": "user-61",
-      "name": "User 61",
-      "active": false,
-      "metrics": {
-        "score": 74,
-        "rating": 4.79,
-        "flags": [
-          true,
-          null,
-          false
-        ]
-      },
-      "profile": {
-        "age": 68,
-        "address": {
-          "city": "City 11",
-          "zip": "75061",
-          "geo": {
-            "lat": 48.8480435700918,
-            "lng": 2.4373014239213338
-          }
-        },
-        "hobbies": [
-          "sports",
-          "music",
-          "cooking",
-          null
-        ]
-      },
-      "notes": "pending"
-    },
-    {
-      "id": 62,
-      "uuid": "user-62",
-      "name": "User 62",
-      "active": false,
-      "metrics": {
-        "score": 32,
-        "rating": 2.86,
-        "flags": [
-          false,
-          true,
-          true
-        ]
-      },
-      "profile": {
-        "age": 28,
-        "address": {
-          "city": "City 12",
-          "zip": "75062",
-          "geo": {
-            "lat": 48.8230096007683,
-            "lng": 2.4930821303868393
-          }
-        },
-        "hobbies": [
-          "music",
-          "travel",
-          "sports",
-          null
-        ]
-      },
-      "notes": "inactive"
-    },
-    {
-      "id": 63,
-      "uuid": "user-63",
-      "name": "User 63",
-      "active": true,
-      "metrics": {
-        "score": 92,
-        "rating": 1.13,
-        "flags": [
-          null,
-          true,
-          true
-        ]
-      },
-      "profile": {
-        "age": 46,
-        "address": {
-          "city": "City 13",
-          "zip": "75063",
-          "geo": {
-            "lat": 48.88265212574334,
-            "lng": 2.487549114532976
-          }
-        },
-        "hobbies": [
-          "travel",
-          "cooking",
-          "art",
-          null
-        ]
-      },
-      "notes": null
-    },
-    {
-      "id": 64,
-      "uuid": "user-64",
-      "name": "User 64",
-      "active": false,
-      "metrics": {
-        "score": 10,
-        "rating": 1.79,
-        "flags": [
-          false,
-          null,
-          false
-        ]
-      },
-      "profile": {
-        "age": 66,
-        "address": {
-          "city": "City 14",
-          "zip": "75064",
-          "geo": {
-            "lat": 48.96432157749725,
-            "lng": 2.413279007932977
-          }
-        },
-        "hobbies": [
-          "reading",
-          "coding",
-          "travel",
-          null
-        ]
-      },
-      "notes": "active"
-    },
-    {
-      "id": 65,
-      "uuid": "user-65",
-      "name": "User 65",
-      "active": true,
-      "metrics": {
-        "score": 84,
-        "rating": 3.85,
-        "flags": [
-          null,
-          false,
-          true
-        ]
-      },
-      "profile": {
-        "age": 59,
-        "address": {
-          "city": "City 15",
-          "zip": "75065",
-          "geo": {
-            "lat": 48.86495462601941,
-            "lng": 2.4169101827457307
-          }
-        },
-        "hobbies": [
-          "sports",
-          "travel",
-          "coding",
-          null
-        ]
-      },
-      "notes": null
-    },
-    {
-      "id": 66,
-      "uuid": "user-66",
-      "name": "User 66",
-      "active": true,
-      "metrics": {
-        "score": 80,
-        "rating": 2.97,
-        "flags": [
-          false,
-          true,
-          null
-        ]
-      },
-      "profile": {
-        "age": 52,
-        "address": {
-          "city": "City 16",
-          "zip": "75066",
-          "geo": {
-            "lat": 48.97245808791042,
-            "lng": 2.390915203208926
-          }
-        },
-        "hobbies": [
-          "travel",
-          "reading",
-          "music",
-          null
-        ]
-      },
-      "notes": "pending"
-    },
-    {
-      "id": 67,
-      "uuid": "user-67",
-      "name": "User 67",
-      "active": false,
-      "metrics": {
-        "score": 79,
-        "rating": 3.52,
-        "flags": [
-          null,
-          false,
-          null
-        ]
-      },
-      "profile": {
-        "age": 36,
-        "address": {
-          "city": "City 17",
-          "zip": "75067",
-          "geo": {
-            "lat": 48.81912282381776,
-            "lng": 2.3897838962129656
-          }
-        },
-        "hobbies": [
-          "travel",
-          "sports",
-          "gaming",
-          null
-        ]
-      },
-      "notes": null
-    },
-    {
-      "id": 68,
-      "uuid": "user-68",
-      "name": "User 68",
-      "active": false,
-      "metrics": {
-        "score": 23,
-        "rating": 3.46,
-        "flags": [
-          false,
-          null,
-          null
-        ]
-      },
-      "profile": {
-        "age": 58,
-        "address": {
-          "city": "City 18",
-          "zip": "75068",
-          "geo": {
-            "lat": 48.936348477764476,
-            "lng": 2.4783982247827208
-          }
-        },
-        "hobbies": [
-          "sports",
-          "travel",
-          "music",
-          null
-        ]
-      },
-      "notes": "review"
-    },
-    {
-      "id": 69,
-      "uuid": "user-69",
-      "name": "User 69",
-      "active": true,
-      "metrics": {
-        "score": 95,
-        "rating": 3.74,
-        "flags": [
-          true,
-          null,
-          true
-        ]
-      },
-      "profile": {
-        "age": 34,
-        "address": {
-          "city": "City 19",
-          "zip": "75069",
-          "geo": {
-            "lat": 48.845893425354475,
-            "lng": 2.4346655199629015
-          }
-        },
-        "hobbies": [
-          "reading",
-          "sports",
-          "gaming",
-          null
-        ]
-      },
-      "notes": "active"
-    },
-    {
-      "id": 70,
-      "uuid": "user-70",
-      "name": "User 70",
-      "active": true,
-      "metrics": {
-        "score": 50,
-        "rating": 1.85,
-        "flags": [
-          false,
-          null,
-          false
-        ]
-      },
-      "profile": {
-        "age": 45,
-        "address": {
-          "city": "City 20",
-          "zip": "75070",
-          "geo": {
-            "lat": 48.82472501682769,
-            "lng": 2.3231070714380544
-          }
-        },
-        "hobbies": [
-          "travel",
-          "reading",
-          "art",
-          null
-        ]
-      },
-      "notes": "pending"
-    },
-    {
-      "id": 71,
-      "uuid": "user-71",
-      "name": "User 71",
-      "active": false,
-      "metrics": {
-        "score": 59,
-        "rating": 2.54,
-        "flags": [
-          true,
-          null,
-          false
-        ]
-      },
-      "profile": {
-        "age": 52,
-        "address": {
-          "city": "City 21",
-          "zip": "75071",
-          "geo": {
-            "lat": 48.87680073935388,
-            "lng": 2.3176611906070246
-          }
-        },
-        "hobbies": [
-          "sports",
-          "music",
-          "reading",
-          null
-        ]
-      },
-      "notes": "active"
-    },
-    {
-      "id": 72,
-      "uuid": "user-72",
-      "name": "User 72",
-      "active": false,
-      "metrics": {
-        "score": 76,
-        "rating": 4.24,
-        "flags": [
-          true,
-          null,
-          true
-        ]
-      },
-      "profile": {
-        "age": 36,
-        "address": {
-          "city": "City 22",
-          "zip": "75072",
-          "geo": {
-            "lat": 48.80581541690647,
-            "lng": 2.359955629730896
-          }
-        },
-        "hobbies": [
-          "reading",
-          "gaming",
-          "art",
-          null
-        ]
-      },
-      "notes": "pending"
-    },
-    {
-      "id": 73,
-      "uuid": "user-73",
-      "name": "User 73",
-      "active": false,
-      "metrics": {
-        "score": 25,
-        "rating": 1.99,
-        "flags": [
-          false,
-          true,
-          false
-        ]
-      },
-      "profile": {
-        "age": 54,
-        "address": {
-          "city": "City 23",
-          "zip": "75073",
-          "geo": {
-            "lat": 48.83246338252754,
-            "lng": 2.4389148282302897
-          }
-        },
-        "hobbies": [
-          "music",
-          "sports",
-          "travel",
-          null
-        ]
-      },
-      "notes": null
-    },
-    {
-      "id": 74,
-      "uuid": "user-74",
-      "name": "User 74",
-      "active": false,
-      "metrics": {
-        "score": 87,
-        "rating": 1.51,
-        "flags": [
-          true,
-          null,
-          null
-        ]
-      },
-      "profile": {
-        "age": 51,
-        "address": {
-          "city": "City 24",
-          "zip": "75074",
-          "geo": {
-            "lat": 48.86433446997867,
-            "lng": 2.334977679344258
-          }
-        },
-        "hobbies": [
-          "gaming",
-          "cooking",
-          "music",
-          null
-        ]
-      },
-      "notes": "pending"
-    },
-    {
-      "id": 75,
-      "uuid": "user-75",
-      "name": "User 75",
-      "active": false,
-      "metrics": {
-        "score": 84,
-        "rating": 4.45,
-        "flags": [
-          null,
-          false,
-          true
-        ]
-      },
-      "profile": {
-        "age": 20,
-        "address": {
-          "city": "City 25",
-          "zip": "75075",
-          "geo": {
-            "lat": 48.949765246293836,
-            "lng": 2.401946535901056
-          }
-        },
-        "hobbies": [
-          "sports",
-          "travel",
-          "coding",
-          null
-        ]
-      },
-      "notes": "active"
-    },
-    {
-      "id": 76,
-      "uuid": "user-76",
-      "name": "User 76",
-      "active": false,
-      "metrics": {
-        "score": 49,
-        "rating": 4.22,
-        "flags": [
-          null,
-          null,
-          null
-        ]
-      },
-      "profile": {
-        "age": 28,
-        "address": {
-          "city": "City 26",
-          "zip": "75076",
-          "geo": {
-            "lat": 48.92481675541186,
-            "lng": 2.428859317973778
-          }
-        },
-        "hobbies": [
-          "reading",
-          "coding",
-          "travel",
-          null
-        ]
-      },
-      "notes": "review"
-    },
-    {
-      "id": 77,
-      "uuid": "user-77",
-      "name": "User 77",
-      "active": false,
-      "metrics": {
-        "score": 71,
-        "rating": 3.91,
-        "flags": [
-          null,
-          false,
-          false
-        ]
-      },
-      "profile": {
-        "age": 66,
-        "address": {
-          "city": "City 27",
-          "zip": "75077",
-          "geo": {
-            "lat": 48.96568833024589,
-            "lng": 2.4171735784634545
-          }
-        },
-        "hobbies": [
-          "art",
-          "reading",
-          "travel",
-          null
-        ]
-      },
-      "notes": "inactive"
-    },
-    {
-      "id": 78,
-      "uuid": "user-78",
-      "name": "User 78",
-      "active": false,
-      "metrics": {
-        "score": 31,
-        "rating": 2.61,
-        "flags": [
-          null,
-          true,
-          false
-        ]
-      },
-      "profile": {
-        "age": 42,
-        "address": {
-          "city": "City 28",
-          "zip": "75078",
-          "geo": {
-            "lat": 48.966700200479245,
-            "lng": 2.4528370308071925
-          }
-        },
-        "hobbies": [
-          "travel",
-          "gaming",
-          "reading",
-          null
-        ]
-      },
-      "notes": "review"
-    },
-    {
-      "id": 79,
-      "uuid": "user-79",
-      "name": "User 79",
-      "active": false,
-      "metrics": {
-        "score": 13,
-        "rating": 1.17,
-        "flags": [
-          false,
-          true,
-          true
-        ]
-      },
-      "profile": {
-        "age": 49,
-        "address": {
-          "city": "City 29",
-          "zip": "75079",
-          "geo": {
-            "lat": 48.876347959671044,
-            "lng": 2.48739949715073
-          }
-        },
-        "hobbies": [
-          "reading",
-          "music",
-          "sports",
-          null
-        ]
-      },
-      "notes": "active"
-    },
-    {
-      "id": 80,
-      "uuid": "user-80",
-      "name": "User 80",
-      "active": true,
-      "metrics": {
-        "score": 45,
-        "rating": 4.66,
-        "flags": [
-          false,
-          null,
-          false
-        ]
-      },
-      "profile": {
-        "age": 39,
-        "address": {
-          "city": "City 30",
-          "zip": "75080",
-          "geo": {
-            "lat": 48.84993213169901,
-            "lng": 2.3704470858776325
-          }
-        },
-        "hobbies": [
-          "music",
-          "sports",
-          "art",
-          null
-        ]
-      },
-      "notes": "inactive"
-    },
-    {
-      "id": 81,
-      "uuid": "user-81",
-      "name": "User 81",
-      "active": true,
-      "metrics": {
-        "score": 16,
-        "rating": 2.1,
-        "flags": [
-          null,
-          null,
-          false
-        ]
-      },
-      "profile": {
-        "age": 65,
-        "address": {
-          "city": "City 31",
-          "zip": "75081",
-          "geo": {
-            "lat": 48.96503267650348,
-            "lng": 2.4652892162454716
-          }
-        },
-        "hobbies": [
-          "sports",
-          "coding",
-          "cooking",
-          null
-        ]
-      },
-      "notes": null
-    },
-    {
-      "id": 82,
-      "uuid": "user-82",
-      "name": "User 82",
-      "active": false,
-      "metrics": {
-        "score": 24,
-        "rating": 1.05,
-        "flags": [
-          true,
-          true,
-          true
-        ]
-      },
-      "profile": {
-        "age": 31,
-        "address": {
-          "city": "City 32",
-          "zip": "75082",
-          "geo": {
-            "lat": 48.9167933364223,
-            "lng": 2.4227967511205937
-          }
-        },
-        "hobbies": [
-          "coding",
-          "reading",
-          "art",
-          null
-        ]
-      },
-      "notes": "inactive"
-    },
-    {
-      "id": 83,
-      "uuid": "user-83",
-      "name": "User 83",
-      "active": false,
-      "metrics": {
-        "score": 55,
-        "rating": 2.88,
-        "flags": [
-          true,
-          null,
-          false
-        ]
-      },
-      "profile": {
-        "age": 22,
-        "address": {
-          "city": "City 33",
-          "zip": "75083",
-          "geo": {
-            "lat": 48.901424570499074,
-            "lng": 2.4710486453788003
-          }
-        },
-        "hobbies": [
-          "music",
-          "reading",
-          "cooking",
-          null
-        ]
-      },
-      "notes": "inactive"
-    },
-    {
-      "id": 84,
-      "uuid": "user-84",
-      "name": "User 84",
-      "active": true,
-      "metrics": {
-        "score": 100,
-        "rating": 1.8,
-        "flags": [
-          true,
-          false,
-          true
-        ]
-      },
-      "profile": {
-        "age": 20,
-        "address": {
-          "city": "City 34",
-          "zip": "75084",
-          "geo": {
-            "lat": 48.84383757496504,
-            "lng": 2.474460323439274
-          }
-        },
-        "hobbies": [
-          "cooking",
-          "coding",
-          "music",
-          null
-        ]
-      },
-      "notes": "pending"
-    },
-    {
-      "id": 85,
-      "uuid": "user-85",
-      "name": "User 85",
-      "active": true,
-      "metrics": {
-        "score": 75,
-        "rating": 4.36,
-        "flags": [
-          true,
-          null,
-          false
-        ]
-      },
-      "profile": {
-        "age": 42,
-        "address": {
-          "city": "City 35",
-          "zip": "75085",
-          "geo": {
-            "lat": 48.80738041564275,
-            "lng": 2.4532444177769785
-          }
-        },
-        "hobbies": [
-          "cooking",
-          "art",
-          "reading",
-          null
-        ]
-      },
-      "notes": "review"
-    },
-    {
-      "id": 86,
-      "uuid": "user-86",
-      "name": "User 86",
-      "active": false,
-      "metrics": {
-        "score": 60,
-        "rating": 1.16,
-        "flags": [
-          null,
-          true,
-          false
-        ]
-      },
-      "profile": {
-        "age": 59,
-        "address": {
-          "city": "City 36",
-          "zip": "75086",
-          "geo": {
-            "lat": 48.975303790133864,
-            "lng": 2.30043919641854
-          }
-        },
-        "hobbies": [
-          "music",
-          "reading",
-          "art",
-          null
-        ]
-      },
-      "notes": "inactive"
-    },
-    {
-      "id": 87,
-      "uuid": "user-87",
-      "name": "User 87",
-      "active": true,
-      "metrics": {
-        "score": 7,
-        "rating": 2.7,
-        "flags": [
-          true,
-          true,
-          null
-        ]
-      },
-      "profile": {
-        "age": 67,
-        "address": {
-          "city": "City 37",
-          "zip": "75087",
-          "geo": {
-            "lat": 48.818518807274785,
-            "lng": 2.3836491024304265
-          }
-        },
-        "hobbies": [
-          "cooking",
-          "music",
-          "gaming",
-          null
-        ]
-      },
-      "notes": "active"
-    },
-    {
-      "id": 88,
-      "uuid": "user-88",
-      "name": "User 88",
-      "active": true,
-      "metrics": {
-        "score": 15,
-        "rating": 4.38,
-        "flags": [
-          false,
-          true,
-          true
-        ]
-      },
-      "profile": {
-        "age": 25,
-        "address": {
-          "city": "City 38",
-          "zip": "75088",
-          "geo": {
-            "lat": 48.812281610506105,
-            "lng": 2.4519725206561835
-          }
-        },
-        "hobbies": [
-          "coding",
-          "travel",
-          "gaming",
-          null
-        ]
-      },
-      "notes": "pending"
-    },
-    {
-      "id": 89,
-      "uuid": "user-89",
-      "name": "User 89",
-      "active": false,
-      "metrics": {
-        "score": 88,
-        "rating": 3.7,
-        "flags": [
-          true,
-          true,
-          false
-        ]
-      },
-      "profile": {
-        "age": 33,
-        "address": {
-          "city": "City 39",
-          "zip": "75089",
-          "geo": {
-            "lat": 48.99733530985268,
-            "lng": 2.38679487595718
-          }
-        },
-        "hobbies": [
-          "travel",
-          "coding",
-          "sports",
-          null
-        ]
-      },
-      "notes": "active"
-    },
-    {
-      "id": 90,
-      "uuid": "user-90",
-      "name": "User 90",
-      "active": true,
-      "metrics": {
-        "score": 87,
-        "rating": 4.77,
-        "flags": [
-          null,
-          false,
-          null
-        ]
-      },
-      "profile": {
-        "age": 26,
-        "address": {
-          "city": "City 40",
-          "zip": "75090",
-          "geo": {
-            "lat": 48.97268957352571,
-            "lng": 2.4086698531581194
-          }
-        },
-        "hobbies": [
-          "art",
-          "reading",
-          "music",
-          null
-        ]
-      },
-      "notes": null
-    },
-    {
-      "id": 91,
-      "uuid": "user-91",
-      "name": "User 91",
-      "active": true,
-      "metrics": {
-        "score": 88,
-        "rating": 3.0,
-        "flags": [
-          true,
-          false,
-          true
-        ]
-      },
-      "profile": {
-        "age": 43,
-        "address": {
-          "city": "City 41",
-          "zip": "75091",
-          "geo": {
-            "lat": 48.96370401725668,
-            "lng": 2.332514454890378
-          }
-        },
-        "hobbies": [
-          "travel",
-          "art",
-          "gaming",
-          null
-        ]
-      },
-      "notes": null
-    },
-    {
-      "id": 92,
-      "uuid": "user-92",
-      "name": "User 92",
-      "active": false,
-      "metrics": {
-        "score": 7,
-        "rating": 3.78,
-        "flags": [
-          true,
-          null,
-          null
-        ]
-      },
-      "profile": {
-        "age": 35,
-        "address": {
-          "city": "City 42",
-          "zip": "75092",
-          "geo": {
-            "lat": 48.80442927900717,
-            "lng": 2.3326250967576496
-          }
-        },
-        "hobbies": [
-          "art",
-          "coding",
-          "cooking",
-          null
-        ]
-      },
-      "notes": "pending"
-    },
-    {
-      "id": 93,
-      "uuid": "user-93",
-      "name": "User 93",
-      "active": true,
-      "metrics": {
-        "score": 6,
-        "rating": 4.64,
-        "flags": [
-          false,
-          true,
-          null
-        ]
-      },
-      "profile": {
-        "age": 30,
-        "address": {
-          "city": "City 43",
-          "zip": "75093",
-          "geo": {
-            "lat": 48.900565354537605,
-            "lng": 2.323460092850196
-          }
-        },
-        "hobbies": [
-          "travel",
-          "reading",
-          "art",
-          null
-        ]
-      },
-      "notes": "inactive"
-    },
-    {
-      "id": 94,
-      "uuid": "user-94",
-      "name": "User 94",
-      "active": true,
-      "metrics": {
-        "score": 6,
-        "rating": 1.71,
-        "flags": [
-          null,
-          null,
-          true
-        ]
-      },
-      "profile": {
-        "age": 69,
-        "address": {
-          "city": "City 44",
-          "zip": "75094",
-          "geo": {
-            "lat": 48.80060991000076,
-            "lng": 2.3223765282232405
-          }
-        },
-        "hobbies": [
-          "cooking",
-          "coding",
-          "reading",
-          null
-        ]
-      },
-      "notes": "review"
-    },
-    {
-      "id": 95,
-      "uuid": "user-95",
-      "name": "User 95",
-      "active": true,
-      "metrics": {
-        "score": 16,
-        "rating": 2.07,
-        "flags": [
-          false,
-          false,
-          true
-        ]
-      },
-      "profile": {
-        "age": 53,
-        "address": {
-          "city": "City 45",
-          "zip": "75095",
-          "geo": {
-            "lat": 48.96802527126704,
-            "lng": 2.4770042822010008
-          }
-        },
-        "hobbies": [
-          "gaming",
-          "art",
-          "coding",
-          null
-        ]
-      },
-      "notes": null
-    },
-    {
-      "id": 96,
-      "uuid": "user-96",
-      "name": "User 96",
-      "active": true,
-      "metrics": {
-        "score": 92,
-        "rating": 2.86,
-        "flags": [
-          null,
-          null,
-          null
-        ]
-      },
-      "profile": {
-        "age": 34,
-        "address": {
-          "city": "City 46",
-          "zip": "75096",
-          "geo": {
-            "lat": 48.80439403637684,
-            "lng": 2.398709561709264
-          }
-        },
-        "hobbies": [
-          "coding",
-          "travel",
-          "gaming",
-          null
-        ]
-      },
-      "notes": "inactive"
-    },
-    {
-      "id": 97,
-      "uuid": "user-97",
-      "name": "User 97",
-      "active": false,
-      "metrics": {
-        "score": 20,
-        "rating": 4.31,
-        "flags": [
-          null,
-          false,
-          false
-        ]
-      },
-      "profile": {
-        "age": 47,
-        "address": {
-          "city": "City 47",
-          "zip": "75097",
-          "geo": {
-            "lat": 48.98864305605497,
-            "lng": 2.3539611505857008
-          }
-        },
-        "hobbies": [
-          "cooking",
-          "gaming",
-          "travel",
-          null
-        ]
-      },
-      "notes": "review"
-    },
-    {
-      "id": 98,
-      "uuid": "user-98",
-      "name": "User 98",
-      "active": true,
-      "metrics": {
-        "score": 18,
-        "rating": 1.37,
-        "flags": [
-          true,
-          false,
-          false
-        ]
-      },
-      "profile": {
-        "age": 18,
-        "address": {
-          "city": "City 48",
-          "zip": "75098",
-          "geo": {
-            "lat": 48.844061277002055,
-            "lng": 2.383046728921265
-          }
-        },
-        "hobbies": [
-          "music",
-          "sports",
-          "reading",
-          null
-        ]
-      },
-      "notes": "review"
-    },
-    {
-      "id": 99,
-      "uuid": "user-99",
-      "name": "User 99",
-      "active": true,
-      "metrics": {
-        "score": 41,
-        "rating": 1.8,
-        "flags": [
-          null,
-          true,
-          true
-        ]
-      },
-      "profile": {
-        "age": 51,
-        "address": {
-          "city": "City 49",
-          "zip": "75099",
-          "geo": {
-            "lat": 48.80376974728682,
-            "lng": 2.3569699078930255
-          }
-        },
-        "hobbies": [
-          "cooking",
-          "reading",
-          "coding",
-          null
-        ]
-      },
-      "notes": "active"
-    },
-    {
-      "id": 100,
-      "uuid": "user-100",
-      "name": "User 100",
-      "active": true,
-      "metrics": {
-        "score": 89,
-        "rating": 3.96,
-        "flags": [
-          false,
-          null,
-          true
-        ]
-      },
-      "profile": {
-        "age": 52,
-        "address": {
-          "city": "City 0",
-          "zip": "75000",
-          "geo": {
-            "lat": 48.815718497738565,
-            "lng": 2.3998890036820177
-          }
-        },
-        "hobbies": [
-          "travel",
-          "music",
-          "sports",
-          null
-        ]
-      },
-      "notes": "pending"
-    },
-    {
-      "id": 101,
-      "uuid": "user-101",
-      "name": "User 101",
-      "active": false,
-      "metrics": {
-        "score": 15,
-        "rating": 2.78,
-        "flags": [
-          true,
-          null,
-          null
-        ]
-      },
-      "profile": {
-        "age": 42,
-        "address": {
-          "city": "City 1",
-          "zip": "75001",
-          "geo": {
-            "lat": 48.94220239535672,
-            "lng": 2.432834387076917
-          }
-        },
-        "hobbies": [
-          "travel",
-          "sports",
-          "coding",
-          null
-        ]
-      },
-      "notes": "pending"
-    },
-    {
-      "id": 102,
-      "uuid": "user-102",
-      "name": "User 102",
-      "active": true,
-      "metrics": {
-        "score": 40,
-        "rating": 2.35,
-        "flags": [
-          null,
-          null,
-          false
-        ]
-      },
-      "profile": {
-        "age": 68,
-        "address": {
-          "city": "City 2",
-          "zip": "75002",
-          "geo": {
-            "lat": 48.944314742908986,
-            "lng": 2.4180142167837486
-          }
-        },
-        "hobbies": [
-          "sports",
-          "gaming",
-          "art",
-          null
-        ]
-      },
-      "notes": "review"
-    },
-    {
-      "id": 103,
-      "uuid": "user-103",
-      "name": "User 103",
-      "active": true,
-      "metrics": {
-        "score": 38,
-        "rating": 1.45,
-        "flags": [
-          false,
-          true,
-          null
-        ]
-      },
-      "profile": {
-        "age": 49,
-        "address": {
-          "city": "City 3",
-          "zip": "75003",
-          "geo": {
-            "lat": 48.8905558997511,
-            "lng": 2.3151771916510455
-          }
-        },
-        "hobbies": [
-          "sports",
-          "travel",
-          "reading",
-          null
-        ]
-      },
-      "notes": null
-    },
-    {
-      "id": 104,
-      "uuid": "user-104",
-      "name": "User 104",
-      "active": true,
-      "metrics": {
-        "score": 46,
-        "rating": 3.9,
-        "flags": [
-          false,
-          null,
-          false
-        ]
-      },
-      "profile": {
-        "age": 57,
-        "address": {
-          "city": "City 4",
-          "zip": "75004",
-          "geo": {
-            "lat": 48.84722298740641,
-            "lng": 2.3381521043422295
-          }
-        },
-        "hobbies": [
-          "reading",
-          "travel",
-          "gaming",
-          null
-        ]
-      },
-      "notes": "active"
-    },
-    {
-      "id": 105,
-      "uuid": "user-105",
-      "name": "User 105",
-      "active": false,
-      "metrics": {
-        "score": 7,
-        "rating": 1.71,
-        "flags": [
-          true,
-          null,
-          true
-        ]
-      },
-      "profile": {
-        "age": 25,
-        "address": {
-          "city": "City 5",
-          "zip": "75005",
-          "geo": {
-            "lat": 48.847883992417664,
-            "lng": 2.3576949363411592
-          }
-        },
-        "hobbies": [
-          "gaming",
-          "art",
-          "sports",
-          null
-        ]
-      },
-      "notes": "inactive"
-    },
-    {
-      "id": 106,
-      "uuid": "user-106",
-      "name": "User 106",
-      "active": false,
-      "metrics": {
-        "score": 33,
-        "rating": 1.67,
-        "flags": [
-          null,
-          true,
-          null
-        ]
-      },
-      "profile": {
-        "age": 63,
-        "address": {
-          "city": "City 6",
-          "zip": "75006",
-          "geo": {
-            "lat": 48.89271485501575,
-            "lng": 2.3892240308745976
-          }
-        },
-        "hobbies": [
-          "cooking",
-          "art",
-          "coding",
-          null
-        ]
-      },
-      "notes": "inactive"
-    },
-    {
-      "id": 107,
-      "uuid": "user-107",
-      "name": "User 107",
-      "active": true,
-      "metrics": {
-        "score": 6,
-        "rating": 3.42,
-        "flags": [
-          false,
-          true,
-          false
-        ]
-      },
-      "profile": {
-        "age": 51,
-        "address": {
-          "city": "City 7",
-          "zip": "75007",
-          "geo": {
-            "lat": 48.9403216617886,
-            "lng": 2.3434559125886705
-          }
-        },
-        "hobbies": [
-          "travel",
-          "gaming",
-          "music",
-          null
-        ]
-      },
-      "notes": "inactive"
-    },
-    {
-      "id": 108,
-      "uuid": "user-108",
-      "name": "User 108",
-      "active": true,
-      "metrics": {
-        "score": 0,
-        "rating": 4.19,
-        "flags": [
-          false,
-          true,
-          null
-        ]
-      },
-      "profile": {
-        "age": 57,
-        "address": {
-          "city": "City 8",
-          "zip": "75008",
-          "geo": {
-            "lat": 48.91701833404737,
-            "lng": 2.4756185556828894
-          }
-        },
-        "hobbies": [
-          "cooking",
-          "coding",
-          "art",
-          null
-        ]
-      },
-      "notes": "pending"
-    },
-    {
-      "id": 109,
-      "uuid": "user-109",
-      "name": "User 109",
-      "active": false,
-      "metrics": {
-        "score": 91,
-        "rating": 4.19,
-        "flags": [
-          null,
-          false,
-          true
-        ]
-      },
-      "profile": {
-        "age": 70,
-        "address": {
-          "city": "City 9",
-          "zip": "75009",
-          "geo": {
-            "lat": 48.885929262053665,
-            "lng": 2.4773127559578545
-          }
-        },
-        "hobbies": [
-          "music",
-          "coding",
-          "sports",
-          null
-        ]
-      },
-      "notes": "active"
-    },
-    {
-      "id": 110,
-      "uuid": "user-110",
-      "name": "User 110",
-      "active": true,
-      "metrics": {
-        "score": 7,
-        "rating": 1.43,
-        "flags": [
-          null,
-          null,
-          null
-        ]
-      },
-      "profile": {
-        "age": 25,
-        "address": {
-          "city": "City 10",
-          "zip": "75010",
-          "geo": {
-            "lat": 48.83266769810402,
-            "lng": 2.48165985211783
-          }
-        },
-        "hobbies": [
-          "coding",
-          "sports",
-          "travel",
-          null
-        ]
-      },
-      "notes": "review"
-    },
-    {
-      "id": 111,
-      "uuid": "user-111",
-      "name": "User 111",
-      "active": true,
-      "metrics": {
-        "score": 47,
-        "rating": 1.93,
-        "flags": [
-          null,
-          false,
-          false
-        ]
-      },
-      "profile": {
-        "age": 24,
-        "address": {
-          "city": "City 11",
-          "zip": "75011",
-          "geo": {
-            "lat": 48.867523679827606,
-            "lng": 2.431516507090558
-          }
-        },
-        "hobbies": [
-          "travel",
-          "art",
-          "cooking",
-          null
-        ]
-      },
-      "notes": "active"
-    },
-    {
-      "id": 112,
-      "uuid": "user-112",
-      "name": "User 112",
-      "active": true,
-      "metrics": {
-        "score": 77,
-        "rating": 4.18,
-        "flags": [
-          null,
-          null,
-          true
-        ]
-      },
-      "profile": {
-        "age": 57,
-        "address": {
-          "city": "City 12",
-          "zip": "75012",
-          "geo": {
-            "lat": 48.8371254777705,
-            "lng": 2.3093160070952377
-          }
-        },
-        "hobbies": [
-          "cooking",
-          "gaming",
-          "sports",
-          null
-        ]
-      },
-      "notes": "active"
-    },
-    {
-      "id": 113,
-      "uuid": "user-113",
-      "name": "User 113",
-      "active": true,
-      "metrics": {
-        "score": 15,
-        "rating": 1.89,
-        "flags": [
-          true,
-          null,
-          false
-        ]
-      },
-      "profile": {
-        "age": 54,
-        "address": {
-          "city": "City 13",
-          "zip": "75013",
-          "geo": {
-            "lat": 48.99857095354989,
-            "lng": 2.441947623619338
-          }
-        },
-        "hobbies": [
-          "cooking",
-          "art",
-          "sports",
-          null
-        ]
-      },
-      "notes": "review"
-    },
-    {
-      "id": 114,
-      "uuid": "user-114",
-      "name": "User 114",
-      "active": true,
-      "metrics": {
-        "score": 19,
-        "rating": 1.01,
-        "flags": [
-          true,
-          false,
-          true
-        ]
-      },
-      "profile": {
-        "age": 19,
-        "address": {
-          "city": "City 14",
-          "zip": "75014",
-          "geo": {
-            "lat": 48.96204638043865,
-            "lng": 2.421227714758127
-          }
-        },
-        "hobbies": [
-          "sports",
-          "coding",
-          "travel",
-          null
-        ]
-      },
-      "notes": null
-    },
-    {
-      "id": 115,
-      "uuid": "user-115",
-      "name": "User 115",
-      "active": true,
-      "metrics": {
-        "score": 73,
-        "rating": 2.69,
-        "flags": [
-          true,
-          null,
-          true
-        ]
-      },
-      "profile": {
-        "age": 63,
-        "address": {
-          "city": "City 15",
-          "zip": "75015",
-          "geo": {
-            "lat": 48.90992317439213,
-            "lng": 2.450726526023528
-          }
-        },
-        "hobbies": [
-          "travel",
-          "reading",
-          "gaming",
-          null
-        ]
-      },
-      "notes": "pending"
-    },
-    {
-      "id": 116,
-      "uuid": "user-116",
-      "name": "User 116",
-      "active": true,
-      "metrics": {
-        "score": 28,
-        "rating": 3.3,
-        "flags": [
-          false,
-          null,
-          null
-        ]
-      },
-      "profile": {
-        "age": 22,
-        "address": {
-          "city": "City 16",
-          "zip": "75016",
-          "geo": {
-            "lat": 48.91406141497058,
-            "lng": 2.479032821247225
-          }
-        },
-        "hobbies": [
-          "reading",
-          "coding",
-          "gaming",
-          null
-        ]
-      },
-      "notes": "active"
-    },
-    {
-      "id": 117,
-      "uuid": "user-117",
-      "name": "User 117",
-      "active": true,
-      "metrics": {
-        "score": 78,
-        "rating": 3.91,
-        "flags": [
-          null,
-          null,
-          true
-        ]
-      },
-      "profile": {
-        "age": 60,
-        "address": {
-          "city": "City 17",
-          "zip": "75017",
-          "geo": {
-            "lat": 48.99718308257665,
-            "lng": 2.3609652898901796
-          }
-        },
-        "hobbies": [
-          "cooking",
-          "travel",
-          "art",
-          null
-        ]
-      },
-      "notes": "inactive"
-    },
-    {
-      "id": 118,
-      "uuid": "user-118",
-      "name": "User 118",
-      "active": false,
-      "metrics": {
-        "score": 83,
-        "rating": 3.1,
-        "flags": [
-          true,
-          true,
-          true
-        ]
-      },
-      "profile": {
-        "age": 49,
-        "address": {
-          "city": "City 18",
-          "zip": "75018",
-          "geo": {
-            "lat": 48.93519847685932,
-            "lng": 2.498296462698456
-          }
-        },
-        "hobbies": [
-          "travel",
-          "music",
-          "reading",
-          null
-        ]
-      },
-      "notes": "review"
-    },
-    {
-      "id": 119,
-      "uuid": "user-119",
-      "name": "User 119",
-      "active": true,
-      "metrics": {
-        "score": 80,
-        "rating": 2.87,
-        "flags": [
-          false,
-          false,
-          true
-        ]
-      },
-      "profile": {
-        "age": 66,
-        "address": {
-          "city": "City 19",
-          "zip": "75019",
-          "geo": {
-            "lat": 48.94671499785547,
-            "lng": 2.3110911420983626
-          }
-        },
-        "hobbies": [
-          "travel",
-          "music",
-          "reading",
-          null
-        ]
-      },
-      "notes": "pending"
-    },
-    {
-      "id": 120,
-      "uuid": "user-120",
-      "name": "User 120",
-      "active": false,
-      "metrics": {
-        "score": 51,
-        "rating": 1.22,
-        "flags": [
-          true,
-          false,
-          null
-        ]
-      },
-      "profile": {
-        "age": 18,
-        "address": {
-          "city": "City 20",
-          "zip": "75020",
-          "geo": {
-            "lat": 48.978495173828705,
-            "lng": 2.376690072786419
-          }
-        },
-        "hobbies": [
-          "cooking",
-          "gaming",
-          "art",
-          null
-        ]
-      },
-      "notes": "pending"
-    }
-  ]
-}
+[
+  {
+    "id": 1,
+    "uuid": "user-1",
+    "name": "User 1",
+    "active": false,
+    "metrics": {
+      "score": 20,
+      "rating": 3.49,
+      "flags": [null, false, null]
+    },
+    "profile": {
+      "age": 28,
+      "address": {
+        "city": "City 1",
+        "zip": "75001",
+        "geo": {
+          "lat": 48.89714173830909,
+          "lng": 2.3941828692059786
+        }
+      },
+      "hobbies": ["reading", "coding", "gaming", null]
+    },
+    "notes": "inactive"
+  },
+  {
+    "id": 2,
+    "uuid": "user-2",
+    "name": "User 2",
+    "active": false,
+    "metrics": {
+      "score": 99,
+      "rating": 2.03,
+      "flags": [null, false, true]
+    },
+    "profile": {
+      "age": 31,
+      "address": {
+        "city": "City 2",
+        "zip": "75002",
+        "geo": {
+          "lat": 48.83755936394963,
+          "lng": 2.4726228250084192
+        }
+      },
+      "hobbies": ["gaming", "cooking", "reading", null]
+    },
+    "notes": null
+  },
+  {
+    "id": 3,
+    "uuid": "user-3",
+    "name": "User 3",
+    "active": true,
+    "metrics": {
+      "score": 53,
+      "rating": 1.24,
+      "flags": [false, true, false]
+    },
+    "profile": {
+      "age": 38,
+      "address": {
+        "city": "City 3",
+        "zip": "75003",
+        "geo": {
+          "lat": 48.91960862741241,
+          "lng": 2.413812671166557
+        }
+      },
+      "hobbies": ["music", "cooking", "coding", null]
+    },
+    "notes": "review"
+  },
+  {
+    "id": 4,
+    "uuid": "user-4",
+    "name": "User 4",
+    "active": true,
+    "metrics": {
+      "score": 95,
+      "rating": 2.01,
+      "flags": [null, true, false]
+    },
+    "profile": {
+      "age": 20,
+      "address": {
+        "city": "City 4",
+        "zip": "75004",
+        "geo": {
+          "lat": 48.84584505775159,
+          "lng": 2.443955190985376
+        }
+      },
+      "hobbies": ["art", "cooking", "reading", null]
+    },
+    "notes": "review"
+  },
+  {
+    "id": 5,
+    "uuid": "user-5",
+    "name": "User 5",
+    "active": true,
+    "metrics": {
+      "score": 33,
+      "rating": 3.35,
+      "flags": [true, true, false]
+    },
+    "profile": {
+      "age": 43,
+      "address": {
+        "city": "City 5",
+        "zip": "75005",
+        "geo": {
+          "lat": 48.957380508544205,
+          "lng": 2.491904991044505
+        }
+      },
+      "hobbies": ["gaming", "art", "cooking", null]
+    },
+    "notes": "pending"
+  },
+  {
+    "id": 6,
+    "uuid": "user-6",
+    "name": "User 6",
+    "active": false,
+    "metrics": {
+      "score": 71,
+      "rating": 1.84,
+      "flags": [false, null, true]
+    },
+    "profile": {
+      "age": 29,
+      "address": {
+        "city": "City 6",
+        "zip": "75006",
+        "geo": {
+          "lat": 48.92558759895033,
+          "lng": 2.377316187183333
+        }
+      },
+      "hobbies": ["reading", "travel", "art", null]
+    },
+    "notes": "active"
+  },
+  {
+    "id": 7,
+    "uuid": "user-7",
+    "name": "User 7",
+    "active": true,
+    "metrics": {
+      "score": 64,
+      "rating": 1.72,
+      "flags": [true, true, false]
+    },
+    "profile": {
+      "age": 51,
+      "address": {
+        "city": "City 7",
+        "zip": "75007",
+        "geo": {
+          "lat": 48.82081034026553,
+          "lng": 2.401371655204456
+        }
+      },
+      "hobbies": ["gaming", "music", "art", null]
+    },
+    "notes": null
+  },
+  {
+    "id": 8,
+    "uuid": "user-8",
+    "name": "User 8",
+    "active": false,
+    "metrics": {
+      "score": 23,
+      "rating": 3.29,
+      "flags": [false, false, null]
+    },
+    "profile": {
+      "age": 59,
+      "address": {
+        "city": "City 8",
+        "zip": "75008",
+        "geo": {
+          "lat": 48.832858099917786,
+          "lng": 2.4076560233660054
+        }
+      },
+      "hobbies": ["art", "travel", "cooking", null]
+    },
+    "notes": "pending"
+  },
+  {
+    "id": 9,
+    "uuid": "user-9",
+    "name": "User 9",
+    "active": false,
+    "metrics": {
+      "score": 37,
+      "rating": 3.3,
+      "flags": [false, false, true]
+    },
+    "profile": {
+      "age": 59,
+      "address": {
+        "city": "City 9",
+        "zip": "75009",
+        "geo": {
+          "lat": 48.85749952117569,
+          "lng": 2.4101914131302338
+        }
+      },
+      "hobbies": ["cooking", "music", "art", null]
+    },
+    "notes": "inactive"
+  },
+  {
+    "id": 10,
+    "uuid": "user-10",
+    "name": "User 10",
+    "active": false,
+    "metrics": {
+      "score": 11,
+      "rating": 2.65,
+      "flags": [false, false, false]
+    },
+    "profile": {
+      "age": 70,
+      "address": {
+        "city": "City 10",
+        "zip": "75010",
+        "geo": {
+          "lat": 48.836306897164775,
+          "lng": 2.424402946014103
+        }
+      },
+      "hobbies": ["music", "reading", "travel", null]
+    },
+    "notes": "pending"
+  },
+  {
+    "id": 11,
+    "uuid": "user-11",
+    "name": "User 11",
+    "active": true,
+    "metrics": {
+      "score": 12,
+      "rating": 1.73,
+      "flags": [false, true, null]
+    },
+    "profile": {
+      "age": 53,
+      "address": {
+        "city": "City 11",
+        "zip": "75011",
+        "geo": {
+          "lat": 48.8781754512214,
+          "lng": 2.3822587107124695
+        }
+      },
+      "hobbies": ["gaming", "cooking", "art", null]
+    },
+    "notes": "pending"
+  },
+  {
+    "id": 12,
+    "uuid": "user-12",
+    "name": "User 12",
+    "active": false,
+    "metrics": {
+      "score": 23,
+      "rating": 4.08,
+      "flags": [true, null, true]
+    },
+    "profile": {
+      "age": 29,
+      "address": {
+        "city": "City 12",
+        "zip": "75012",
+        "geo": {
+          "lat": 48.991024522087876,
+          "lng": 2.3363142593701203
+        }
+      },
+      "hobbies": ["music", "gaming", "cooking", null]
+    },
+    "notes": "review"
+  },
+  {
+    "id": 13,
+    "uuid": "user-13",
+    "name": "User 13",
+    "active": false,
+    "metrics": {
+      "score": 24,
+      "rating": 1.83,
+      "flags": [null, false, false]
+    },
+    "profile": {
+      "age": 65,
+      "address": {
+        "city": "City 13",
+        "zip": "75013",
+        "geo": {
+          "lat": 48.890590704976944,
+          "lng": 2.3885932859669756
+        }
+      },
+      "hobbies": ["art", "cooking", "reading", null]
+    },
+    "notes": "inactive"
+  },
+  {
+    "id": 14,
+    "uuid": "user-14",
+    "name": "User 14",
+    "active": true,
+    "metrics": {
+      "score": 94,
+      "rating": 3.54,
+      "flags": [null, false, null]
+    },
+    "profile": {
+      "age": 69,
+      "address": {
+        "city": "City 14",
+        "zip": "75014",
+        "geo": {
+          "lat": 48.9182279164038,
+          "lng": 2.481268859337674
+        }
+      },
+      "hobbies": ["sports", "travel", "art", null]
+    },
+    "notes": "inactive"
+  },
+  {
+    "id": 15,
+    "uuid": "user-15",
+    "name": "User 15",
+    "active": true,
+    "metrics": {
+      "score": 76,
+      "rating": 1.79,
+      "flags": [true, false, false]
+    },
+    "profile": {
+      "age": 52,
+      "address": {
+        "city": "City 15",
+        "zip": "75015",
+        "geo": {
+          "lat": 48.91754912230283,
+          "lng": 2.3281191034403474
+        }
+      },
+      "hobbies": ["reading", "art", "cooking", null]
+    },
+    "notes": "active"
+  },
+  {
+    "id": 16,
+    "uuid": "user-16",
+    "name": "User 16",
+    "active": true,
+    "metrics": {
+      "score": 84,
+      "rating": 4.57,
+      "flags": [null, null, null]
+    },
+    "profile": {
+      "age": 41,
+      "address": {
+        "city": "City 16",
+        "zip": "75016",
+        "geo": {
+          "lat": 48.91898633433494,
+          "lng": 2.466028634610779
+        }
+      },
+      "hobbies": ["coding", "sports", "reading", null]
+    },
+    "notes": "review"
+  },
+  {
+    "id": 17,
+    "uuid": "user-17",
+    "name": "User 17",
+    "active": true,
+    "metrics": {
+      "score": 1,
+      "rating": 1.98,
+      "flags": [null, null, null]
+    },
+    "profile": {
+      "age": 65,
+      "address": {
+        "city": "City 17",
+        "zip": "75017",
+        "geo": {
+          "lat": 48.93756764877208,
+          "lng": 2.482005948343731
+        }
+      },
+      "hobbies": ["coding", "music", "sports", null]
+    },
+    "notes": "inactive"
+  },
+  {
+    "id": 18,
+    "uuid": "user-18",
+    "name": "User 18",
+    "active": false,
+    "metrics": {
+      "score": 25,
+      "rating": 2.36,
+      "flags": [true, false, false]
+    },
+    "profile": {
+      "age": 32,
+      "address": {
+        "city": "City 18",
+        "zip": "75018",
+        "geo": {
+          "lat": 48.84358459944943,
+          "lng": 2.4534899096627294
+        }
+      },
+      "hobbies": ["cooking", "travel", "sports", null]
+    },
+    "notes": null
+  },
+  {
+    "id": 19,
+    "uuid": "user-19",
+    "name": "User 19",
+    "active": true,
+    "metrics": {
+      "score": 25,
+      "rating": 4.67,
+      "flags": [true, true, null]
+    },
+    "profile": {
+      "age": 44,
+      "address": {
+        "city": "City 19",
+        "zip": "75019",
+        "geo": {
+          "lat": 48.96105452646891,
+          "lng": 2.3099417266240208
+        }
+      },
+      "hobbies": ["music", "sports", "travel", null]
+    },
+    "notes": "active"
+  },
+  {
+    "id": 20,
+    "uuid": "user-20",
+    "name": "User 20",
+    "active": false,
+    "metrics": {
+      "score": 65,
+      "rating": 2.31,
+      "flags": [false, true, true]
+    },
+    "profile": {
+      "age": 50,
+      "address": {
+        "city": "City 20",
+        "zip": "75020",
+        "geo": {
+          "lat": 48.908808774308206,
+          "lng": 2.313294282416157
+        }
+      },
+      "hobbies": ["coding", "art", "music", null]
+    },
+    "notes": "inactive"
+  },
+  {
+    "id": 21,
+    "uuid": "user-21",
+    "name": "User 21",
+    "active": true,
+    "metrics": {
+      "score": 35,
+      "rating": 2.49,
+      "flags": [false, false, true]
+    },
+    "profile": {
+      "age": 51,
+      "address": {
+        "city": "City 21",
+        "zip": "75021",
+        "geo": {
+          "lat": 48.850629386836644,
+          "lng": 2.3624766105561417
+        }
+      },
+      "hobbies": ["reading", "sports", "art", null]
+    },
+    "notes": "pending"
+  },
+  {
+    "id": 22,
+    "uuid": "user-22",
+    "name": "User 22",
+    "active": false,
+    "metrics": {
+      "score": 10,
+      "rating": 3.97,
+      "flags": [true, true, false]
+    },
+    "profile": {
+      "age": 32,
+      "address": {
+        "city": "City 22",
+        "zip": "75022",
+        "geo": {
+          "lat": 48.994280541264466,
+          "lng": 2.4671999395538844
+        }
+      },
+      "hobbies": ["cooking", "travel", "coding", null]
+    },
+    "notes": "active"
+  },
+  {
+    "id": 23,
+    "uuid": "user-23",
+    "name": "User 23",
+    "active": false,
+    "metrics": {
+      "score": 72,
+      "rating": 3.4,
+      "flags": [true, null, null]
+    },
+    "profile": {
+      "age": 66,
+      "address": {
+        "city": "City 23",
+        "zip": "75023",
+        "geo": {
+          "lat": 48.86204229103748,
+          "lng": 2.462913159577365
+        }
+      },
+      "hobbies": ["cooking", "sports", "art", null]
+    },
+    "notes": "active"
+  },
+  {
+    "id": 24,
+    "uuid": "user-24",
+    "name": "User 24",
+    "active": false,
+    "metrics": {
+      "score": 40,
+      "rating": 2.88,
+      "flags": [false, false, null]
+    },
+    "profile": {
+      "age": 61,
+      "address": {
+        "city": "City 24",
+        "zip": "75024",
+        "geo": {
+          "lat": 48.87528038002888,
+          "lng": 2.448513696068143
+        }
+      },
+      "hobbies": ["reading", "sports", "art", null]
+    },
+    "notes": "review"
+  },
+  {
+    "id": 25,
+    "uuid": "user-25",
+    "name": "User 25",
+    "active": false,
+    "metrics": {
+      "score": 50,
+      "rating": 4.23,
+      "flags": [true, false, false]
+    },
+    "profile": {
+      "age": 58,
+      "address": {
+        "city": "City 25",
+        "zip": "75025",
+        "geo": {
+          "lat": 48.9221066131591,
+          "lng": 2.3241766364891743
+        }
+      },
+      "hobbies": ["gaming", "music", "art", null]
+    },
+    "notes": null
+  },
+  {
+    "id": 26,
+    "uuid": "user-26",
+    "name": "User 26",
+    "active": false,
+    "metrics": {
+      "score": 5,
+      "rating": 4.18,
+      "flags": [null, true, false]
+    },
+    "profile": {
+      "age": 45,
+      "address": {
+        "city": "City 26",
+        "zip": "75026",
+        "geo": {
+          "lat": 48.90592375133158,
+          "lng": 2.490550052899669
+        }
+      },
+      "hobbies": ["gaming", "travel", "art", null]
+    },
+    "notes": "inactive"
+  },
+  {
+    "id": 27,
+    "uuid": "user-27",
+    "name": "User 27",
+    "active": false,
+    "metrics": {
+      "score": 56,
+      "rating": 4.3,
+      "flags": [true, null, null]
+    },
+    "profile": {
+      "age": 63,
+      "address": {
+        "city": "City 27",
+        "zip": "75027",
+        "geo": {
+          "lat": 48.8770678710993,
+          "lng": 2.4166777879081187
+        }
+      },
+      "hobbies": ["travel", "music", "coding", null]
+    },
+    "notes": "active"
+  },
+  {
+    "id": 28,
+    "uuid": "user-28",
+    "name": "User 28",
+    "active": true,
+    "metrics": {
+      "score": 14,
+      "rating": 4.23,
+      "flags": [null, true, false]
+    },
+    "profile": {
+      "age": 28,
+      "address": {
+        "city": "City 28",
+        "zip": "75028",
+        "geo": {
+          "lat": 48.93194623264114,
+          "lng": 2.4625858716312026
+        }
+      },
+      "hobbies": ["reading", "gaming", "sports", null]
+    },
+    "notes": "active"
+  },
+  {
+    "id": 29,
+    "uuid": "user-29",
+    "name": "User 29",
+    "active": true,
+    "metrics": {
+      "score": 81,
+      "rating": 1.29,
+      "flags": [true, false, null]
+    },
+    "profile": {
+      "age": 55,
+      "address": {
+        "city": "City 29",
+        "zip": "75029",
+        "geo": {
+          "lat": 48.95016508574252,
+          "lng": 2.4236285780993274
+        }
+      },
+      "hobbies": ["reading", "coding", "music", null]
+    },
+    "notes": "review"
+  },
+  {
+    "id": 30,
+    "uuid": "user-30",
+    "name": "User 30",
+    "active": false,
+    "metrics": {
+      "score": 56,
+      "rating": 1.27,
+      "flags": [false, false, true]
+    },
+    "profile": {
+      "age": 29,
+      "address": {
+        "city": "City 30",
+        "zip": "75030",
+        "geo": {
+          "lat": 48.81116095173668,
+          "lng": 2.3846961943311897
+        }
+      },
+      "hobbies": ["music", "reading", "art", null]
+    },
+    "notes": "pending"
+  },
+  {
+    "id": 31,
+    "uuid": "user-31",
+    "name": "User 31",
+    "active": false,
+    "metrics": {
+      "score": 48,
+      "rating": 1.24,
+      "flags": [true, true, true]
+    },
+    "profile": {
+      "age": 30,
+      "address": {
+        "city": "City 31",
+        "zip": "75031",
+        "geo": {
+          "lat": 48.975827795104635,
+          "lng": 2.4702491215558666
+        }
+      },
+      "hobbies": ["travel", "cooking", "sports", null]
+    },
+    "notes": null
+  },
+  {
+    "id": 32,
+    "uuid": "user-32",
+    "name": "User 32",
+    "active": false,
+    "metrics": {
+      "score": 53,
+      "rating": 1.07,
+      "flags": [true, true, null]
+    },
+    "profile": {
+      "age": 62,
+      "address": {
+        "city": "City 32",
+        "zip": "75032",
+        "geo": {
+          "lat": 48.86403771848997,
+          "lng": 2.483828061868078
+        }
+      },
+      "hobbies": ["reading", "travel", "cooking", null]
+    },
+    "notes": "inactive"
+  },
+  {
+    "id": 33,
+    "uuid": "user-33",
+    "name": "User 33",
+    "active": true,
+    "metrics": {
+      "score": 46,
+      "rating": 2.89,
+      "flags": [null, true, null]
+    },
+    "profile": {
+      "age": 44,
+      "address": {
+        "city": "City 33",
+        "zip": "75033",
+        "geo": {
+          "lat": 48.953253830944746,
+          "lng": 2.3711946532515706
+        }
+      },
+      "hobbies": ["music", "art", "sports", null]
+    },
+    "notes": "active"
+  },
+  {
+    "id": 34,
+    "uuid": "user-34",
+    "name": "User 34",
+    "active": false,
+    "metrics": {
+      "score": 17,
+      "rating": 1.17,
+      "flags": [false, true, false]
+    },
+    "profile": {
+      "age": 29,
+      "address": {
+        "city": "City 34",
+        "zip": "75034",
+        "geo": {
+          "lat": 48.81880582372987,
+          "lng": 2.328990551564046
+        }
+      },
+      "hobbies": ["coding", "sports", "cooking", null]
+    },
+    "notes": "review"
+  },
+  {
+    "id": 35,
+    "uuid": "user-35",
+    "name": "User 35",
+    "active": false,
+    "metrics": {
+      "score": 40,
+      "rating": 2.73,
+      "flags": [null, true, false]
+    },
+    "profile": {
+      "age": 23,
+      "address": {
+        "city": "City 35",
+        "zip": "75035",
+        "geo": {
+          "lat": 48.988379843269016,
+          "lng": 2.311728721765012
+        }
+      },
+      "hobbies": ["gaming", "music", "coding", null]
+    },
+    "notes": "inactive"
+  },
+  {
+    "id": 36,
+    "uuid": "user-36",
+    "name": "User 36",
+    "active": false,
+    "metrics": {
+      "score": 43,
+      "rating": 2.48,
+      "flags": [null, null, true]
+    },
+    "profile": {
+      "age": 67,
+      "address": {
+        "city": "City 36",
+        "zip": "75036",
+        "geo": {
+          "lat": 48.93908988706576,
+          "lng": 2.4769347732346123
+        }
+      },
+      "hobbies": ["sports", "cooking", "gaming", null]
+    },
+    "notes": null
+  },
+  {
+    "id": 37,
+    "uuid": "user-37",
+    "name": "User 37",
+    "active": false,
+    "metrics": {
+      "score": 64,
+      "rating": 2.95,
+      "flags": [true, null, false]
+    },
+    "profile": {
+      "age": 58,
+      "address": {
+        "city": "City 37",
+        "zip": "75037",
+        "geo": {
+          "lat": 48.821551621434544,
+          "lng": 2.38507253322567
+        }
+      },
+      "hobbies": ["music", "art", "coding", null]
+    },
+    "notes": null
+  },
+  {
+    "id": 38,
+    "uuid": "user-38",
+    "name": "User 38",
+    "active": false,
+    "metrics": {
+      "score": 92,
+      "rating": 4.13,
+      "flags": [true, false, false]
+    },
+    "profile": {
+      "age": 32,
+      "address": {
+        "city": "City 38",
+        "zip": "75038",
+        "geo": {
+          "lat": 48.958879266436924,
+          "lng": 2.474002011963699
+        }
+      },
+      "hobbies": ["gaming", "reading", "sports", null]
+    },
+    "notes": null
+  },
+  {
+    "id": 39,
+    "uuid": "user-39",
+    "name": "User 39",
+    "active": false,
+    "metrics": {
+      "score": 43,
+      "rating": 2.47,
+      "flags": [true, false, false]
+    },
+    "profile": {
+      "age": 30,
+      "address": {
+        "city": "City 39",
+        "zip": "75039",
+        "geo": {
+          "lat": 48.89117725813649,
+          "lng": 2.4724567024904993
+        }
+      },
+      "hobbies": ["travel", "sports", "coding", null]
+    },
+    "notes": "pending"
+  },
+  {
+    "id": 40,
+    "uuid": "user-40",
+    "name": "User 40",
+    "active": false,
+    "metrics": {
+      "score": 80,
+      "rating": 3.68,
+      "flags": [null, null, true]
+    },
+    "profile": {
+      "age": 51,
+      "address": {
+        "city": "City 40",
+        "zip": "75040",
+        "geo": {
+          "lat": 48.832829579003885,
+          "lng": 2.362298599940754
+        }
+      },
+      "hobbies": ["gaming", "cooking", "coding", null]
+    },
+    "notes": "inactive"
+  },
+  {
+    "id": 41,
+    "uuid": "user-41",
+    "name": "User 41",
+    "active": false,
+    "metrics": {
+      "score": 54,
+      "rating": 2.87,
+      "flags": [true, false, null]
+    },
+    "profile": {
+      "age": 36,
+      "address": {
+        "city": "City 41",
+        "zip": "75041",
+        "geo": {
+          "lat": 48.80979977948709,
+          "lng": 2.419070769663291
+        }
+      },
+      "hobbies": ["sports", "music", "art", null]
+    },
+    "notes": "inactive"
+  },
+  {
+    "id": 42,
+    "uuid": "user-42",
+    "name": "User 42",
+    "active": true,
+    "metrics": {
+      "score": 12,
+      "rating": 3.7,
+      "flags": [true, true, true]
+    },
+    "profile": {
+      "age": 21,
+      "address": {
+        "city": "City 42",
+        "zip": "75042",
+        "geo": {
+          "lat": 48.926546719712285,
+          "lng": 2.3372880636453517
+        }
+      },
+      "hobbies": ["travel", "gaming", "coding", null]
+    },
+    "notes": "pending"
+  },
+  {
+    "id": 43,
+    "uuid": "user-43",
+    "name": "User 43",
+    "active": false,
+    "metrics": {
+      "score": 78,
+      "rating": 1.35,
+      "flags": [true, null, true]
+    },
+    "profile": {
+      "age": 24,
+      "address": {
+        "city": "City 43",
+        "zip": "75043",
+        "geo": {
+          "lat": 48.851077587488376,
+          "lng": 2.404973838577174
+        }
+      },
+      "hobbies": ["art", "cooking", "music", null]
+    },
+    "notes": null
+  },
+  {
+    "id": 44,
+    "uuid": "user-44",
+    "name": "User 44",
+    "active": true,
+    "metrics": {
+      "score": 67,
+      "rating": 2.3,
+      "flags": [false, true, true]
+    },
+    "profile": {
+      "age": 21,
+      "address": {
+        "city": "City 44",
+        "zip": "75044",
+        "geo": {
+          "lat": 48.825278995691185,
+          "lng": 2.359471899521797
+        }
+      },
+      "hobbies": ["travel", "cooking", "reading", null]
+    },
+    "notes": "active"
+  },
+  {
+    "id": 45,
+    "uuid": "user-45",
+    "name": "User 45",
+    "active": true,
+    "metrics": {
+      "score": 75,
+      "rating": 4.16,
+      "flags": [false, true, true]
+    },
+    "profile": {
+      "age": 63,
+      "address": {
+        "city": "City 45",
+        "zip": "75045",
+        "geo": {
+          "lat": 48.82512567219646,
+          "lng": 2.40933165628213
+        }
+      },
+      "hobbies": ["music", "sports", "art", null]
+    },
+    "notes": "pending"
+  },
+  {
+    "id": 46,
+    "uuid": "user-46",
+    "name": "User 46",
+    "active": false,
+    "metrics": {
+      "score": 60,
+      "rating": 2.26,
+      "flags": [true, false, true]
+    },
+    "profile": {
+      "age": 53,
+      "address": {
+        "city": "City 46",
+        "zip": "75046",
+        "geo": {
+          "lat": 48.985383416571715,
+          "lng": 2.327744108794686
+        }
+      },
+      "hobbies": ["reading", "travel", "sports", null]
+    },
+    "notes": "review"
+  },
+  {
+    "id": 47,
+    "uuid": "user-47",
+    "name": "User 47",
+    "active": true,
+    "metrics": {
+      "score": 75,
+      "rating": 1.83,
+      "flags": [null, null, null]
+    },
+    "profile": {
+      "age": 62,
+      "address": {
+        "city": "City 47",
+        "zip": "75047",
+        "geo": {
+          "lat": 48.94193772837965,
+          "lng": 2.446265451669933
+        }
+      },
+      "hobbies": ["coding", "travel", "reading", null]
+    },
+    "notes": "inactive"
+  },
+  {
+    "id": 48,
+    "uuid": "user-48",
+    "name": "User 48",
+    "active": false,
+    "metrics": {
+      "score": 52,
+      "rating": 3.57,
+      "flags": [true, true, true]
+    },
+    "profile": {
+      "age": 30,
+      "address": {
+        "city": "City 48",
+        "zip": "75048",
+        "geo": {
+          "lat": 48.944459624193456,
+          "lng": 2.406757116233543
+        }
+      },
+      "hobbies": ["gaming", "music", "sports", null]
+    },
+    "notes": "pending"
+  },
+  {
+    "id": 49,
+    "uuid": "user-49",
+    "name": "User 49",
+    "active": true,
+    "metrics": {
+      "score": 71,
+      "rating": 4.5,
+      "flags": [null, false, null]
+    },
+    "profile": {
+      "age": 28,
+      "address": {
+        "city": "City 49",
+        "zip": "75049",
+        "geo": {
+          "lat": 48.98526940570677,
+          "lng": 2.3182841275109696
+        }
+      },
+      "hobbies": ["coding", "cooking", "sports", null]
+    },
+    "notes": "pending"
+  },
+  {
+    "id": 50,
+    "uuid": "user-50",
+    "name": "User 50",
+    "active": true,
+    "metrics": {
+      "score": 87,
+      "rating": 3.04,
+      "flags": [false, true, null]
+    },
+    "profile": {
+      "age": 64,
+      "address": {
+        "city": "City 0",
+        "zip": "75050",
+        "geo": {
+          "lat": 48.942171403828475,
+          "lng": 2.4071544134289216
+        }
+      },
+      "hobbies": ["sports", "travel", "cooking", null]
+    },
+    "notes": "pending"
+  },
+  {
+    "id": 51,
+    "uuid": "user-51",
+    "name": "User 51",
+    "active": false,
+    "metrics": {
+      "score": 21,
+      "rating": 4.51,
+      "flags": [false, false, false]
+    },
+    "profile": {
+      "age": 25,
+      "address": {
+        "city": "City 1",
+        "zip": "75051",
+        "geo": {
+          "lat": 48.85182160799466,
+          "lng": 2.4576344899332865
+        }
+      },
+      "hobbies": ["reading", "coding", "art", null]
+    },
+    "notes": "active"
+  },
+  {
+    "id": 52,
+    "uuid": "user-52",
+    "name": "User 52",
+    "active": false,
+    "metrics": {
+      "score": 59,
+      "rating": 1.36,
+      "flags": [null, true, false]
+    },
+    "profile": {
+      "age": 40,
+      "address": {
+        "city": "City 2",
+        "zip": "75052",
+        "geo": {
+          "lat": 48.968612676881556,
+          "lng": 2.3216360123670015
+        }
+      },
+      "hobbies": ["travel", "music", "art", null]
+    },
+    "notes": "pending"
+  },
+  {
+    "id": 53,
+    "uuid": "user-53",
+    "name": "User 53",
+    "active": false,
+    "metrics": {
+      "score": 27,
+      "rating": 3.88,
+      "flags": [true, null, true]
+    },
+    "profile": {
+      "age": 34,
+      "address": {
+        "city": "City 3",
+        "zip": "75053",
+        "geo": {
+          "lat": 48.883186496201155,
+          "lng": 2.495781496494734
+        }
+      },
+      "hobbies": ["reading", "cooking", "coding", null]
+    },
+    "notes": "review"
+  },
+  {
+    "id": 54,
+    "uuid": "user-54",
+    "name": "User 54",
+    "active": true,
+    "metrics": {
+      "score": 72,
+      "rating": 4.13,
+      "flags": [true, null, true]
+    },
+    "profile": {
+      "age": 66,
+      "address": {
+        "city": "City 4",
+        "zip": "75054",
+        "geo": {
+          "lat": 48.822168673213724,
+          "lng": 2.398736128856196
+        }
+      },
+      "hobbies": ["coding", "art", "music", null]
+    },
+    "notes": "review"
+  },
+  {
+    "id": 55,
+    "uuid": "user-55",
+    "name": "User 55",
+    "active": false,
+    "metrics": {
+      "score": 46,
+      "rating": 3.87,
+      "flags": [false, true, false]
+    },
+    "profile": {
+      "age": 44,
+      "address": {
+        "city": "City 5",
+        "zip": "75055",
+        "geo": {
+          "lat": 48.94591509975173,
+          "lng": 2.4259475573867015
+        }
+      },
+      "hobbies": ["coding", "sports", "cooking", null]
+    },
+    "notes": "review"
+  },
+  {
+    "id": 56,
+    "uuid": "user-56",
+    "name": "User 56",
+    "active": false,
+    "metrics": {
+      "score": 86,
+      "rating": 2.46,
+      "flags": [true, false, false]
+    },
+    "profile": {
+      "age": 62,
+      "address": {
+        "city": "City 6",
+        "zip": "75056",
+        "geo": {
+          "lat": 48.95117266350602,
+          "lng": 2.480024857166977
+        }
+      },
+      "hobbies": ["reading", "gaming", "coding", null]
+    },
+    "notes": "pending"
+  },
+  {
+    "id": 57,
+    "uuid": "user-57",
+    "name": "User 57",
+    "active": true,
+    "metrics": {
+      "score": 1,
+      "rating": 3.0,
+      "flags": [null, true, false]
+    },
+    "profile": {
+      "age": 35,
+      "address": {
+        "city": "City 7",
+        "zip": "75057",
+        "geo": {
+          "lat": 48.90636436613287,
+          "lng": 2.346675808757136
+        }
+      },
+      "hobbies": ["reading", "cooking", "gaming", null]
+    },
+    "notes": "inactive"
+  },
+  {
+    "id": 58,
+    "uuid": "user-58",
+    "name": "User 58",
+    "active": false,
+    "metrics": {
+      "score": 6,
+      "rating": 3.97,
+      "flags": [null, null, true]
+    },
+    "profile": {
+      "age": 64,
+      "address": {
+        "city": "City 8",
+        "zip": "75058",
+        "geo": {
+          "lat": 48.881302037497704,
+          "lng": 2.320475377957451
+        }
+      },
+      "hobbies": ["travel", "reading", "art", null]
+    },
+    "notes": "review"
+  },
+  {
+    "id": 59,
+    "uuid": "user-59",
+    "name": "User 59",
+    "active": false,
+    "metrics": {
+      "score": 46,
+      "rating": 1.16,
+      "flags": [false, null, false]
+    },
+    "profile": {
+      "age": 50,
+      "address": {
+        "city": "City 9",
+        "zip": "75059",
+        "geo": {
+          "lat": 48.917942557857025,
+          "lng": 2.437977214605694
+        }
+      },
+      "hobbies": ["gaming", "sports", "cooking", null]
+    },
+    "notes": "inactive"
+  },
+  {
+    "id": 60,
+    "uuid": "user-60",
+    "name": "User 60",
+    "active": true,
+    "metrics": {
+      "score": 22,
+      "rating": 2.19,
+      "flags": [null, true, false]
+    },
+    "profile": {
+      "age": 40,
+      "address": {
+        "city": "City 10",
+        "zip": "75060",
+        "geo": {
+          "lat": 48.85755804746319,
+          "lng": 2.3362593202978785
+        }
+      },
+      "hobbies": ["travel", "music", "coding", null]
+    },
+    "notes": "inactive"
+  },
+  {
+    "id": 61,
+    "uuid": "user-61",
+    "name": "User 61",
+    "active": false,
+    "metrics": {
+      "score": 74,
+      "rating": 4.79,
+      "flags": [true, null, false]
+    },
+    "profile": {
+      "age": 68,
+      "address": {
+        "city": "City 11",
+        "zip": "75061",
+        "geo": {
+          "lat": 48.8480435700918,
+          "lng": 2.4373014239213338
+        }
+      },
+      "hobbies": ["sports", "music", "cooking", null]
+    },
+    "notes": "pending"
+  },
+  {
+    "id": 62,
+    "uuid": "user-62",
+    "name": "User 62",
+    "active": false,
+    "metrics": {
+      "score": 32,
+      "rating": 2.86,
+      "flags": [false, true, true]
+    },
+    "profile": {
+      "age": 28,
+      "address": {
+        "city": "City 12",
+        "zip": "75062",
+        "geo": {
+          "lat": 48.8230096007683,
+          "lng": 2.4930821303868393
+        }
+      },
+      "hobbies": ["music", "travel", "sports", null]
+    },
+    "notes": "inactive"
+  },
+  {
+    "id": 63,
+    "uuid": "user-63",
+    "name": "User 63",
+    "active": true,
+    "metrics": {
+      "score": 92,
+      "rating": 1.13,
+      "flags": [null, true, true]
+    },
+    "profile": {
+      "age": 46,
+      "address": {
+        "city": "City 13",
+        "zip": "75063",
+        "geo": {
+          "lat": 48.88265212574334,
+          "lng": 2.487549114532976
+        }
+      },
+      "hobbies": ["travel", "cooking", "art", null]
+    },
+    "notes": null
+  },
+  {
+    "id": 64,
+    "uuid": "user-64",
+    "name": "User 64",
+    "active": false,
+    "metrics": {
+      "score": 10,
+      "rating": 1.79,
+      "flags": [false, null, false]
+    },
+    "profile": {
+      "age": 66,
+      "address": {
+        "city": "City 14",
+        "zip": "75064",
+        "geo": {
+          "lat": 48.96432157749725,
+          "lng": 2.413279007932977
+        }
+      },
+      "hobbies": ["reading", "coding", "travel", null]
+    },
+    "notes": "active"
+  },
+  {
+    "id": 65,
+    "uuid": "user-65",
+    "name": "User 65",
+    "active": true,
+    "metrics": {
+      "score": 84,
+      "rating": 3.85,
+      "flags": [null, false, true]
+    },
+    "profile": {
+      "age": 59,
+      "address": {
+        "city": "City 15",
+        "zip": "75065",
+        "geo": {
+          "lat": 48.86495462601941,
+          "lng": 2.4169101827457307
+        }
+      },
+      "hobbies": ["sports", "travel", "coding", null]
+    },
+    "notes": null
+  },
+  {
+    "id": 66,
+    "uuid": "user-66",
+    "name": "User 66",
+    "active": true,
+    "metrics": {
+      "score": 80,
+      "rating": 2.97,
+      "flags": [false, true, null]
+    },
+    "profile": {
+      "age": 52,
+      "address": {
+        "city": "City 16",
+        "zip": "75066",
+        "geo": {
+          "lat": 48.97245808791042,
+          "lng": 2.390915203208926
+        }
+      },
+      "hobbies": ["travel", "reading", "music", null]
+    },
+    "notes": "pending"
+  },
+  {
+    "id": 67,
+    "uuid": "user-67",
+    "name": "User 67",
+    "active": false,
+    "metrics": {
+      "score": 79,
+      "rating": 3.52,
+      "flags": [null, false, null]
+    },
+    "profile": {
+      "age": 36,
+      "address": {
+        "city": "City 17",
+        "zip": "75067",
+        "geo": {
+          "lat": 48.81912282381776,
+          "lng": 2.3897838962129656
+        }
+      },
+      "hobbies": ["travel", "sports", "gaming", null]
+    },
+    "notes": null
+  },
+  {
+    "id": 68,
+    "uuid": "user-68",
+    "name": "User 68",
+    "active": false,
+    "metrics": {
+      "score": 23,
+      "rating": 3.46,
+      "flags": [false, null, null]
+    },
+    "profile": {
+      "age": 58,
+      "address": {
+        "city": "City 18",
+        "zip": "75068",
+        "geo": {
+          "lat": 48.936348477764476,
+          "lng": 2.4783982247827208
+        }
+      },
+      "hobbies": ["sports", "travel", "music", null]
+    },
+    "notes": "review"
+  },
+  {
+    "id": 69,
+    "uuid": "user-69",
+    "name": "User 69",
+    "active": true,
+    "metrics": {
+      "score": 95,
+      "rating": 3.74,
+      "flags": [true, null, true]
+    },
+    "profile": {
+      "age": 34,
+      "address": {
+        "city": "City 19",
+        "zip": "75069",
+        "geo": {
+          "lat": 48.845893425354475,
+          "lng": 2.4346655199629015
+        }
+      },
+      "hobbies": ["reading", "sports", "gaming", null]
+    },
+    "notes": "active"
+  },
+  {
+    "id": 70,
+    "uuid": "user-70",
+    "name": "User 70",
+    "active": true,
+    "metrics": {
+      "score": 50,
+      "rating": 1.85,
+      "flags": [false, null, false]
+    },
+    "profile": {
+      "age": 45,
+      "address": {
+        "city": "City 20",
+        "zip": "75070",
+        "geo": {
+          "lat": 48.82472501682769,
+          "lng": 2.3231070714380544
+        }
+      },
+      "hobbies": ["travel", "reading", "art", null]
+    },
+    "notes": "pending"
+  },
+  {
+    "id": 71,
+    "uuid": "user-71",
+    "name": "User 71",
+    "active": false,
+    "metrics": {
+      "score": 59,
+      "rating": 2.54,
+      "flags": [true, null, false]
+    },
+    "profile": {
+      "age": 52,
+      "address": {
+        "city": "City 21",
+        "zip": "75071",
+        "geo": {
+          "lat": 48.87680073935388,
+          "lng": 2.3176611906070246
+        }
+      },
+      "hobbies": ["sports", "music", "reading", null]
+    },
+    "notes": "active"
+  },
+  {
+    "id": 72,
+    "uuid": "user-72",
+    "name": "User 72",
+    "active": false,
+    "metrics": {
+      "score": 76,
+      "rating": 4.24,
+      "flags": [true, null, true]
+    },
+    "profile": {
+      "age": 36,
+      "address": {
+        "city": "City 22",
+        "zip": "75072",
+        "geo": {
+          "lat": 48.80581541690647,
+          "lng": 2.359955629730896
+        }
+      },
+      "hobbies": ["reading", "gaming", "art", null]
+    },
+    "notes": "pending"
+  },
+  {
+    "id": 73,
+    "uuid": "user-73",
+    "name": "User 73",
+    "active": false,
+    "metrics": {
+      "score": 25,
+      "rating": 1.99,
+      "flags": [false, true, false]
+    },
+    "profile": {
+      "age": 54,
+      "address": {
+        "city": "City 23",
+        "zip": "75073",
+        "geo": {
+          "lat": 48.83246338252754,
+          "lng": 2.4389148282302897
+        }
+      },
+      "hobbies": ["music", "sports", "travel", null]
+    },
+    "notes": null
+  },
+  {
+    "id": 74,
+    "uuid": "user-74",
+    "name": "User 74",
+    "active": false,
+    "metrics": {
+      "score": 87,
+      "rating": 1.51,
+      "flags": [true, null, null]
+    },
+    "profile": {
+      "age": 51,
+      "address": {
+        "city": "City 24",
+        "zip": "75074",
+        "geo": {
+          "lat": 48.86433446997867,
+          "lng": 2.334977679344258
+        }
+      },
+      "hobbies": ["gaming", "cooking", "music", null]
+    },
+    "notes": "pending"
+  },
+  {
+    "id": 75,
+    "uuid": "user-75",
+    "name": "User 75",
+    "active": false,
+    "metrics": {
+      "score": 84,
+      "rating": 4.45,
+      "flags": [null, false, true]
+    },
+    "profile": {
+      "age": 20,
+      "address": {
+        "city": "City 25",
+        "zip": "75075",
+        "geo": {
+          "lat": 48.949765246293836,
+          "lng": 2.401946535901056
+        }
+      },
+      "hobbies": ["sports", "travel", "coding", null]
+    },
+    "notes": "active"
+  },
+  {
+    "id": 76,
+    "uuid": "user-76",
+    "name": "User 76",
+    "active": false,
+    "metrics": {
+      "score": 49,
+      "rating": 4.22,
+      "flags": [null, null, null]
+    },
+    "profile": {
+      "age": 28,
+      "address": {
+        "city": "City 26",
+        "zip": "75076",
+        "geo": {
+          "lat": 48.92481675541186,
+          "lng": 2.428859317973778
+        }
+      },
+      "hobbies": ["reading", "coding", "travel", null]
+    },
+    "notes": "review"
+  },
+  {
+    "id": 77,
+    "uuid": "user-77",
+    "name": "User 77",
+    "active": false,
+    "metrics": {
+      "score": 71,
+      "rating": 3.91,
+      "flags": [null, false, false]
+    },
+    "profile": {
+      "age": 66,
+      "address": {
+        "city": "City 27",
+        "zip": "75077",
+        "geo": {
+          "lat": 48.96568833024589,
+          "lng": 2.4171735784634545
+        }
+      },
+      "hobbies": ["art", "reading", "travel", null]
+    },
+    "notes": "inactive"
+  },
+  {
+    "id": 78,
+    "uuid": "user-78",
+    "name": "User 78",
+    "active": false,
+    "metrics": {
+      "score": 31,
+      "rating": 2.61,
+      "flags": [null, true, false]
+    },
+    "profile": {
+      "age": 42,
+      "address": {
+        "city": "City 28",
+        "zip": "75078",
+        "geo": {
+          "lat": 48.966700200479245,
+          "lng": 2.4528370308071925
+        }
+      },
+      "hobbies": ["travel", "gaming", "reading", null]
+    },
+    "notes": "review"
+  },
+  {
+    "id": 79,
+    "uuid": "user-79",
+    "name": "User 79",
+    "active": false,
+    "metrics": {
+      "score": 13,
+      "rating": 1.17,
+      "flags": [false, true, true]
+    },
+    "profile": {
+      "age": 49,
+      "address": {
+        "city": "City 29",
+        "zip": "75079",
+        "geo": {
+          "lat": 48.876347959671044,
+          "lng": 2.48739949715073
+        }
+      },
+      "hobbies": ["reading", "music", "sports", null]
+    },
+    "notes": "active"
+  },
+  {
+    "id": 80,
+    "uuid": "user-80",
+    "name": "User 80",
+    "active": true,
+    "metrics": {
+      "score": 45,
+      "rating": 4.66,
+      "flags": [false, null, false]
+    },
+    "profile": {
+      "age": 39,
+      "address": {
+        "city": "City 30",
+        "zip": "75080",
+        "geo": {
+          "lat": 48.84993213169901,
+          "lng": 2.3704470858776325
+        }
+      },
+      "hobbies": ["music", "sports", "art", null]
+    },
+    "notes": "inactive"
+  },
+  {
+    "id": 81,
+    "uuid": "user-81",
+    "name": "User 81",
+    "active": true,
+    "metrics": {
+      "score": 16,
+      "rating": 2.1,
+      "flags": [null, null, false]
+    },
+    "profile": {
+      "age": 65,
+      "address": {
+        "city": "City 31",
+        "zip": "75081",
+        "geo": {
+          "lat": 48.96503267650348,
+          "lng": 2.4652892162454716
+        }
+      },
+      "hobbies": ["sports", "coding", "cooking", null]
+    },
+    "notes": null
+  },
+  {
+    "id": 82,
+    "uuid": "user-82",
+    "name": "User 82",
+    "active": false,
+    "metrics": {
+      "score": 24,
+      "rating": 1.05,
+      "flags": [true, true, true]
+    },
+    "profile": {
+      "age": 31,
+      "address": {
+        "city": "City 32",
+        "zip": "75082",
+        "geo": {
+          "lat": 48.9167933364223,
+          "lng": 2.4227967511205937
+        }
+      },
+      "hobbies": ["coding", "reading", "art", null]
+    },
+    "notes": "inactive"
+  },
+  {
+    "id": 83,
+    "uuid": "user-83",
+    "name": "User 83",
+    "active": false,
+    "metrics": {
+      "score": 55,
+      "rating": 2.88,
+      "flags": [true, null, false]
+    },
+    "profile": {
+      "age": 22,
+      "address": {
+        "city": "City 33",
+        "zip": "75083",
+        "geo": {
+          "lat": 48.901424570499074,
+          "lng": 2.4710486453788003
+        }
+      },
+      "hobbies": ["music", "reading", "cooking", null]
+    },
+    "notes": "inactive"
+  },
+  {
+    "id": 84,
+    "uuid": "user-84",
+    "name": "User 84",
+    "active": true,
+    "metrics": {
+      "score": 100,
+      "rating": 1.8,
+      "flags": [true, false, true]
+    },
+    "profile": {
+      "age": 20,
+      "address": {
+        "city": "City 34",
+        "zip": "75084",
+        "geo": {
+          "lat": 48.84383757496504,
+          "lng": 2.474460323439274
+        }
+      },
+      "hobbies": ["cooking", "coding", "music", null]
+    },
+    "notes": "pending"
+  },
+  {
+    "id": 85,
+    "uuid": "user-85",
+    "name": "User 85",
+    "active": true,
+    "metrics": {
+      "score": 75,
+      "rating": 4.36,
+      "flags": [true, null, false]
+    },
+    "profile": {
+      "age": 42,
+      "address": {
+        "city": "City 35",
+        "zip": "75085",
+        "geo": {
+          "lat": 48.80738041564275,
+          "lng": 2.4532444177769785
+        }
+      },
+      "hobbies": ["cooking", "art", "reading", null]
+    },
+    "notes": "review"
+  },
+  {
+    "id": 86,
+    "uuid": "user-86",
+    "name": "User 86",
+    "active": false,
+    "metrics": {
+      "score": 60,
+      "rating": 1.16,
+      "flags": [null, true, false]
+    },
+    "profile": {
+      "age": 59,
+      "address": {
+        "city": "City 36",
+        "zip": "75086",
+        "geo": {
+          "lat": 48.975303790133864,
+          "lng": 2.30043919641854
+        }
+      },
+      "hobbies": ["music", "reading", "art", null]
+    },
+    "notes": "inactive"
+  },
+  {
+    "id": 87,
+    "uuid": "user-87",
+    "name": "User 87",
+    "active": true,
+    "metrics": {
+      "score": 7,
+      "rating": 2.7,
+      "flags": [true, true, null]
+    },
+    "profile": {
+      "age": 67,
+      "address": {
+        "city": "City 37",
+        "zip": "75087",
+        "geo": {
+          "lat": 48.818518807274785,
+          "lng": 2.3836491024304265
+        }
+      },
+      "hobbies": ["cooking", "music", "gaming", null]
+    },
+    "notes": "active"
+  },
+  {
+    "id": 88,
+    "uuid": "user-88",
+    "name": "User 88",
+    "active": true,
+    "metrics": {
+      "score": 15,
+      "rating": 4.38,
+      "flags": [false, true, true]
+    },
+    "profile": {
+      "age": 25,
+      "address": {
+        "city": "City 38",
+        "zip": "75088",
+        "geo": {
+          "lat": 48.812281610506105,
+          "lng": 2.4519725206561835
+        }
+      },
+      "hobbies": ["coding", "travel", "gaming", null]
+    },
+    "notes": "pending"
+  },
+  {
+    "id": 89,
+    "uuid": "user-89",
+    "name": "User 89",
+    "active": false,
+    "metrics": {
+      "score": 88,
+      "rating": 3.7,
+      "flags": [true, true, false]
+    },
+    "profile": {
+      "age": 33,
+      "address": {
+        "city": "City 39",
+        "zip": "75089",
+        "geo": {
+          "lat": 48.99733530985268,
+          "lng": 2.38679487595718
+        }
+      },
+      "hobbies": ["travel", "coding", "sports", null]
+    },
+    "notes": "active"
+  },
+  {
+    "id": 90,
+    "uuid": "user-90",
+    "name": "User 90",
+    "active": true,
+    "metrics": {
+      "score": 87,
+      "rating": 4.77,
+      "flags": [null, false, null]
+    },
+    "profile": {
+      "age": 26,
+      "address": {
+        "city": "City 40",
+        "zip": "75090",
+        "geo": {
+          "lat": 48.97268957352571,
+          "lng": 2.4086698531581194
+        }
+      },
+      "hobbies": ["art", "reading", "music", null]
+    },
+    "notes": null
+  },
+  {
+    "id": 91,
+    "uuid": "user-91",
+    "name": "User 91",
+    "active": true,
+    "metrics": {
+      "score": 88,
+      "rating": 3.0,
+      "flags": [true, false, true]
+    },
+    "profile": {
+      "age": 43,
+      "address": {
+        "city": "City 41",
+        "zip": "75091",
+        "geo": {
+          "lat": 48.96370401725668,
+          "lng": 2.332514454890378
+        }
+      },
+      "hobbies": ["travel", "art", "gaming", null]
+    },
+    "notes": null
+  },
+  {
+    "id": 92,
+    "uuid": "user-92",
+    "name": "User 92",
+    "active": false,
+    "metrics": {
+      "score": 7,
+      "rating": 3.78,
+      "flags": [true, null, null]
+    },
+    "profile": {
+      "age": 35,
+      "address": {
+        "city": "City 42",
+        "zip": "75092",
+        "geo": {
+          "lat": 48.80442927900717,
+          "lng": 2.3326250967576496
+        }
+      },
+      "hobbies": ["art", "coding", "cooking", null]
+    },
+    "notes": "pending"
+  },
+  {
+    "id": 93,
+    "uuid": "user-93",
+    "name": "User 93",
+    "active": true,
+    "metrics": {
+      "score": 6,
+      "rating": 4.64,
+      "flags": [false, true, null]
+    },
+    "profile": {
+      "age": 30,
+      "address": {
+        "city": "City 43",
+        "zip": "75093",
+        "geo": {
+          "lat": 48.900565354537605,
+          "lng": 2.323460092850196
+        }
+      },
+      "hobbies": ["travel", "reading", "art", null]
+    },
+    "notes": "inactive"
+  },
+  {
+    "id": 94,
+    "uuid": "user-94",
+    "name": "User 94",
+    "active": true,
+    "metrics": {
+      "score": 6,
+      "rating": 1.71,
+      "flags": [null, null, true]
+    },
+    "profile": {
+      "age": 69,
+      "address": {
+        "city": "City 44",
+        "zip": "75094",
+        "geo": {
+          "lat": 48.80060991000076,
+          "lng": 2.3223765282232405
+        }
+      },
+      "hobbies": ["cooking", "coding", "reading", null]
+    },
+    "notes": "review"
+  },
+  {
+    "id": 95,
+    "uuid": "user-95",
+    "name": "User 95",
+    "active": true,
+    "metrics": {
+      "score": 16,
+      "rating": 2.07,
+      "flags": [false, false, true]
+    },
+    "profile": {
+      "age": 53,
+      "address": {
+        "city": "City 45",
+        "zip": "75095",
+        "geo": {
+          "lat": 48.96802527126704,
+          "lng": 2.4770042822010008
+        }
+      },
+      "hobbies": ["gaming", "art", "coding", null]
+    },
+    "notes": null
+  },
+  {
+    "id": 96,
+    "uuid": "user-96",
+    "name": "User 96",
+    "active": true,
+    "metrics": {
+      "score": 92,
+      "rating": 2.86,
+      "flags": [null, null, null]
+    },
+    "profile": {
+      "age": 34,
+      "address": {
+        "city": "City 46",
+        "zip": "75096",
+        "geo": {
+          "lat": 48.80439403637684,
+          "lng": 2.398709561709264
+        }
+      },
+      "hobbies": ["coding", "travel", "gaming", null]
+    },
+    "notes": "inactive"
+  },
+  {
+    "id": 97,
+    "uuid": "user-97",
+    "name": "User 97",
+    "active": false,
+    "metrics": {
+      "score": 20,
+      "rating": 4.31,
+      "flags": [null, false, false]
+    },
+    "profile": {
+      "age": 47,
+      "address": {
+        "city": "City 47",
+        "zip": "75097",
+        "geo": {
+          "lat": 48.98864305605497,
+          "lng": 2.3539611505857008
+        }
+      },
+      "hobbies": ["cooking", "gaming", "travel", null]
+    },
+    "notes": "review"
+  },
+  {
+    "id": 98,
+    "uuid": "user-98",
+    "name": "User 98",
+    "active": true,
+    "metrics": {
+      "score": 18,
+      "rating": 1.37,
+      "flags": [true, false, false]
+    },
+    "profile": {
+      "age": 18,
+      "address": {
+        "city": "City 48",
+        "zip": "75098",
+        "geo": {
+          "lat": 48.844061277002055,
+          "lng": 2.383046728921265
+        }
+      },
+      "hobbies": ["music", "sports", "reading", null]
+    },
+    "notes": "review"
+  },
+  {
+    "id": 99,
+    "uuid": "user-99",
+    "name": "User 99",
+    "active": true,
+    "metrics": {
+      "score": 41,
+      "rating": 1.8,
+      "flags": [null, true, true]
+    },
+    "profile": {
+      "age": 51,
+      "address": {
+        "city": "City 49",
+        "zip": "75099",
+        "geo": {
+          "lat": 48.80376974728682,
+          "lng": 2.3569699078930255
+        }
+      },
+      "hobbies": ["cooking", "reading", "coding", null]
+    },
+    "notes": "active"
+  },
+  {
+    "id": 100,
+    "uuid": "user-100",
+    "name": "User 100",
+    "active": true,
+    "metrics": {
+      "score": 89,
+      "rating": 3.96,
+      "flags": [false, null, true]
+    },
+    "profile": {
+      "age": 52,
+      "address": {
+        "city": "City 0",
+        "zip": "75000",
+        "geo": {
+          "lat": 48.815718497738565,
+          "lng": 2.3998890036820177
+        }
+      },
+      "hobbies": ["travel", "music", "sports", null]
+    },
+    "notes": "pending"
+  },
+  {
+    "id": 101,
+    "uuid": "user-101",
+    "name": "User 101",
+    "active": false,
+    "metrics": {
+      "score": 15,
+      "rating": 2.78,
+      "flags": [true, null, null]
+    },
+    "profile": {
+      "age": 42,
+      "address": {
+        "city": "City 1",
+        "zip": "75001",
+        "geo": {
+          "lat": 48.94220239535672,
+          "lng": 2.432834387076917
+        }
+      },
+      "hobbies": ["travel", "sports", "coding", null]
+    },
+    "notes": "pending"
+  },
+  {
+    "id": 102,
+    "uuid": "user-102",
+    "name": "User 102",
+    "active": true,
+    "metrics": {
+      "score": 40,
+      "rating": 2.35,
+      "flags": [null, null, false]
+    },
+    "profile": {
+      "age": 68,
+      "address": {
+        "city": "City 2",
+        "zip": "75002",
+        "geo": {
+          "lat": 48.944314742908986,
+          "lng": 2.4180142167837486
+        }
+      },
+      "hobbies": ["sports", "gaming", "art", null]
+    },
+    "notes": "review"
+  },
+  {
+    "id": 103,
+    "uuid": "user-103",
+    "name": "User 103",
+    "active": true,
+    "metrics": {
+      "score": 38,
+      "rating": 1.45,
+      "flags": [false, true, null]
+    },
+    "profile": {
+      "age": 49,
+      "address": {
+        "city": "City 3",
+        "zip": "75003",
+        "geo": {
+          "lat": 48.8905558997511,
+          "lng": 2.3151771916510455
+        }
+      },
+      "hobbies": ["sports", "travel", "reading", null]
+    },
+    "notes": null
+  },
+  {
+    "id": 104,
+    "uuid": "user-104",
+    "name": "User 104",
+    "active": true,
+    "metrics": {
+      "score": 46,
+      "rating": 3.9,
+      "flags": [false, null, false]
+    },
+    "profile": {
+      "age": 57,
+      "address": {
+        "city": "City 4",
+        "zip": "75004",
+        "geo": {
+          "lat": 48.84722298740641,
+          "lng": 2.3381521043422295
+        }
+      },
+      "hobbies": ["reading", "travel", "gaming", null]
+    },
+    "notes": "active"
+  },
+  {
+    "id": 105,
+    "uuid": "user-105",
+    "name": "User 105",
+    "active": false,
+    "metrics": {
+      "score": 7,
+      "rating": 1.71,
+      "flags": [true, null, true]
+    },
+    "profile": {
+      "age": 25,
+      "address": {
+        "city": "City 5",
+        "zip": "75005",
+        "geo": {
+          "lat": 48.847883992417664,
+          "lng": 2.3576949363411592
+        }
+      },
+      "hobbies": ["gaming", "art", "sports", null]
+    },
+    "notes": "inactive"
+  },
+  {
+    "id": 106,
+    "uuid": "user-106",
+    "name": "User 106",
+    "active": false,
+    "metrics": {
+      "score": 33,
+      "rating": 1.67,
+      "flags": [null, true, null]
+    },
+    "profile": {
+      "age": 63,
+      "address": {
+        "city": "City 6",
+        "zip": "75006",
+        "geo": {
+          "lat": 48.89271485501575,
+          "lng": 2.3892240308745976
+        }
+      },
+      "hobbies": ["cooking", "art", "coding", null]
+    },
+    "notes": "inactive"
+  },
+  {
+    "id": 107,
+    "uuid": "user-107",
+    "name": "User 107",
+    "active": true,
+    "metrics": {
+      "score": 6,
+      "rating": 3.42,
+      "flags": [false, true, false]
+    },
+    "profile": {
+      "age": 51,
+      "address": {
+        "city": "City 7",
+        "zip": "75007",
+        "geo": {
+          "lat": 48.9403216617886,
+          "lng": 2.3434559125886705
+        }
+      },
+      "hobbies": ["travel", "gaming", "music", null]
+    },
+    "notes": "inactive"
+  },
+  {
+    "id": 108,
+    "uuid": "user-108",
+    "name": "User 108",
+    "active": true,
+    "metrics": {
+      "score": 0,
+      "rating": 4.19,
+      "flags": [false, true, null]
+    },
+    "profile": {
+      "age": 57,
+      "address": {
+        "city": "City 8",
+        "zip": "75008",
+        "geo": {
+          "lat": 48.91701833404737,
+          "lng": 2.4756185556828894
+        }
+      },
+      "hobbies": ["cooking", "coding", "art", null]
+    },
+    "notes": "pending"
+  },
+  {
+    "id": 109,
+    "uuid": "user-109",
+    "name": "User 109",
+    "active": false,
+    "metrics": {
+      "score": 91,
+      "rating": 4.19,
+      "flags": [null, false, true]
+    },
+    "profile": {
+      "age": 70,
+      "address": {
+        "city": "City 9",
+        "zip": "75009",
+        "geo": {
+          "lat": 48.885929262053665,
+          "lng": 2.4773127559578545
+        }
+      },
+      "hobbies": ["music", "coding", "sports", null]
+    },
+    "notes": "active"
+  },
+  {
+    "id": 110,
+    "uuid": "user-110",
+    "name": "User 110",
+    "active": true,
+    "metrics": {
+      "score": 7,
+      "rating": 1.43,
+      "flags": [null, null, null]
+    },
+    "profile": {
+      "age": 25,
+      "address": {
+        "city": "City 10",
+        "zip": "75010",
+        "geo": {
+          "lat": 48.83266769810402,
+          "lng": 2.48165985211783
+        }
+      },
+      "hobbies": ["coding", "sports", "travel", null]
+    },
+    "notes": "review"
+  },
+  {
+    "id": 111,
+    "uuid": "user-111",
+    "name": "User 111",
+    "active": true,
+    "metrics": {
+      "score": 47,
+      "rating": 1.93,
+      "flags": [null, false, false]
+    },
+    "profile": {
+      "age": 24,
+      "address": {
+        "city": "City 11",
+        "zip": "75011",
+        "geo": {
+          "lat": 48.867523679827606,
+          "lng": 2.431516507090558
+        }
+      },
+      "hobbies": ["travel", "art", "cooking", null]
+    },
+    "notes": "active"
+  },
+  {
+    "id": 112,
+    "uuid": "user-112",
+    "name": "User 112",
+    "active": true,
+    "metrics": {
+      "score": 77,
+      "rating": 4.18,
+      "flags": [null, null, true]
+    },
+    "profile": {
+      "age": 57,
+      "address": {
+        "city": "City 12",
+        "zip": "75012",
+        "geo": {
+          "lat": 48.8371254777705,
+          "lng": 2.3093160070952377
+        }
+      },
+      "hobbies": ["cooking", "gaming", "sports", null]
+    },
+    "notes": "active"
+  },
+  {
+    "id": 113,
+    "uuid": "user-113",
+    "name": "User 113",
+    "active": true,
+    "metrics": {
+      "score": 15,
+      "rating": 1.89,
+      "flags": [true, null, false]
+    },
+    "profile": {
+      "age": 54,
+      "address": {
+        "city": "City 13",
+        "zip": "75013",
+        "geo": {
+          "lat": 48.99857095354989,
+          "lng": 2.441947623619338
+        }
+      },
+      "hobbies": ["cooking", "art", "sports", null]
+    },
+    "notes": "review"
+  },
+  {
+    "id": 114,
+    "uuid": "user-114",
+    "name": "User 114",
+    "active": true,
+    "metrics": {
+      "score": 19,
+      "rating": 1.01,
+      "flags": [true, false, true]
+    },
+    "profile": {
+      "age": 19,
+      "address": {
+        "city": "City 14",
+        "zip": "75014",
+        "geo": {
+          "lat": 48.96204638043865,
+          "lng": 2.421227714758127
+        }
+      },
+      "hobbies": ["sports", "coding", "travel", null]
+    },
+    "notes": null
+  },
+  {
+    "id": 115,
+    "uuid": "user-115",
+    "name": "User 115",
+    "active": true,
+    "metrics": {
+      "score": 73,
+      "rating": 2.69,
+      "flags": [true, null, true]
+    },
+    "profile": {
+      "age": 63,
+      "address": {
+        "city": "City 15",
+        "zip": "75015",
+        "geo": {
+          "lat": 48.90992317439213,
+          "lng": 2.450726526023528
+        }
+      },
+      "hobbies": ["travel", "reading", "gaming", null]
+    },
+    "notes": "pending"
+  },
+  {
+    "id": 116,
+    "uuid": "user-116",
+    "name": "User 116",
+    "active": true,
+    "metrics": {
+      "score": 28,
+      "rating": 3.3,
+      "flags": [false, null, null]
+    },
+    "profile": {
+      "age": 22,
+      "address": {
+        "city": "City 16",
+        "zip": "75016",
+        "geo": {
+          "lat": 48.91406141497058,
+          "lng": 2.479032821247225
+        }
+      },
+      "hobbies": ["reading", "coding", "gaming", null]
+    },
+    "notes": "active"
+  },
+  {
+    "id": 117,
+    "uuid": "user-117",
+    "name": "User 117",
+    "active": true,
+    "metrics": {
+      "score": 78,
+      "rating": 3.91,
+      "flags": [null, null, true]
+    },
+    "profile": {
+      "age": 60,
+      "address": {
+        "city": "City 17",
+        "zip": "75017",
+        "geo": {
+          "lat": 48.99718308257665,
+          "lng": 2.3609652898901796
+        }
+      },
+      "hobbies": ["cooking", "travel", "art", null]
+    },
+    "notes": "inactive"
+  },
+  {
+    "id": 118,
+    "uuid": "user-118",
+    "name": "User 118",
+    "active": false,
+    "metrics": {
+      "score": 83,
+      "rating": 3.1,
+      "flags": [true, true, true]
+    },
+    "profile": {
+      "age": 49,
+      "address": {
+        "city": "City 18",
+        "zip": "75018",
+        "geo": {
+          "lat": 48.93519847685932,
+          "lng": 2.498296462698456
+        }
+      },
+      "hobbies": ["travel", "music", "reading", null]
+    },
+    "notes": "review"
+  },
+  {
+    "id": 119,
+    "uuid": "user-119",
+    "name": "User 119",
+    "active": true,
+    "metrics": {
+      "score": 80,
+      "rating": 2.87,
+      "flags": [false, false, true]
+    },
+    "profile": {
+      "age": 66,
+      "address": {
+        "city": "City 19",
+        "zip": "75019",
+        "geo": {
+          "lat": 48.94671499785547,
+          "lng": 2.3110911420983626
+        }
+      },
+      "hobbies": ["travel", "music", "reading", null]
+    },
+    "notes": "pending"
+  },
+  {
+    "id": 120,
+    "uuid": "user-120",
+    "name": "User 120",
+    "active": false,
+    "metrics": {
+      "score": 51,
+      "rating": 1.22,
+      "flags": [true, false, null]
+    },
+    "profile": {
+      "age": 18,
+      "address": {
+        "city": "City 20",
+        "zip": "75020",
+        "geo": {
+          "lat": 48.978495173828705,
+          "lng": 2.376690072786419
+        }
+      },
+      "hobbies": ["cooking", "gaming", "art", null]
+    },
+    "notes": "pending"
+  }
+]
