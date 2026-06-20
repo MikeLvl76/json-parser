@@ -307,27 +307,53 @@ JsonValue *str_to_json_array(char *str_array)
     if (!v->as.array.items)
     {
         fprintf(stderr, "Failed to parse: %s\n", str_array);
+        free(v);
         return NULL;
     }
 
     // Skip '['
     char *p = str_array + 1;
 
+    size_t buf_capacity = 2048;
+    char *buffer = malloc(buf_capacity);
+    if (!buffer)
+    {
+        fprintf(stderr, "Cannot allocate buffer\n");
+        return v;
+    }
+
     int depth = 0, in_str = 0;
-    char buffer[2048];
     size_t id = 0;
 
     while (*p)
     {
-        if (v->as.array.length == v->as.array.capacity)
+        if (id >= buf_capacity)
         {
-            v->as.array.capacity *= 2;
-            v->as.array.items = realloc(v->as.array.items, sizeof(JsonValue) * v->as.array.capacity);
-            if (!v->as.array.items)
+            while (id >= buf_capacity)
+                buf_capacity *= 2;
+
+            char *tmp = realloc(buffer, buf_capacity);
+            if (!tmp)
             {
-                printf("An error has occurred\n");
+                fprintf(stderr, "Reallocation failed\n");
+                free(buffer);
                 return v;
             }
+            buffer = tmp;
+        }
+
+        if (v->as.array.length == v->as.array.capacity)
+        {
+
+            v->as.array.capacity *= 2;
+            JsonValue **tmp = realloc(v->as.array.items, sizeof(JsonValue) * v->as.array.capacity);
+            if (!tmp)
+            {
+                fprintf(stderr, "Reallocation failed\n");
+                free(v->as.array.items);
+                return v;
+            }
+            v->as.array.items = tmp;
         }
 
         if (*p == '"' && (p == str_array + 1 || *(p - 1) != '\\'))
@@ -380,6 +406,7 @@ JsonValue *str_to_json_array(char *str_array)
         buffer[id++] = *p++;
     }
 
+    free(buffer);
     return v;
 }
 
@@ -404,11 +431,19 @@ JsonValue *str_to_json_object(char *str_object)
     if (!v->as.object.entries)
     {
         fprintf(stderr, "Failed to parse: %s\n", str_object);
+        free(v);
         return NULL;
     }
 
+    size_t buf_capacity = 2048;
+    char *entry_buf = malloc(buf_capacity);
+    if (!entry_buf)
+    {
+        fprintf(stderr, "Cannot allocate buffer\n");
+        return v;
+    }
+
     int in_str = 0, depth = 0;
-    char entry_buf[2048];
     size_t idx = 0;
 
     // Skip '{'
@@ -416,10 +451,26 @@ JsonValue *str_to_json_object(char *str_object)
 
     while (*p)
     {
+        if (idx >= buf_capacity)
+        {
+            while (idx >= buf_capacity)
+                buf_capacity *= 2;
+
+            char *tmp = realloc(entry_buf, buf_capacity);
+            if (!tmp)
+            {
+                fprintf(stderr, "Reallocation failed\n");
+                free(entry_buf);
+                return v;
+            }
+            entry_buf = tmp;
+        }
+
         JsonEntry *entry = malloc(sizeof(JsonEntry));
         if (!entry)
         {
-            return NULL;
+            fprintf(stderr, "Cannot allocate entry\n");
+            return v;
         }
 
         if (*p == '"' && (p == str_object + 1 || *(p - 1) != '\\'))
@@ -460,12 +511,14 @@ JsonValue *str_to_json_object(char *str_object)
                         if (v->as.object.count == v->as.object.capacity)
                         {
                             v->as.object.capacity *= 2;
-                            v->as.object.entries = realloc(v->as.object.entries, sizeof(JsonEntry) * v->as.object.capacity);
+                            JsonEntry **entries = realloc(v->as.object.entries, sizeof(JsonEntry) * v->as.object.capacity);
                             if (!v->as.object.entries)
                             {
-                                printf("An error has occurred\n");
+                                fprintf(stderr, "Reallocation failed\n");
+                                free(v->as.object.entries);
                                 return v;
                             }
+                            v->as.object.entries = entries;
                         }
 
                         v->as.object.entries[v->as.object.count++] = entry;

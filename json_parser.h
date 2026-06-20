@@ -1,9 +1,5 @@
 #include "json_functions.h"
 
-#define READ_TEST_FILE_PATH "default_data.json"
-#define MAX_BUFFER_SIZE 256
-#define MAX_FILE_LINES 1024
-
 JsonValue *read_json(char *filepath)
 {
 
@@ -15,37 +11,61 @@ JsonValue *read_json(char *filepath)
         exit(1);
     }
 
-    char *buffer = (char *)malloc(MAX_BUFFER_SIZE);
-    char *str = (char *)malloc(MAX_BUFFER_SIZE * MAX_FILE_LINES);
+    size_t buffer_capacity = 256, str_capacity = 1024;
+
+    char *buffer = malloc(buffer_capacity);
+    char *str = malloc(str_capacity);
 
     if (!buffer || !str)
     {
-        printf("Error: cannot allocate memory\n");
+        fprintf(stderr, "Error: cannot allocate memory\n");
         exit(1);
     }
 
-    *buffer = '\0';
+    size_t str_len = 0;
+
     *str = '\0';
 
-    while (!feof(file))
+    while (fgets(buffer, (int)buffer_capacity, file))
     {
         if (ferror(file))
         {
             fprintf(stderr, "Error while reading file: code %d\n", errno);
+            free(buffer);
+            free(str);
             exit(1);
         }
 
-        char *line = fgets(buffer, MAX_BUFFER_SIZE, file);
-        if (!line)
+        trim(buffer);
+
+        size_t buf_len = strlen(buffer);
+
+        if (str_len + buf_len + 1 > str_capacity)
         {
-            continue;
+            // Reallocate until having enough capacity
+            while (str_len + buf_len + 1 > str_capacity)
+                str_capacity *= 2;
+
+            char *tmp = realloc(str, str_capacity);
+            if (!tmp)
+            {
+                printf("Reallocation failed\n");
+                free(buffer);
+                free(str);
+                exit(1);
+            }
+            str = tmp;
         }
 
-        trim(buffer);
-        strncat(str, buffer, strlen(buffer));
+        memcpy(str + str_len, buffer, buf_len);
+        str_len += buf_len;
+        str[str_len] = '\0';
     }
 
-    if (*str != '{' && str[strlen(str) - 1] != '}')
+    free(buffer);
+    fclose(file);
+
+    if (*str != '{' && str[str_len - 1] != '}')
     {
         printf("Missing object brackets in file\n");
         exit(1);
@@ -53,9 +73,7 @@ JsonValue *read_json(char *filepath)
 
     JsonValue *json = str_to_json_value(str);
 
-    free(buffer);
     free(str);
-    fclose(file);
 
     return json;
 }

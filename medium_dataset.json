@@ -1,0 +1,327 @@
+{
+  "metadata": {
+    "version": "2.1",
+    "environment": "staging",
+    "generatedAt": "2026-06-20T12:00:00Z",
+    "author": null,
+    "flags": {
+      "debug": true,
+      "archived": false,
+      "experimental": null
+    }
+  },
+  "organizations": [
+    {
+      "id": 1001,
+      "name": "Acme Corp",
+      "active": true,
+      "departments": [
+        {
+          "id": "ENG",
+          "name": "Engineering",
+          "budget": 2500000,
+          "manager": {
+            "id": 1,
+            "name": "Alice Johnson",
+            "email": "alice@example.com"
+          },
+          "teams": [
+            {
+              "id": "ENG-BE",
+              "name": "Backend",
+              "members": [
+                {
+                  "id": 101,
+                  "username": "user101",
+                  "active": true,
+                  "roles": ["developer", "reviewer"],
+                  "contact": {
+                    "email": "user101@example.com",
+                    "phone": null
+                  },
+                  "skills": ["java", "postgres", "docker"],
+                  "metrics": {
+                    "commits": 450,
+                    "bugsClosed": 78,
+                    "velocity": 8.7
+                  }
+                },
+                {
+                  "id": 102,
+                  "username": "user102",
+                  "active": false,
+                  "roles": ["developer"],
+                  "contact": {
+                    "email": "user102@example.com",
+                    "phone": "+33-100-000-102"
+                  },
+                  "skills": ["python", "redis"],
+                  "metrics": {
+                    "commits": 201,
+                    "bugsClosed": 31,
+                    "velocity": 6.2
+                  }
+                },
+                {
+                  "id": 103,
+                  "username": "user103",
+                  "active": true,
+                  "roles": ["lead"],
+                  "contact": {
+                    "email": "user103@example.com",
+                    "phone": null
+                  },
+                  "skills": ["architecture", "kubernetes", "aws"],
+                  "metrics": {
+                    "commits": 520,
+                    "bugsClosed": 91,
+                    "velocity": 9.3
+                  }
+                }
+              ]
+            },
+            {
+              "id": "ENG-FE",
+              "name": "Frontend",
+              "members": [
+                {
+                  "id": 104,
+                  "username": "user104",
+                  "active": true,
+                  "roles": ["developer"],
+                  "contact": {
+                    "email": "user104@example.com",
+                    "phone": null
+                  },
+                  "skills": ["react", "typescript", "css"],
+                  "metrics": {
+                    "commits": 330,
+                    "bugsClosed": 44,
+                    "velocity": 7.9
+                  }
+                },
+                {
+                  "id": 105,
+                  "username": "user105",
+                  "active": true,
+                  "roles": ["developer", "designer"],
+                  "contact": {
+                    "email": "user105@example.com",
+                    "phone": "+33-100-000-105"
+                  },
+                  "skills": ["figma", "react", "ux"],
+                  "metrics": {
+                    "commits": 289,
+                    "bugsClosed": 29,
+                    "velocity": 7.1
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "OPS",
+          "name": "Operations",
+          "budget": 1200000,
+          "manager": {
+            "id": 2,
+            "name": "Bob Smith",
+            "email": "bob@example.com"
+          },
+          "teams": [
+            {
+              "id": "OPS-INFRA",
+              "name": "Infrastructure",
+              "members": [
+                {
+                  "id": 201,
+                  "username": "infra01",
+                  "active": true,
+                  "roles": ["sysadmin"],
+                  "contact": {
+                    "email": "infra01@example.com",
+                    "phone": null
+                  },
+                  "servers": ["srv-01", "srv-02", "srv-03"]
+                },
+                {
+                  "id": 202,
+                  "username": "infra02",
+                  "active": true,
+                  "roles": ["devops"],
+                  "contact": {
+                    "email": "infra02@example.com",
+                    "phone": "+33-100-000-202"
+                  },
+                  "servers": ["srv-04", "srv-05"]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "id": "PRJ-100",
+      "name": "Customer Portal",
+      "status": "active",
+      "priority": 1,
+      "tags": ["web", "customer", "frontend"],
+      "budget": 450000,
+      "milestones": [
+        {
+          "name": "Design",
+          "completed": true,
+          "date": "2026-01-15"
+        },
+        {
+          "name": "Development",
+          "completed": false,
+          "date": null
+        },
+        {
+          "name": "Launch",
+          "completed": false,
+          "date": null
+        }
+      ],
+      "dependencies": ["AUTH-01", "API-02"]
+    },
+    {
+      "id": "PRJ-101",
+      "name": "Analytics Platform",
+      "status": "planning",
+      "priority": 2,
+      "tags": ["data", "analytics", "cloud"],
+      "budget": 900000,
+      "milestones": [
+        {
+          "name": "Requirements",
+          "completed": true,
+          "date": "2026-03-10"
+        },
+        {
+          "name": "Prototype",
+          "completed": false,
+          "date": null
+        }
+      ],
+      "dependencies": []
+    }
+  ],
+  "inventory": {
+    "warehouses": [
+      {
+        "id": "WH-01",
+        "location": "Paris",
+        "capacity": 10000,
+        "items": [
+          {
+            "sku": "SKU-1001",
+            "name": "Laptop",
+            "quantity": 120,
+            "price": 1299.99,
+            "attributes": {
+              "color": "silver",
+              "weightKg": 1.8,
+              "fragile": true
+            }
+          },
+          {
+            "sku": "SKU-1002",
+            "name": "Monitor",
+            "quantity": 300,
+            "price": 299.99,
+            "attributes": {
+              "color": "black",
+              "weightKg": 4.7,
+              "fragile": true
+            }
+          }
+        ]
+      },
+      {
+        "id": "WH-02",
+        "location": "Lyon",
+        "capacity": 5000,
+        "items": [
+          {
+            "sku": "SKU-2001",
+            "name": "Keyboard",
+            "quantity": 850,
+            "price": 49.99,
+            "attributes": {
+              "color": "black",
+              "weightKg": 0.8,
+              "fragile": false
+            }
+          },
+          {
+            "sku": "SKU-2002",
+            "name": "Mouse",
+            "quantity": 1250,
+            "price": 29.99,
+            "attributes": {
+              "color": "white",
+              "weightKg": 0.2,
+              "fragile": false
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "auditLog": [
+    {
+      "id": 1,
+      "action": "LOGIN",
+      "userId": 101,
+      "timestamp": "2026-06-01T10:00:00Z",
+      "success": true,
+      "metadata": {
+        "ip": "192.168.1.10",
+        "device": "desktop"
+      }
+    },
+    {
+      "id": 2,
+      "action": "UPDATE_PROFILE",
+      "userId": 102,
+      "timestamp": "2026-06-01T10:30:00Z",
+      "success": true,
+      "metadata": {
+        "changedFields": ["email", "phone"]
+      }
+    },
+    {
+      "id": 3,
+      "action": "DELETE_RECORD",
+      "userId": 103,
+      "timestamp": "2026-06-01T11:00:00Z",
+      "success": false,
+      "metadata": {
+        "reason": "permission_denied"
+      }
+    }
+  ],
+  "configuration": {
+    "api": {
+      "baseUrl": "https://api.example.com",
+      "timeoutSeconds": 30,
+      "retries": 3
+    },
+    "features": {
+      "search": true,
+      "export": true,
+      "import": false,
+      "beta": null
+    },
+    "thresholds": {
+      "warning": 70,
+      "critical": 90
+    }
+  }
+}
