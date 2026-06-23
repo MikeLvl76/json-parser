@@ -1,14 +1,17 @@
 #include "json_functions.h"
 
-JsonValue *read_json(char *filepath)
+JsonValue *read_json(char *filepath, int show_error, int stop_on_error)
 {
 
     FILE *file = fopen(filepath, "rb");
 
     if (!file)
     {
-        printf("Error: cannot open file at path %s\n", filepath);
-        exit(1);
+        if (show_error)
+            fprintf(stderr, "Error: cannot open file at path %s\n", filepath);
+        
+        if (stop_on_error)
+            exit(1);
     }
 
     size_t buffer_capacity = 256, str_capacity = 1024;
@@ -18,8 +21,11 @@ JsonValue *read_json(char *filepath)
 
     if (!buffer || !str)
     {
-        fprintf(stderr, "Error: cannot allocate memory\n");
-        exit(1);
+        if (show_error)
+            fprintf(stderr, "Error: cannot allocate memory\n");
+
+        if (stop_on_error)
+            exit(1);
     }
 
     size_t str_len = 0;
@@ -30,13 +36,17 @@ JsonValue *read_json(char *filepath)
     {
         if (ferror(file))
         {
-            fprintf(stderr, "Error while reading file: code %d\n", errno);
+            if (show_error)
+                fprintf(stderr, "Error while reading file: code %d\n", errno);
+
             free(buffer);
             free(str);
-            exit(1);
+
+            if (stop_on_error)
+                exit(1);
         }
 
-        trim(buffer);
+        trim(buffer, show_error, stop_on_error);
 
         size_t buf_len = strlen(buffer);
 
@@ -49,10 +59,14 @@ JsonValue *read_json(char *filepath)
             char *tmp = realloc(str, str_capacity);
             if (!tmp)
             {
-                printf("Reallocation failed\n");
+                if (show_error)
+                    fprintf(stderr, "Reallocation failed\n");
+
                 free(buffer);
                 free(str);
-                exit(1);
+
+                if (stop_on_error)
+                    exit(1);
             }
             str = tmp;
         }
@@ -71,20 +85,26 @@ JsonValue *read_json(char *filepath)
     {
         if (str[str_len - 1] != '}')
         {
-            fprintf(stderr, "Missing object brackets in file\n");
-            exit(1);
+            if (show_error)
+                fprintf(stderr, "Missing object brackets in file\n");
+
+            if (stop_on_error)
+                exit(1);
         }
     }
     else if (open == '[')
     {
         if (str[str_len - 1] != ']')
         {
-            fprintf(stderr, "Missing array brackets in file\n");
-            exit(1);
+            if (show_error)
+                fprintf(stderr, "Missing array brackets in file\n");
+
+            if (stop_on_error)
+                exit(1);
         }
     }
 
-    JsonValue *json = str_to_json_value(str);
+    JsonValue *json = str_to_json_value(str, show_error, stop_on_error);
 
     free(str);
 

@@ -3,10 +3,18 @@
 #include <ctype.h>
 #include <stdlib.h>
 
-int isint(char *str)
+int isint(const char *str, int show_error, int stop_on_error)
 {
-    if (*str == '\0')
+    if (!str || *str == '\0')
+    {
+        if (show_error)
+            fprintf(stderr, "String is empty\n");
+
+        if (stop_on_error)
+            exit(1);
+
         return 0;
+    }
 
     if (*str == '-')
     {
@@ -26,14 +34,22 @@ int isint(char *str)
     return 1;
 }
 
-int isdouble(const char *str)
+int isdouble(const char *str, int show_error, int stop_on_error)
 {
     int has_digit = 0;
     int has_dot = 0;
     int has_exp = 0;
 
     if (!str || *str == '\0')
+    {
+        if (show_error)
+            fprintf(stderr, "String is empty\n");
+
+        if (stop_on_error)
+            exit(1);
+
         return 0;
+    }
 
     // +/- leading
     if (*str == '-' || *str == '+')
@@ -77,11 +93,16 @@ int isdouble(const char *str)
     return has_digit;
 }
 
-void trim(char *str)
+void trim(char *str, int show_error, int stop_on_error)
 {
     if (!str)
     {
-        printf("Error: empty or null string\n");
+        if (show_error)
+            fprintf(stderr, "Error: empty or null string\n");
+
+        if (stop_on_error)
+            exit(1);
+
         return;
     }
 
@@ -107,16 +128,32 @@ void trim(char *str)
     *end = '\0';
 }
 
-char *sub(const char *str, size_t start, size_t end)
+char *sub(const char *str, size_t start, size_t end, int show_error, int stop_on_error)
 {
     if (!str || end < start)
+    {
+        if (show_error)
+            fprintf(stderr, "Check if indices (%zu, %zu) are valid or if string exists\n", start, end);
+
+        if (stop_on_error)
+            exit(1);
+
         return NULL;
+    }
 
     size_t len = end - start;
 
     char *out = malloc(len + 1);
     if (!out)
+    {
+        if (show_error)
+            fprintf(stderr, "Cannot allocate memory\n");
+
+        if (stop_on_error)
+            exit(1);
+
         return NULL;
+    }
 
     memcpy(out, str + start, len);
     out[len] = '\0';
@@ -128,4 +165,21 @@ void print_indent(int indent)
 {
     for (int i = 0; i < indent; i++)
         putchar(' ');
+}
+
+int check_extension(char *path, int show_error, int stop_on_error)
+{
+    if (!path || strlen(path) < 6)
+    {
+        if (show_error)
+            fprintf(stderr, "Path doesn't exist or doesn't have enough characters\n");
+
+        if (stop_on_error)
+            exit(1);
+
+        return 0;
+    }
+
+    char *extension = sub(path, strlen(path) - strlen(".json"), strlen(path), show_error, stop_on_error);
+    return strcmp(extension, ".json") == 0 ? 1 : 0;
 }

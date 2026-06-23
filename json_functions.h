@@ -86,16 +86,16 @@ JsonEntry *alloc_entry(char *key, JsonValue *value)
 }
 
 /* Parse JSON file */
-void dump_json(JsonValue *json, int indent);
-JsonValue *str_to_json_value(char *str);
-JsonValue *str_to_json_int(char *str);
-JsonValue *str_to_json_double(char *str);
-JsonValue *str_to_json_str(char *str);
-JsonValue *str_to_json_bool(char *str);
-JsonValue *str_to_json_array(char *str_array);
-JsonValue *str_to_json_object(char *str_object);
+void dump_json(JsonValue *json, int indent, int prettify);
+JsonValue *str_to_json_value(char *str, int show_error, int stop_on_error);
+JsonValue *str_to_json_int(char *str, int show_error, int stop_on_error);
+JsonValue *str_to_json_double(char *str, int show_error, int stop_on_error);
+JsonValue *str_to_json_str(char *str, int show_error, int stop_on_error);
+JsonValue *str_to_json_bool(char *str, int show_error, int stop_on_error);
+JsonValue *str_to_json_array(char *str_array, int show_error, int stop_on_error);
+JsonValue *str_to_json_object(char *str_object, int show_error, int stop_on_error);
 
-void dump_json(JsonValue *json, int indent)
+void dump_json(JsonValue *json, int indent, int prettify)
 {
     if (!json)
     {
@@ -125,19 +125,23 @@ void dump_json(JsonValue *json, int indent)
             break;
         }
 
-        printf("[\n");
+        printf(prettify > 0 ? "[\n" : "[");
 
         for (size_t i = 0; i < json->as.array.length; ++i)
         {
-            print_indent(indent + 4);
-            dump_json(json->as.array.items[i], indent + 4);
+            if (prettify)
+                print_indent(indent + 4);
+
+            dump_json(json->as.array.items[i], prettify > 0 ? indent + 4 : indent, prettify);
             if (i < json->as.array.length - 1)
                 printf(", ");
 
-            printf("\n");
+            if (prettify)
+                printf("\n");
         }
 
-        print_indent(indent);
+        if (prettify)
+            print_indent(indent);
         printf("]");
         break;
 
@@ -148,20 +152,23 @@ void dump_json(JsonValue *json, int indent)
             break;
         }
 
-        printf("{\n");
+        printf(prettify > 0 ? "{\n" : "{");
 
         for (size_t i = 0; i < json->as.object.count; ++i)
         {
-            print_indent(indent + 4);
+            if (prettify)
+                print_indent(indent + 4);
             printf("%s: ", json->as.object.entries[i]->key);
-            dump_json(json->as.object.entries[i]->value, indent + 4);
+            dump_json(json->as.object.entries[i]->value, prettify > 0 ? indent + 4 : indent, prettify);
             if (i < json->as.object.count - 1)
                 printf(",");
 
-            printf("\n");
+            if (prettify)
+                printf("\n");
         }
 
-        print_indent(indent);
+        if (prettify)
+            print_indent(indent);
         printf("}");
         break;
 
@@ -178,33 +185,39 @@ void dump_json(JsonValue *json, int indent)
     }
 }
 
-JsonValue *str_to_json_value(char *str)
+JsonValue *str_to_json_value(char *str, int show_error, int stop_on_error)
 {
     if (!str)
     {
+        if (show_error)
+            fprintf(stderr, "No string to parse\n");
+
+        if (stop_on_error)
+            exit(1);
+
         return NULL;
     }
 
-    trim(str);
+    trim(str, show_error, stop_on_error);
     size_t len = strlen(str);
 
     // INTEGER
-    if (isint(str))
-        return str_to_json_int(str);
+    if (isint(str, show_error, stop_on_error))
+        return str_to_json_int(str, show_error, stop_on_error);
 
     // DOUBLE
-    if (isdouble(str))
-        return str_to_json_double(str);
+    if (isdouble(str, show_error, stop_on_error))
+        return str_to_json_double(str, show_error, stop_on_error);
 
     // STRING
     if (len >= 2 && str[0] == '"' && str[len - 1] == '"')
     {
-        return str_to_json_str(str);
+        return str_to_json_str(str, show_error, stop_on_error);
     }
 
     // BOOLEAN
     if (strcmp(str, "true") == 0 || strcmp(str, "false") == 0)
-        return str_to_json_bool(str);
+        return str_to_json_bool(str, show_error, stop_on_error);
 
     // NULL
     if (strcmp(str, "null") == 0)
@@ -212,7 +225,12 @@ JsonValue *str_to_json_value(char *str)
         JsonValue *v = malloc(sizeof(JsonValue));
         if (!v)
         {
-            printf("An error has occurred");
+            if (show_error)
+                fprintf(stderr, "An error has occurred");
+
+            if (stop_on_error)
+                exit(1);
+
             return NULL;
         }
         v->type = NULL_VALUE;
@@ -221,20 +239,26 @@ JsonValue *str_to_json_value(char *str)
 
     // ARRAY
     if (len >= 2 && str[0] == '[' && str[len - 1] == ']')
-        return str_to_json_array(str);
+        return str_to_json_array(str, show_error, stop_on_error);
 
     // OBJECT
     if (len >= 2 && str[0] == '{' && str[len - 1] == '}')
-        return str_to_json_object(str);
+        return str_to_json_object(str, show_error, stop_on_error);
 
     return NULL;
 }
 
-JsonValue *str_to_json_int(char *str)
+JsonValue *str_to_json_int(char *str, int show_error, int stop_on_error)
 {
     JsonValue *value = malloc(sizeof(JsonValue));
     if (!value)
     {
+        if (show_error)
+            fprintf(stderr, "Cannot allocate memory\n");
+
+        if (stop_on_error)
+            exit(1);
+
         return NULL;
     }
 
@@ -244,11 +268,17 @@ JsonValue *str_to_json_int(char *str)
     return value;
 }
 
-JsonValue *str_to_json_double(char *str)
+JsonValue *str_to_json_double(char *str, int show_error, int stop_on_error)
 {
     JsonValue *value = malloc(sizeof(JsonValue));
     if (!value)
     {
+        if (show_error)
+            fprintf(stderr, "Cannot allocate memory\n");
+
+        if (stop_on_error)
+            exit(1);
+
         return NULL;
     }
 
@@ -258,11 +288,17 @@ JsonValue *str_to_json_double(char *str)
     return value;
 }
 
-JsonValue *str_to_json_str(char *str)
+JsonValue *str_to_json_str(char *str, int show_error, int stop_on_error)
 {
     JsonValue *value = malloc(sizeof(JsonValue));
     if (!value)
     {
+        if (show_error)
+            fprintf(stderr, "Cannot allocate memory\n");
+
+        if (stop_on_error)
+            exit(1);
+
         return NULL;
     }
 
@@ -272,11 +308,17 @@ JsonValue *str_to_json_str(char *str)
     return value;
 }
 
-JsonValue *str_to_json_bool(char *str)
+JsonValue *str_to_json_bool(char *str, int show_error, int stop_on_error)
 {
     JsonValue *value = malloc(sizeof(JsonValue));
     if (!value)
     {
+        if (show_error)
+            fprintf(stderr, "Cannot allocate memory\n");
+
+        if (stop_on_error)
+            exit(1);
+
         return NULL;
     }
 
@@ -291,11 +333,17 @@ JsonValue *str_to_json_bool(char *str)
  * Returns a JsonValue with NULL as type if error
  *
  */
-JsonValue *str_to_json_array(char *str_array)
+JsonValue *str_to_json_array(char *str_array, int show_error, int stop_on_error)
 {
     JsonValue *v = malloc(sizeof(JsonValue));
     if (!v)
     {
+        if (show_error)
+            fprintf(stderr, "Cannot allocate memory\n");
+
+        if (stop_on_error)
+            exit(1);
+
         return NULL;
     }
 
@@ -306,8 +354,14 @@ JsonValue *str_to_json_array(char *str_array)
 
     if (!v->as.array.items)
     {
-        fprintf(stderr, "Failed to parse: %s\n", str_array);
+        if (show_error)
+            fprintf(stderr, "Failed to parse: %s\n", str_array);
+
         free(v);
+
+        if (stop_on_error)
+            exit(1);
+
         return NULL;
     }
 
@@ -318,7 +372,12 @@ JsonValue *str_to_json_array(char *str_array)
     char *buffer = malloc(buf_capacity);
     if (!buffer)
     {
-        fprintf(stderr, "Cannot allocate buffer\n");
+        if (show_error)
+            fprintf(stderr, "Cannot allocate memory to buffer\n");
+
+        if (stop_on_error)
+            exit(1);
+
         return v;
     }
 
@@ -335,8 +394,14 @@ JsonValue *str_to_json_array(char *str_array)
             char *tmp = realloc(buffer, buf_capacity);
             if (!tmp)
             {
-                fprintf(stderr, "Reallocation failed\n");
+                if (show_error)
+                    fprintf(stderr, "Reallocation failed\n");
+
                 free(buffer);
+
+                if (stop_on_error)
+                    exit(1);
+
                 return v;
             }
             buffer = tmp;
@@ -349,8 +414,14 @@ JsonValue *str_to_json_array(char *str_array)
             JsonValue **tmp = realloc(v->as.array.items, sizeof(JsonValue) * v->as.array.capacity);
             if (!tmp)
             {
-                fprintf(stderr, "Reallocation failed\n");
+                if (show_error)
+                    fprintf(stderr, "Reallocation failed\n");
+
                 free(v->as.array.items);
+
+                if (stop_on_error)
+                    exit(1);
+
                 return v;
             }
             v->as.array.items = tmp;
@@ -374,11 +445,11 @@ JsonValue *str_to_json_array(char *str_array)
                 {
                     buffer[id] = '\0';
 
-                    trim(buffer);
+                    trim(buffer, show_error, stop_on_error);
 
                     if (id > 0)
                     {
-                        v->as.array.items[v->as.array.length++] = str_to_json_value(buffer);
+                        v->as.array.items[v->as.array.length++] = str_to_json_value(buffer, show_error, stop_on_error);
                     }
 
                     break;
@@ -390,11 +461,11 @@ JsonValue *str_to_json_array(char *str_array)
         {
             buffer[id] = '\0';
 
-            trim(buffer);
+            trim(buffer, show_error, stop_on_error);
 
             if (id > 0)
             {
-                v->as.array.items[v->as.array.length++] = str_to_json_value(buffer);
+                v->as.array.items[v->as.array.length++] = str_to_json_value(buffer, show_error, stop_on_error);
             }
 
             id = 0;
@@ -415,11 +486,17 @@ JsonValue *str_to_json_array(char *str_array)
  * Returns a JsonValue with NULL as type if error
  *
  */
-JsonValue *str_to_json_object(char *str_object)
+JsonValue *str_to_json_object(char *str_object, int show_error, int stop_on_error)
 {
     JsonValue *v = malloc(sizeof(JsonValue));
     if (!v)
     {
+        if (show_error)
+            fprintf(stderr, "Cannot allocate memory\n");
+
+        if (stop_on_error)
+            exit(1);
+
         return NULL;
     }
 
@@ -430,8 +507,14 @@ JsonValue *str_to_json_object(char *str_object)
 
     if (!v->as.object.entries)
     {
-        fprintf(stderr, "Failed to parse: %s\n", str_object);
+        if (show_error)
+            fprintf(stderr, "Failed to parse: %s\n", str_object);
+
         free(v);
+
+        if (stop_on_error)
+            exit(1);
+
         return NULL;
     }
 
@@ -439,7 +522,12 @@ JsonValue *str_to_json_object(char *str_object)
     char *entry_buf = malloc(buf_capacity);
     if (!entry_buf)
     {
-        fprintf(stderr, "Cannot allocate buffer\n");
+        if (show_error)
+            fprintf(stderr, "Cannot allocate memory to buffer\n");
+
+        if (stop_on_error)
+            exit(1);
+
         return v;
     }
 
@@ -459,8 +547,14 @@ JsonValue *str_to_json_object(char *str_object)
             char *tmp = realloc(entry_buf, buf_capacity);
             if (!tmp)
             {
-                fprintf(stderr, "Reallocation failed\n");
+                if (show_error)
+                    fprintf(stderr, "Reallocation failed\n");
+
                 free(entry_buf);
+
+                if (stop_on_error)
+                    exit(1);
+
                 return v;
             }
             entry_buf = tmp;
@@ -469,7 +563,12 @@ JsonValue *str_to_json_object(char *str_object)
         JsonEntry *entry = malloc(sizeof(JsonEntry));
         if (!entry)
         {
-            fprintf(stderr, "Cannot allocate entry\n");
+            if (show_error)
+                fprintf(stderr, "Cannot allocate memory to entry\n");
+
+            if (stop_on_error)
+                exit(1);
+
             return v;
         }
 
@@ -489,7 +588,7 @@ JsonValue *str_to_json_object(char *str_object)
             {
                 entry_buf[idx] = '\0';
 
-                trim(entry_buf);
+                trim(entry_buf, show_error, stop_on_error);
 
                 if (*entry_buf)
                 {
@@ -502,11 +601,11 @@ JsonValue *str_to_json_object(char *str_object)
                         char *key = entry_buf;
                         char *value = colon + 1;
 
-                        trim(key);
-                        trim(value);
+                        trim(key, show_error, stop_on_error);
+                        trim(value, show_error, stop_on_error);
 
                         entry->key = strdup(key);
-                        entry->value = str_to_json_value(value);
+                        entry->value = str_to_json_value(value, show_error, stop_on_error);
 
                         if (v->as.object.count == v->as.object.capacity)
                         {
@@ -514,8 +613,14 @@ JsonValue *str_to_json_object(char *str_object)
                             JsonEntry **entries = realloc(v->as.object.entries, sizeof(JsonEntry) * v->as.object.capacity);
                             if (!v->as.object.entries)
                             {
-                                fprintf(stderr, "Reallocation failed\n");
+                                if (show_error)
+                                    fprintf(stderr, "Reallocation failed\n");
+
                                 free(v->as.object.entries);
+
+                                if (stop_on_error)
+                                    exit(1);
+
                                 return v;
                             }
                             v->as.object.entries = entries;
@@ -545,14 +650,14 @@ JsonValue *str_to_json_object(char *str_object)
 
 /* Manipulate struct */
 size_t count_elements(JsonValue json);
-size_t idxentry(JsonValue json, char *key);
-JsonEntry *getentry(JsonValue json, char *key);
-JsonEntry *entry_at(JsonValue json, size_t index);
-int addentry(JsonValue *dest, JsonEntry *entry, size_t position);
-int setentry(JsonValue *dest, char *key, JsonValue *value);
-int rementry(JsonValue *dest, char *key);
-char **getkeys(JsonValue json);
-JsonValue **getvalues(JsonValue json);
+size_t idxentry(JsonValue json, char *key, int show_error, int stop_on_error);
+JsonEntry *getentry(JsonValue json, char *key, int show_error, int stop_on_error);
+JsonEntry *entry_at(JsonValue json, size_t index, int show_error, int stop_on_error);
+int addentry(JsonValue *dest, JsonEntry *entry, size_t position, int show_error, int stop_on_error);
+int setentry(JsonValue *dest, char *key, JsonValue *value, int show_error, int stop_on_error);
+int rementry(JsonValue *dest, char *key, int show_error, int stop_on_error);
+char **getkeys(JsonValue json, int show_error, int stop_on_error);
+JsonValue **getvalues(JsonValue json, int show_error, int stop_on_error);
 JsonEntry **getentries(JsonValue json);
 
 size_t count_elements(JsonValue json)
@@ -570,23 +675,38 @@ size_t count_elements(JsonValue json)
     return 0;
 }
 
-size_t idxentry(JsonValue json, char *key)
+size_t idxentry(JsonValue json, char *key, int show_error, int stop_on_error)
 {
     if (!key)
     {
-        printf("Incorrect key");
+        if (show_error)
+            fprintf(stderr, "Incorrect key");
+
+        if (stop_on_error)
+            exit(1);
+
         return 0;
     }
 
     if (json.type != OBJECT)
     {
-        printf("Target must be a JsonValue with OBJECT as type\n");
+        if (show_error)
+            fprintf(stderr, "Target must be a JsonValue with OBJECT as type\n");
+
+        if (stop_on_error)
+            exit(1);
+
         return 0;
     }
 
     if (count_elements(json) == 0)
     {
-        printf("Object is empty\n");
+        if (show_error)
+            fprintf(stderr, "Object is empty\n");
+
+        if (stop_on_error)
+            exit(1);
+
         return 0;
     }
 
@@ -601,24 +721,39 @@ size_t idxentry(JsonValue json, char *key)
     return 0;
 }
 
-JsonEntry *getentry(JsonValue json, char *key)
+JsonEntry *getentry(JsonValue json, char *key, int show_error, int stop_on_error)
 {
     if (!key)
     {
-        printf("Incorrect key");
-        return NULL;
+        if (show_error)
+            fprintf(stderr, "Incorrect key");
+
+        if (stop_on_error)
+            exit(1);
+
+        return 0;
     }
 
     if (json.type != OBJECT)
     {
-        printf("Target must be a JsonValue with OBJECT as type\n");
-        return NULL;
+        if (show_error)
+            fprintf(stderr, "Target must be a JsonValue with OBJECT as type\n");
+
+        if (stop_on_error)
+            exit(1);
+
+        return 0;
     }
 
     if (count_elements(json) == 0)
     {
-        printf("Object is empty\n");
-        return NULL;
+        if (show_error)
+            fprintf(stderr, "Object is empty\n");
+
+        if (stop_on_error)
+            exit(1);
+
+        return 0;
     }
 
     for (size_t i = 0; i < json.as.object.count; ++i)
@@ -633,40 +768,65 @@ JsonEntry *getentry(JsonValue json, char *key)
     return NULL;
 }
 
-JsonEntry *entry_at(JsonValue json, size_t index)
+JsonEntry *entry_at(JsonValue json, size_t index, int show_error, int stop_on_error)
 {
     if (index >= json.as.object.count)
     {
-        printf("Index %zu out of bounds\n", index);
+        if (show_error)
+            fprintf(stderr, "Index %zu out of bounds\n", index);
+
+        if (stop_on_error)
+            exit(1);
+
         return NULL;
     }
 
     return json.as.object.entries[index];
 }
 
-int addentry(JsonValue *dest, JsonEntry *entry, size_t position)
+int addentry(JsonValue *dest, JsonEntry *entry, size_t position, int show_error, int stop_on_error)
 {
     if (!dest || dest->type != OBJECT)
     {
-        printf("Unknown object\n");
+        if (show_error)
+            fprintf(stderr, "Unknown object\n");
+
+        if (stop_on_error)
+            exit(1);
+
         return 0;
     }
 
     if (!entry)
     {
-        printf("Unknown entry\n");
+        if (show_error)
+            fprintf(stderr, "Unknown entry\n");
+
+        if (stop_on_error)
+            exit(1);
+
         return 0;
     }
 
     if (position >= count_elements(*dest))
     {
-        printf("Object cannot support new entry\n");
+        if (show_error)
+            fprintf(stderr, "Object cannot support new entry\n");
+
+        if (stop_on_error)
+            exit(1);
+
         return 0;
     }
 
-    if (getentry(*dest, entry->key))
+    if (getentry(*dest, entry->key, show_error, stop_on_error))
     {
-        printf("Cannot add entry with same key\n");
+        if (show_error)
+            fprintf(stderr, "Cannot add entry with same key\n");
+
+        if (stop_on_error)
+            exit(1);
+
         return 0;
     }
 
@@ -676,7 +836,12 @@ int addentry(JsonValue *dest, JsonEntry *entry, size_t position)
         dest->as.object.entries = realloc(dest->as.object.entries, sizeof(JsonEntry) * dest->as.object.capacity);
         if (!dest->as.object.entries)
         {
-            printf("An error has occurred\n");
+            if (show_error)
+                fprintf(stderr, "An error has occurred\n");
+
+            if (stop_on_error)
+                exit(1);
+
             return 0;
         }
     }
@@ -690,17 +855,27 @@ int addentry(JsonValue *dest, JsonEntry *entry, size_t position)
     return 1;
 }
 
-int setentry(JsonValue *dest, char *key, JsonValue *value)
+int setentry(JsonValue *dest, char *key, JsonValue *value, int show_error, int stop_on_error)
 {
     if (!dest || dest->type != OBJECT)
     {
-        printf("Unknown object\n");
+        if (show_error)
+            fprintf(stderr, "Unknown object\n");
+
+        if (stop_on_error)
+            exit(1);
+
         return 0;
     }
 
     if (!key)
     {
-        printf("Incorrect key");
+        if (show_error)
+            fprintf(stderr, "Incorrect key\n");
+
+        if (stop_on_error)
+            exit(1);
+
         return 0;
     }
 
@@ -711,11 +886,16 @@ int setentry(JsonValue *dest, char *key, JsonValue *value)
 
     if (count_elements(*dest) == 0)
     {
-        printf("Object is empty\n");
+        if (show_error)
+            fprintf(stderr, "Object is empty\n");
+
+        if (stop_on_error)
+            exit(1);
+
         return 0;
     }
 
-    JsonEntry *entry = getentry(*dest, key);
+    JsonEntry *entry = getentry(*dest, key, show_error, stop_on_error);
     if (!entry)
     {
         return 0;
@@ -724,27 +904,42 @@ int setentry(JsonValue *dest, char *key, JsonValue *value)
     return 1;
 }
 
-int rementry(JsonValue *dest, char *key)
+int rementry(JsonValue *dest, char *key, int show_error, int stop_on_error)
 {
     if (!dest || dest->type != OBJECT)
     {
-        printf("Unknown object\n");
+        if (show_error)
+            fprintf(stderr, "Unknown object\n");
+
+        if (stop_on_error)
+            exit(1);
+
         return 0;
     }
 
     if (!key)
     {
-        printf("Incorrect key");
+        if (show_error)
+            fprintf(stderr, "Incorrect key");
+
+        if (stop_on_error)
+            exit(1);
+
         return 0;
     }
 
-    if (!getentry(*dest, key))
+    if (!getentry(*dest, key, show_error, stop_on_error))
     {
-        printf("Cannot find entry with key:%s\n", key);
+        if (show_error)
+            fprintf(stderr, "Cannot find entry with key:%s\n", key);
+
+        if (stop_on_error)
+            exit(1);
+
         return 0;
     }
 
-    size_t index = idxentry(*dest, key);
+    size_t index = idxentry(*dest, key, show_error, stop_on_error);
     for (size_t i = index; i < dest->as.object.count - 1; ++i)
     {
         dest->as.object.entries[i] = dest->as.object.entries[i + 1];
@@ -754,11 +949,16 @@ int rementry(JsonValue *dest, char *key)
 }
 
 /* Returns existing keys of json object without copy */
-char **getkeys(JsonValue json)
+char **getkeys(JsonValue json, int show_error, int stop_on_error)
 {
     if (json.type != OBJECT)
     {
-        printf("Target must be a JsonValue with OBJECT as type\n");
+        if (show_error)
+            fprintf(stderr, "Target must be a JsonValue with OBJECT as type\n");
+
+        if (stop_on_error)
+            exit(1);
+
         return NULL;
     }
 
@@ -777,11 +977,16 @@ char **getkeys(JsonValue json)
 }
 
 /* Returns existing values of json object without copy */
-JsonValue **getvalues(JsonValue json)
+JsonValue **getvalues(JsonValue json, int show_error, int stop_on_error)
 {
     if (json.type != OBJECT)
     {
-        printf("Target must be a JsonValue with OBJECT as type\n");
+        if (show_error)
+            fprintf(stderr, "Target must be a JsonValue with OBJECT as type\n");
+
+        if (stop_on_error)
+            exit(1);
+
         return NULL;
     }
 
