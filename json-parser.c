@@ -1,6 +1,8 @@
 #include "json_parser.h"
 #include <time.h>
 
+#define MAX_FILES_ALLOWED 16
+
 void print_cmd()
 {
     printf("Available commands:\n\n");
@@ -13,8 +15,8 @@ void print_cmd()
     printf("   --default                    Use default json\n");
     printf("    -d\n\n");
 
-    printf("  file\n");
-    printf("   --file <path>                Use a JSON file provided by path\n");
+    printf("  files\n");
+    printf("   --files <path>               Use one or multiple JSON files provided by path\n");
     printf("    -f    <path>\n\n");
 
     printf("  pretty\n");
@@ -49,7 +51,13 @@ int main(int argc, char **argv)
     }
 
     int show_default = 0, show_pretty = 0, show_error = 0, stop_on_error = 0;
-    char filepath[256];
+    char **paths = malloc(sizeof(char *) * MAX_FILES_ALLOWED);
+    if (!paths)
+    {
+        fprintf(stderr, "An error has occurred\n");
+        exit(1);
+    }
+    char **p = paths;
     int indent = 0;
 
     for (int i = 1; i < argc; ++i)
@@ -63,16 +71,16 @@ int main(int argc, char **argv)
         if (strcmp(argv[i], "--default") == 0 || strcmp(argv[i], "-d") == 0)
             show_default = 1;
 
-        if (strcmp(argv[i], "--file") == 0 || strcmp(argv[i], "-f") == 0)
+        if (strcmp(argv[i], "--files") == 0 || strcmp(argv[i], "-f") == 0)
         {
-            if (i + 1 < argc - 1 && check_extension(argv[i + 1], 1, 1))
+            int k = i + 1;
+            while (k < argc - 1 && !starts_with(argv[k], '-', 1, 1))
             {
-                strcpy(filepath, argv[i + 1]);
-            }
-            else
-            {
-                fprintf(stderr, "Cannot use file at path: %s\n", argv[i + 1]);
-                exit(1);
+                if (check_extension(argv[k], 1, 0))
+                {
+                    *p++ = strdup(argv[k]);
+                }
+                k++;
             }
         }
 
@@ -112,32 +120,44 @@ int main(int argc, char **argv)
     {
         printf("### USING DEFAULT FILE ### \n");
         srand((unsigned int)time(NULL));
-        char *paths[3] = {"default_dataset.json", "medium_dataset.json", "big_dataset.json"};
+        char *default_paths[3] = {"default_dataset.json", "medium_dataset.json", "big_dataset.json"};
         for (size_t i = 0; i < 3; ++i)
         {
-            if (!check_extension(paths[i], 1, 1))
+            if (!check_extension(default_paths[i], 1, 1))
             {
-                fprintf(stderr, "Expected \".json\" extension, got: %s\n", paths[i]);
+                fprintf(stderr, "Expected \".json\" extension, got: %s\n", default_paths[i]);
                 exit(1);
             }
         }
         int id = rand() % 3;
-        strcpy(filepath, paths[id]);
+        *p++ = default_paths[id];
     }
 
-    printf("Reading %s\n", filepath);
-    printf("Current indent: %d\n", indent);
-    printf(show_pretty ? "Pretty display enabled\n" : "Pretty display disabled\n");
-    printf(show_error ? "Error handling enabled\n" : "Error handling disabled\n");
-    printf(stop_on_error ? "Exiting on error enabled\n\n" : "Exiting on error disabled\n\n");
+    size_t count = 0;
+    while (*paths)
+    {
+        printf("Reading %s\n", *paths);
+        printf("Current indent: %d\n", indent);
+        printf(show_pretty ? "Pretty display enabled\n" : "Pretty display disabled\n");
+        printf(show_error ? "Error handling enabled\n" : "Error handling disabled\n");
+        printf(stop_on_error ? "Exiting on error enabled\n\n" : "Exiting on error disabled\n\n");
 
-    JsonValue *json = read_json(filepath, show_error, stop_on_error);
-    dump_json(json, indent, show_pretty);
-    printf("\n\n");
+        JsonValue *json = read_json(*paths, show_error, stop_on_error);
+        dump_json(json, indent, show_pretty);
+        printf("\n\n");
 
-    printf("Counted %zu main item(s)\n", count_elements(*json));
+        printf("Counted %zu main item(s)\n\n", count_elements(*json));
 
-    free(json);
+        free(json);
+        count++;
+        paths++;
+    }
+    printf("Read a total of %zu files\n", count);
+    for (size_t i = 0; i < MAX_FILES_ALLOWED; ++i)
+    {
+        free(paths[i]);
+    }
+    free(paths);
     exit(0);
 
     return 0;

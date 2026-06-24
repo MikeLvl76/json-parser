@@ -172,7 +172,7 @@ int check_extension(char *path, int show_error, int stop_on_error)
     if (!path || strlen(path) < 6)
     {
         if (show_error)
-            fprintf(stderr, "Path doesn't exist or doesn't have enough characters\n");
+            fprintf(stderr, "Path \"%s\" doesn't exist or doesn't have enough characters\n", path);
 
         if (stop_on_error)
             exit(1);
@@ -182,4 +182,23 @@ int check_extension(char *path, int show_error, int stop_on_error)
 
     char *extension = sub(path, strlen(path) - strlen(".json"), strlen(path), show_error, stop_on_error);
     return strcmp(extension, ".json") == 0 ? 1 : 0;
+}
+
+int starts_with(char *str, char c, int show_error, int stop_on_error)
+{
+    if (!str || *str == '\0')
+    {
+        if (show_error)
+            fprintf(stderr, "String doesn't exist\n");
+
+        if (stop_on_error)
+            exit(1);
+
+        return 0;
+    }
+
+    if (str[0] == c)
+        return 1;
+
+    return 0;
 }
