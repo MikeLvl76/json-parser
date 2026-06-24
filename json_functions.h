@@ -658,7 +658,7 @@ int setentry(JsonValue *dest, char *key, JsonValue *value, int show_error, int s
 int rementry(JsonValue *dest, char *key, int show_error, int stop_on_error);
 char **getkeys(JsonValue json, int show_error, int stop_on_error);
 JsonValue **getvalues(JsonValue json, int show_error, int stop_on_error);
-JsonEntry **getentries(JsonValue json);
+JsonEntry **getentries(JsonValue json, int show_error, int stop_on_error);
 
 size_t count_elements(JsonValue json)
 {
@@ -1005,8 +1005,19 @@ JsonValue **getvalues(JsonValue json, int show_error, int stop_on_error)
 }
 
 /* Returns existing entries of json object without copy */
-JsonEntry **getentries(JsonValue json)
+JsonEntry **getentries(JsonValue json, int show_error, int stop_on_error)
 {
+    if (json.type != OBJECT)
+    {
+        if (show_error)
+            fprintf(stderr, "Target must be a JsonValue with OBJECT as type\n");
+
+        if (stop_on_error)
+            exit(1);
+
+        return NULL;
+    }
+
     return json.as.object.entries;
 }
 

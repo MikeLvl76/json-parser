@@ -23,16 +23,16 @@ Just a light parser written in C on Windows :scream: :scream: :scream: (I will p
 - **Note:** commands order doesn't matter but at least one must be provided
 
 <table>
-    <tr class="header">
-        <th class="header-cell">Name</th>
-        <th class="header-cell">Usage</th>
-        <th class="header-cell">Description</th>
+    <tr>
+        <th>Name</th>
+        <th>Usage</th>
+        <th>Description</th>
     </tr>
     <tr>
         <td>Help</td>
-        <td class="usage">
-            <code class="code">--help</code>
-            <code class="code">-h</code>
+        <td>
+            <code>--help</code>
+            <code>-h</code>
         </td>
         <td>
             Display commands usage. 
@@ -40,9 +40,9 @@ Just a light parser written in C on Windows :scream: :scream: :scream: (I will p
     </tr>
     <tr>
         <td>Default</td>
-        <td class="usage">
-            <code class="code">--default</code>
-            <code class="code">-d</code>
+        <td>
+            <code>--default</code>
+            <code>-d</code>
         </td>
         <td>
             Use default JSON files.<br/>
@@ -51,9 +51,9 @@ Just a light parser written in C on Windows :scream: :scream: :scream: (I will p
     </tr>
     <tr>
         <td>Files</td>
-        <td class="usage">
-            <code class="code">--files &#60;paths&#62;</code>
-            <code class="code">-f &#60;paths&#62;</code>
+        <td>
+            <code>--files &#60;paths&#62;</code>
+            <code>-f &#60;paths&#62;</code>
         </td>
         <td>
             Use files by giving their path.<br/>
@@ -63,9 +63,9 @@ Just a light parser written in C on Windows :scream: :scream: :scream: (I will p
     </tr>
     <tr>
         <td>Pretty</td>
-        <td class="usage">
-            <code class="code">--pretty</code>
-            <code class="code">-p</code>
+        <td>
+            <code>--pretty</code>
+            <code>-p</code>
         </td>
         <td>
             Prints JSON content with correct indents and spaces.<br/>
@@ -74,9 +74,9 @@ Just a light parser written in C on Windows :scream: :scream: :scream: (I will p
     </tr>
     <tr>
         <td>Show error</td>
-        <td class="usage">
-            <code class="code">--show-error</code>
-            <code class="code">-se</code>
+        <td>
+            <code>--show-error</code>
+            <code>-se</code>
         </td>
         <td>
             Prints parsing errors but does not stop running.<br/>
@@ -85,9 +85,9 @@ Just a light parser written in C on Windows :scream: :scream: :scream: (I will p
     </tr>
     <tr>
         <td>Stop on error</td>
-        <td class="usage">
-            <code class="code">--stop-on-error</code>
-            <code class="code">-soe</code>
+        <td>
+            <code>--stop-on-error</code>
+            <code>-soe</code>
         </td>
         <td>
             Stop running at first encountered error.<br/>
@@ -97,13 +97,43 @@ Just a light parser written in C on Windows :scream: :scream: :scream: (I will p
     </tr>
     <tr>
         <td>Indent</td>
-        <td class="usage">
-            <code class="code">--indent &#60;value&#62;</code>
-            <code class="code">-i &#60;value&#62;</code>
+        <td>
+            <code>--indent &#60;value&#62;</code>
+            <code>-i &#60;value&#62;</code>
         </td>
         <td>
             Set indent (default 0) to modify indent before key/value pairs, arrays or objects.<br/>
             Useful with <code>--prettify</code> command for better print.<br/>
+        </td>
+    </tr>
+    <tr>
+        <td>Keys</td>
+        <td>
+            <code>--keys</code>
+            <code>-k</code>
+        </td>
+        <td>
+            List all keys from top-level object in JSON.
+        </td>
+    </tr>
+    <tr>
+        <td>Values</td>
+        <td>
+            <code>--values</code>
+            <code>-v</code>
+        </td>
+        <td>
+            List all values from top-level object in JSON.
+        </td>
+    </tr>
+    <tr>
+        <td>Entries</td>
+        <td>
+            <code>--entries</code>
+            <code>-e</code>
+        </td>
+        <td>
+            List all entries from top-level object in JSON.
         </td>
     </tr>
 </table>
