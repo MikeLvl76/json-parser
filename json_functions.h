@@ -229,7 +229,11 @@ void tree_impl(JsonValue *root, int depth, int *has_next, int is_last, char *lab
         printf("%s ", is_last ? "└──" : "├──");
 
         if (label)
-            printf("%s (%s)\n", label, type_name(root->type));
+        {
+            char *name = sub(label, 1, strlen(label) - 1, 1, 1);
+            printf("%s (%s)\n", name, type_name(root->type));
+            free(name);
+        }
         else
             printf("(%s)\n", type_name(root->type));
     }
