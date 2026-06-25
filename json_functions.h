@@ -87,6 +87,7 @@ JsonEntry *alloc_entry(char *key, JsonValue *value)
 
 /* Parse JSON file */
 void dump_json(JsonValue *json, int indent, int prettify);
+void tree(JsonValue *root);
 JsonValue *str_to_json_value(char *str, int show_error, int stop_on_error);
 JsonValue *str_to_json_int(char *str, int show_error, int stop_on_error);
 JsonValue *str_to_json_double(char *str, int show_error, int stop_on_error);
@@ -183,6 +184,97 @@ void dump_json(JsonValue *json, int indent, int prettify)
     default:
         break;
     }
+}
+
+char *type_name(JsonValueType type)
+{
+    switch (type)
+    {
+    case INTEGER:
+        return "integer";
+    case DOUBLE:
+        return "double";
+    case STRING:
+        return "string";
+    case ARRAY:
+        return "array";
+    case OBJECT:
+        return "object";
+    case BOOLEAN:
+        return "boolean";
+    case NULL_VALUE:
+        return "null";
+    default:
+        return "unknown";
+    }
+}
+
+void tree_impl(JsonValue *root, int depth, int *has_next, int is_last, char *label)
+{
+    if (!root)
+    {
+        print_tree_prefix(has_next, depth);
+        printf("%s invalid node\n", is_last ? "└──" : "├──");
+        return;
+    }
+
+    if (depth == 0)
+    {
+        printf("(%s)\n", type_name(root->type));
+    }
+    else
+    {
+        print_tree_prefix(has_next, depth - 1);
+
+        printf("%s ", is_last ? "└──" : "├──");
+
+        if (label)
+            printf("%s (%s)\n", label, type_name(root->type));
+        else
+            printf("(%s)\n", type_name(root->type));
+    }
+
+    switch (root->type)
+    {
+    case ARRAY:
+    {
+        for (size_t i = 0; i < root->as.array.length; ++i)
+        {
+            char index[32];
+            snprintf(index, sizeof(index), "[%zu]", i);
+
+            has_next[depth] = !is_last;
+
+            tree_impl(root->as.array.items[i], depth + 1, has_next, i == root->as.array.length - 1, index);
+        }
+        break;
+    }
+
+    case OBJECT:
+    {
+        for (size_t i = 0; i < root->as.object.count; ++i)
+        {
+            JsonEntry *entry = root->as.object.entries[i];
+
+            if (!entry)
+                continue;
+
+            has_next[depth] = !is_last;
+
+            tree_impl(entry->value, depth + 1, has_next, i == root->as.object.count - 1, entry->key);
+        }
+        break;
+    }
+
+    default:
+        break;
+    }
+}
+
+void tree(JsonValue *root)
+{
+    int has_next[128] = {0};
+    tree_impl(root, 0, has_next, 1, NULL);
 }
 
 JsonValue *str_to_json_value(char *str, int show_error, int stop_on_error)

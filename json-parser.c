@@ -19,6 +19,10 @@ void print_cmd()
     printf("   --files <path>               Use one or multiple JSON files provided by path\n");
     printf("    -f    <path>\n\n");
 
+    printf("  tree\n");
+    printf("   --tree                       Print JSON in tree format\n");
+    printf("    -t\n\n");
+
     printf("  pretty\n");
     printf("   --pretty                     Print JSON with correct indents, linebreaks and spaces\n");
     printf("    -p\n\n");
@@ -62,7 +66,9 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    int show_default = 0, show_pretty = 0, show_error = 0, stop_on_error = 0, display_keys = 0, display_values = 0, display_entries = 0;
+    int show_default = 0, show_pretty = 0, show_error = 0, stop_on_error = 0,
+        display_keys = 0, display_values = 0, display_entries = 0, as_tree = 0;
+
     char **paths = malloc(sizeof(char *) * MAX_FILES_ALLOWED);
     if (!paths)
     {
@@ -94,7 +100,11 @@ int main(int argc, char **argv)
                 }
                 k++;
             }
+            *p = NULL;
         }
+
+        if (strcmp(argv[i], "--tree") == 0 || strcmp(argv[i], "-t") == 0)
+            as_tree = 1;
 
         if (strcmp(argv[i], "--pretty") == 0 || strcmp(argv[i], "-p") == 0)
             show_pretty = 1;
@@ -232,14 +242,21 @@ int main(int argc, char **argv)
         };
 
         printf("JSON content:\n");
-        dump_json(json, indent, show_pretty);
-        printf("\n\n");
+        if (as_tree)
+        {
+            tree(json);
+            printf("\n");
+        }
+        else
+        {
+            dump_json(json, indent, show_pretty);
+            printf("\n\n");
+        }
 
         free(json);
         count++;
         paths++;
     }
-    printf("Read a total of %zu files\n", count);
     for (size_t i = 0; i < count; ++i)
     {
         free(paths[i]);

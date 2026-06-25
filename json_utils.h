@@ -167,6 +167,14 @@ void print_indent(int indent)
         putchar(' ');
 }
 
+void print_tree_prefix(int *has_next, int depth)
+{
+    for (int i = 0; i < depth; ++i)
+    {
+        printf(has_next[i] ? "│   " : "    ");
+    }
+}
+
 int check_extension(char *path, int show_error, int stop_on_error)
 {
     if (!path || strlen(path) < 6)
@@ -181,7 +189,7 @@ int check_extension(char *path, int show_error, int stop_on_error)
     }
 
     char *extension = sub(path, strlen(path) - strlen(".json"), strlen(path), show_error, stop_on_error);
-    return strcmp(extension, ".json") == 0 ? 1 : 0;
+    return strcmp(extension, ".json") == 0;
 }
 
 int starts_with(char *str, char c, int show_error, int stop_on_error)
@@ -197,8 +205,5 @@ int starts_with(char *str, char c, int show_error, int stop_on_error)
         return 0;
     }
 
-    if (str[0] == c)
-        return 1;
-
-    return 0;
+    return str[0] == c;
 }
