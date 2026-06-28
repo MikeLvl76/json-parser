@@ -38,18 +38,6 @@ void print_cmd()
     printf("  indent\n");
     printf("   --indent <value>             Change default indent value when printing JSON content\n");
     printf("    -i      <value>\n\n");
-
-    printf("  keys\n");
-    printf("   --keys                       Display keys from JSON object\n");
-    printf("    -k\n\n");
-
-    printf("  values\n");
-    printf("   --values                     Display values from JSON object\n");
-    printf("    -v\n\n");
-
-    printf("  entries\n");
-    printf("   --entries                    Display entries from JSON object\n");
-    printf("    -e\n\n");
 }
 
 void print_help()
@@ -66,8 +54,7 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    int show_default = 0, show_pretty = 0, show_error = 0, stop_on_error = 0,
-        display_keys = 0, display_values = 0, display_entries = 0, as_tree = 0;
+    int show_default = 0, show_pretty = 0, show_error = 0, stop_on_error = 0, as_tree = 0;
 
     char **paths = malloc(sizeof(char *) * MAX_FILES_ALLOWED);
     if (!paths)
@@ -136,15 +123,6 @@ int main(int argc, char **argv)
                 exit(1);
             }
         }
-
-        if (strcmp(argv[i], "--keys") == 0 || strcmp(argv[i], "-k") == 0)
-            display_keys = 1;
-
-        if (strcmp(argv[i], "--values") == 0 || strcmp(argv[i], "-v") == 0)
-            display_values = 1;
-
-        if (strcmp(argv[i], "--entries") == 0 || strcmp(argv[i], "-e") == 0)
-            display_entries = 1;
     }
 
     if (show_default)
@@ -171,75 +149,9 @@ int main(int argc, char **argv)
         printf(show_pretty ? "Pretty display: \u2714 enabled\n" : "Pretty display: \u2716 disabled\n");
         printf("Current indent: %d\n", indent);
         printf(show_error ? "Error handling: \u2714 enabled\n" : "Error handling: \u2716 disabled\n");
-        printf(stop_on_error ? "Exiting on error: \u2714 enabled\n" : "Exiting on error: \u2716 disabled\n");
-        printf(display_keys ? "Keys list: \u2714 enabled\n" : "Keys list: \u2716 disabled\n");
-        printf(display_values ? "Values list: \u2714 enabled\n" : "Values list: \u2716 disabled\n");
-        printf(display_entries ? "Entries list: \u2714 enabled\n\n" : "Entries list: \u2716 disabled\n\n");
+        printf(stop_on_error ? "Exiting on error: \u2714 enabled\n\n" : "Exiting on error: \u2716 disabled\n\n");
 
         JsonValue *json = read_json(*paths, show_error, stop_on_error);
-        if (display_keys)
-        {
-            printf("Keys:\n\n");
-            char **keys = getkeys(*json, show_error, stop_on_error);
-            if (!keys)
-            {
-                printf("  No keys\n");
-            }
-            else
-            {
-                for (size_t i = 0; i < json->as.object.count; ++i)
-                {
-                    printf("  %s\n", keys[i]);
-                    free(keys[i]);
-                }
-                printf("\n");
-                free(keys);
-            }
-        };
-
-        if (display_values)
-        {
-            printf("Values:\n\n");
-            JsonValue **values = getvalues(*json, show_error, stop_on_error);
-            if (!values)
-            {
-                printf("  No values\n");
-            }
-            else
-            {
-                for (size_t i = 0; i < json->as.object.count; ++i)
-                {
-                    printf("  ");
-                    dump_json(values[i], indent, show_pretty);
-                    free(values[i]);
-                    printf("\n");
-                }
-                printf("\n");
-                free(values);
-            }
-        };
-
-        if (display_entries)
-        {
-            printf("Entries:\n\n");
-            JsonEntry **entries = getentries(*json, show_error, stop_on_error);
-            if (!entries)
-            {
-                printf("  No entries\n");
-            }
-            else
-            {
-                for (size_t i = 0; i < json->as.object.count; ++i)
-                {
-                    printf("  (%s, ", entries[i]->key);
-                    dump_json(entries[i]->value, indent, show_pretty);
-                    free(entries[i]);
-                    printf(")\n");
-                }
-                printf("\n");
-                free(entries);
-            }
-        };
 
         printf("JSON content:\n");
         if (as_tree)

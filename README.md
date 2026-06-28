@@ -107,33 +107,15 @@ Just a light parser written in C on Windows :scream: :scream: :scream: (I will p
         </td>
     </tr>
     <tr>
-        <td>Keys</td>
+        <td>Tree</td>
         <td>
-            <code>--keys</code>
-            <code>-k</code>
+            <code>--tree</code>
+            <code>-t</code>
         </td>
         <td>
-            List all keys from top-level object in JSON.
-        </td>
-    </tr>
-    <tr>
-        <td>Values</td>
-        <td>
-            <code>--values</code>
-            <code>-v</code>
-        </td>
-        <td>
-            List all values from top-level object in JSON.
-        </td>
-    </tr>
-    <tr>
-        <td>Entries</td>
-        <td>
-            <code>--entries</code>
-            <code>-e</code>
-        </td>
-        <td>
-            List all entries from top-level object in JSON.
+            Display JSON content as a tree.<br/>
+            Each node is represented with its type. For array/object the content is also represented.<br/>
+            This mode of display is not compatible with classic display and <code>--prettier</code> command will not work with.
         </td>
     </tr>
 </table>
