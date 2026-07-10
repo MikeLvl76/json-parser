@@ -23,6 +23,10 @@ void print_cmd()
     printf("   --tree                       Print JSON in tree format\n");
     printf("    -t\n\n");
 
+    printf("  with values\n");
+    printf("   --with-values                Show values for tree representation\n");
+    printf("    -wv\n\n");
+
     printf("  pretty\n");
     printf("   --pretty                     Print JSON with correct indents, linebreaks and spaces\n");
     printf("    -p\n\n");
@@ -54,7 +58,7 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    int show_default = 0, show_pretty = 0, show_error = 0, stop_on_error = 0, as_tree = 0;
+    int show_default = 0, show_pretty = 0, show_error = 0, stop_on_error = 0, as_tree = 0, tree_with_values = 0;
 
     char **paths = malloc(sizeof(char *) * MAX_FILES_ALLOWED);
     if (!paths)
@@ -91,7 +95,13 @@ int main(int argc, char **argv)
         }
 
         if (strcmp(argv[i], "--tree") == 0 || strcmp(argv[i], "-t") == 0)
+        {
             as_tree = 1;
+            if (i + 1 < argc - 1 && (strcmp(argv[i + 1], "--with-values") == 0 || strcmp(argv[i + 1], "-wv") == 0))
+            {
+                tree_with_values = 1;
+            }
+        }
 
         if (strcmp(argv[i], "--pretty") == 0 || strcmp(argv[i], "-p") == 0)
             show_pretty = 1;
@@ -156,7 +166,7 @@ int main(int argc, char **argv)
         printf("JSON content:\n");
         if (as_tree)
         {
-            tree(json);
+            tree(json, tree_with_values);
             printf("\n");
         }
         else
