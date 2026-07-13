@@ -118,4 +118,14 @@ Just a light parser written in C on Windows :scream: :scream: :scream: (I will p
             This mode of display is not compatible with classic display and <code>--prettier</code> command will not work with.
         </td>
     </tr>
+    <tr>
+        <td>Find key</td>
+        <td>
+            <code>--find-key &#60;key&#62;</code>
+            <code>-fk &#60;key&#62;</code>
+        </td>
+        <td>
+            Find the first occurrence of a key in json.<br/>
+        </td>
+    </tr>
 </table>
