@@ -17,7 +17,7 @@ void print_cmd()
 
     printf("  files\n");
     printf("   --files <path>               Use one or multiple JSON files provided by path\n");
-    printf("    -f    <path>\n\n");
+    printf("    -f     <path>\n\n");
 
     printf("  tree\n");
     printf("   --tree                       Print JSON in tree format\n");
@@ -42,6 +42,10 @@ void print_cmd()
     printf("  indent\n");
     printf("   --indent <value>             Change default indent value when printing JSON content\n");
     printf("    -i      <value>\n\n");
+
+    printf("  find key\n");
+    printf("   --find-key <key>             Retrieve entry by its key\n");
+    printf("    -fk       <key>\n\n");
 }
 
 void print_help()
@@ -58,7 +62,10 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    int show_default = 0, show_pretty = 0, show_error = 0, stop_on_error = 0, as_tree = 0, tree_with_values = 0;
+    int show_default = 0, show_pretty = 0, show_error = 0, stop_on_error = 0,
+        as_tree = 0, tree_with_values = 0, find_by_key = 0;
+
+    char *key;
 
     char **paths = malloc(sizeof(char *) * MAX_FILES_ALLOWED);
     if (!paths)
@@ -83,7 +90,7 @@ int main(int argc, char **argv)
         if (strcmp(argv[i], "--files") == 0 || strcmp(argv[i], "-f") == 0)
         {
             int k = i + 1;
-            while (k < argc - 1 && !starts_with(argv[k], '-', 1, 1))
+            while (k <= argc - 1 && !starts_with(argv[k], '-', 1, 1))
             {
                 if (check_extension(argv[k], 1, 0))
                 {
@@ -97,7 +104,7 @@ int main(int argc, char **argv)
         if (strcmp(argv[i], "--tree") == 0 || strcmp(argv[i], "-t") == 0)
         {
             as_tree = 1;
-            if (i + 1 < argc - 1 && (strcmp(argv[i + 1], "--with-values") == 0 || strcmp(argv[i + 1], "-wv") == 0))
+            if (i + 1 <= argc - 1 && (strcmp(argv[i + 1], "--with-values") == 0 || strcmp(argv[i + 1], "-wv") == 0))
             {
                 tree_with_values = 1;
             }
@@ -114,7 +121,7 @@ int main(int argc, char **argv)
 
         if (strcmp(argv[i], "--indent") == 0 || strcmp(argv[i], "-i") == 0)
         {
-            if (i + 1 < argc - 1 && isint(argv[i + 1], 1, 1))
+            if (i + 1 <= argc - 1 && isint(argv[i + 1], 1, 1))
             {
                 int value = atoi(argv[i + 1]);
                 if (value <= 0)
@@ -130,6 +137,20 @@ int main(int argc, char **argv)
             else
             {
                 fprintf(stderr, "Incorrect indent value: %s\n", argv[i + 1]);
+                exit(1);
+            }
+        }
+
+        if (strcmp(argv[i], "--find-key") == 0 || strcmp(argv[i], "-fk") == 0)
+        {
+            if (i + 1 <= argc - 1)
+            {
+                key = strdup(argv[i + 1]);
+                find_by_key = 1;
+            }
+            else
+            {
+                fprintf(stderr, "Incorrect key: %s\n", argv[i + 1]);
                 exit(1);
             }
         }
@@ -163,7 +184,6 @@ int main(int argc, char **argv)
 
         JsonValue *json = read_json(*paths, show_error, stop_on_error);
 
-        printf("JSON content:\n");
         if (as_tree)
         {
             tree(json, tree_with_values);
@@ -173,6 +193,28 @@ int main(int argc, char **argv)
         {
             dump_json(json, indent, show_pretty);
             printf("\n\n");
+        }
+
+        if (find_by_key)
+        {
+            if (key)
+            {
+                printf("Searching for \"%s\" key...\n", key);
+                JsonEntry *entry = getentry(*json, key, show_error, stop_on_error);
+                if (!entry)
+                {
+                    fprintf(stderr, "Cannot retrieve entry by key: %s\n", key);
+                    exit(1);
+                }
+
+                printf("%s: ", entry->key);
+                dump_json(entry->value, indent, show_pretty);
+                printf("\n");
+            }
+            else
+            {
+                printf("WARNING: Could not find key\n");
+            }
         }
 
         free(json);

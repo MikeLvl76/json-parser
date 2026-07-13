@@ -112,7 +112,7 @@ void dump_json(JsonValue *json, int indent, int prettify)
         break;
 
     case DOUBLE:
-        printf("%lf", json->as.double_value);
+        printf("%.3lf", json->as.double_value);
         break;
 
     case STRING:
@@ -909,18 +909,7 @@ JsonEntry *getentry(JsonValue json, char *key, int show_error, int stop_on_error
         if (stop_on_error)
             exit(1);
 
-        return 0;
-    }
-
-    if (json.type != OBJECT)
-    {
-        if (show_error)
-            fprintf(stderr, "Target must be a JsonValue with OBJECT as type\n");
-
-        if (stop_on_error)
-            exit(1);
-
-        return 0;
+        return NULL;
     }
 
     if (count_elements(json) == 0)
@@ -931,16 +920,56 @@ JsonEntry *getentry(JsonValue json, char *key, int show_error, int stop_on_error
         if (stop_on_error)
             exit(1);
 
-        return 0;
+        return NULL;
     }
 
-    for (size_t i = 0; i < json.as.object.count; ++i)
+    if (json.type == OBJECT)
     {
-        if (strcmp(json.as.object.entries[i]->key, key) == 0)
+        for (size_t i = 0; i < json.as.object.count; ++i)
         {
-            return json.as.object.entries[i];
+            JsonEntry *entry = json.as.object.entries[i];
+            char *k = sub(entry->key, 1, strlen(entry->key) - 1, show_error, stop_on_error);
+            if (!k)
+            {
+                if (show_error)
+                    fprintf(stderr, "Object is empty\n");
+
+                if (stop_on_error)
+                    exit(1);
+
+                return NULL;
+            }
+
+            if (strcmp(k, key) == 0)
+            {
+                free(k);
+                return entry;
+            }
+            free(k);
+
+            if (entry->value->type == ARRAY || entry->value->type == OBJECT)
+            {
+                return getentry(*entry->value, key, show_error, stop_on_error);
+            }
         }
     }
+    else if (json.type == ARRAY)
+    {
+        for (size_t i = 0; i < json.as.array.length; ++i)
+        {
+            JsonValue *value = json.as.array.items[i];
+            if (value->type == ARRAY || value->type == OBJECT)
+            {
+                return getentry(*value, key, show_error, stop_on_error);
+            }
+        }
+    }
+
+    if (show_error)
+        fprintf(stderr, "Target must be a JsonValue with OBJECT or ARRAY as type\n");
+
+    if (stop_on_error)
+        exit(1);
 
     printf("Unknown key\n");
     return NULL;
