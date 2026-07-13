@@ -3,6 +3,13 @@
 
 #define MAX_FILES_ALLOWED 16
 
+typedef struct
+{
+    char *name;
+    char *usage;
+    char *description;
+} Arg;
+
 void print_cmd()
 {
     printf("Available commands:\n\n");
@@ -53,6 +60,16 @@ void print_help()
     fprintf(stderr, "TODO: implement \"print_help\" function");
 }
 
+int check_cmd(char *arg, char *cmd, char *short_cmd)
+{
+    if (!arg || !cmd || !short_cmd)
+    {
+        return 0;
+    }
+
+    return strcmp(arg, cmd) == 0 || strcmp(arg, short_cmd) == 0;
+}
+
 int main(int argc, char **argv)
 {
     if (argc < 2)
@@ -78,16 +95,16 @@ int main(int argc, char **argv)
 
     for (int i = 1; i < argc; ++i)
     {
-        if (strcmp(argv[i], "--help") == 0 || strcmp(argv[i], "-h") == 0)
+        if (check_cmd(argv[i], "--help", "-h"))
         {
             print_help();
             exit(1);
         }
 
-        if (strcmp(argv[i], "--default") == 0 || strcmp(argv[i], "-d") == 0)
+        if (check_cmd(argv[i], "--default", "-d"))
             show_default = 1;
 
-        if (strcmp(argv[i], "--files") == 0 || strcmp(argv[i], "-f") == 0)
+        if (check_cmd(argv[i], "--files", "-f"))
         {
             int k = i + 1;
             while (k <= argc - 1 && !starts_with(argv[k], '-', 1, 1))
@@ -101,25 +118,25 @@ int main(int argc, char **argv)
             *p = NULL;
         }
 
-        if (strcmp(argv[i], "--tree") == 0 || strcmp(argv[i], "-t") == 0)
+        if (check_cmd(argv[i], "--tree", "-t"))
         {
             as_tree = 1;
-            if (i + 1 <= argc - 1 && (strcmp(argv[i + 1], "--with-values") == 0 || strcmp(argv[i + 1], "-wv") == 0))
+            if (i + 1 <= argc - 1 && check_cmd(argv[i + 1], "--with-values", "-wv"))
             {
                 tree_with_values = 1;
             }
         }
 
-        if (strcmp(argv[i], "--pretty") == 0 || strcmp(argv[i], "-p") == 0)
+        if (check_cmd(argv[i], "--pretty", "-p"))
             show_pretty = 1;
 
-        if (strcmp(argv[i], "--show-error") == 0 || strcmp(argv[i], "-se") == 0)
+        if (check_cmd(argv[i], "--show-error", "-se"))
             show_error = 1;
 
-        if (strcmp(argv[i], "--stop-on-error") == 0 || strcmp(argv[i], "-soe") == 0)
+        if (check_cmd(argv[i], "--stop-on-error", "-soe"))
             stop_on_error = 1;
 
-        if (strcmp(argv[i], "--indent") == 0 || strcmp(argv[i], "-i") == 0)
+        if (check_cmd(argv[i], "--indent", "-i"))
         {
             if (i + 1 <= argc - 1 && isint(argv[i + 1], 1, 1))
             {
@@ -141,7 +158,7 @@ int main(int argc, char **argv)
             }
         }
 
-        if (strcmp(argv[i], "--find-key") == 0 || strcmp(argv[i], "-fk") == 0)
+        if (check_cmd(argv[i], "--find-key", "-fk"))
         {
             if (i + 1 <= argc - 1)
             {
