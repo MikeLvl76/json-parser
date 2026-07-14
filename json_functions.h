@@ -829,14 +829,13 @@ JsonValue *str_to_json_object(char *str_object, int show_error, int stop_on_erro
 /* Manipulate struct */
 size_t count_elements(JsonValue json);
 size_t idxentry(JsonValue json, char *key, int show_error, int stop_on_error);
-JsonEntry *getentry(JsonValue json, char *key, int show_error, int stop_on_error);
+JsonEntry *getentry(JsonValue json, char *key, int show_error);
 JsonEntry *entry_at(JsonValue json, size_t index, int show_error, int stop_on_error);
 int addentry(JsonValue *dest, JsonEntry *entry, size_t position, int show_error, int stop_on_error);
 int setentry(JsonValue *dest, char *key, JsonValue *value, int show_error, int stop_on_error);
 int rementry(JsonValue *dest, char *key, int show_error, int stop_on_error);
 char **getkeys(JsonValue json, int show_error, int stop_on_error);
 JsonValue **getvalues(JsonValue json, int show_error, int stop_on_error);
-JsonEntry **getentries(JsonValue json, int show_error, int stop_on_error);
 
 size_t count_elements(JsonValue json)
 {
@@ -899,15 +898,15 @@ size_t idxentry(JsonValue json, char *key, int show_error, int stop_on_error)
     return 0;
 }
 
-JsonEntry *getentry(JsonValue json, char *key, int show_error, int stop_on_error)
+/*
+ * TODO: trigger exit only when object is fully traversed if key is absent
+ */
+JsonEntry *getentry(JsonValue json, char *key, int show_error)
 {
     if (!key)
     {
         if (show_error)
             fprintf(stderr, "Incorrect key");
-
-        if (stop_on_error)
-            exit(1);
 
         return NULL;
     }
@@ -917,9 +916,6 @@ JsonEntry *getentry(JsonValue json, char *key, int show_error, int stop_on_error
         if (show_error)
             fprintf(stderr, "Object is empty\n");
 
-        if (stop_on_error)
-            exit(1);
-
         return NULL;
     }
 
@@ -928,14 +924,11 @@ JsonEntry *getentry(JsonValue json, char *key, int show_error, int stop_on_error
         for (size_t i = 0; i < json.as.object.count; ++i)
         {
             JsonEntry *entry = json.as.object.entries[i];
-            char *k = sub(entry->key, 1, strlen(entry->key) - 1, show_error, stop_on_error);
+            char *k = sub(entry->key, 1, strlen(entry->key) - 1, show_error, 0);
             if (!k)
             {
                 if (show_error)
                     fprintf(stderr, "Object is empty\n");
-
-                if (stop_on_error)
-                    exit(1);
 
                 return NULL;
             }
@@ -949,7 +942,9 @@ JsonEntry *getentry(JsonValue json, char *key, int show_error, int stop_on_error
 
             if (entry->value->type == ARRAY || entry->value->type == OBJECT)
             {
-                return getentry(*entry->value, key, show_error, stop_on_error);
+                JsonEntry *res = getentry(*entry->value, key, show_error);
+                if (res)
+                    return res;
             }
         }
     }
@@ -960,16 +955,15 @@ JsonEntry *getentry(JsonValue json, char *key, int show_error, int stop_on_error
             JsonValue *value = json.as.array.items[i];
             if (value->type == ARRAY || value->type == OBJECT)
             {
-                return getentry(*value, key, show_error, stop_on_error);
+                JsonEntry *res = getentry(*value, key, show_error);
+                if (res)
+                    return res;
             }
         }
     }
 
     if (show_error)
-        fprintf(stderr, "Target must be a JsonValue with OBJECT or ARRAY as type\n");
-
-    if (stop_on_error)
-        exit(1);
+        fprintf(stderr, "key must be within an object\n");
 
     printf("Unknown key\n");
     return NULL;
@@ -1026,7 +1020,7 @@ int addentry(JsonValue *dest, JsonEntry *entry, size_t position, int show_error,
         return 0;
     }
 
-    if (getentry(*dest, entry->key, show_error, stop_on_error))
+    if (getentry(*dest, entry->key, show_error))
     {
         if (show_error)
             fprintf(stderr, "Cannot add entry with same key\n");
@@ -1102,7 +1096,7 @@ int setentry(JsonValue *dest, char *key, JsonValue *value, int show_error, int s
         return 0;
     }
 
-    JsonEntry *entry = getentry(*dest, key, show_error, stop_on_error);
+    JsonEntry *entry = getentry(*dest, key, show_error);
     if (!entry)
     {
         return 0;
@@ -1135,7 +1129,7 @@ int rementry(JsonValue *dest, char *key, int show_error, int stop_on_error)
         return 0;
     }
 
-    if (!getentry(*dest, key, show_error, stop_on_error))
+    if (!getentry(*dest, key, show_error))
     {
         if (show_error)
             fprintf(stderr, "Cannot find entry with key:%s\n", key);
@@ -1155,13 +1149,15 @@ int rementry(JsonValue *dest, char *key, int show_error, int stop_on_error)
     return 1;
 }
 
-/* Returns existing keys of json object without copy */
+/*
+ * TODO: handle depth for nested objects or arrays of objects
+ */
 char **getkeys(JsonValue json, int show_error, int stop_on_error)
 {
-    if (json.type != OBJECT)
+    if (count_elements(json) == 0)
     {
         if (show_error)
-            fprintf(stderr, "Target must be a JsonValue with OBJECT as type\n");
+            fprintf(stderr, "Object is empty\n");
 
         if (stop_on_error)
             exit(1);
@@ -1169,27 +1165,68 @@ char **getkeys(JsonValue json, int show_error, int stop_on_error)
         return NULL;
     }
 
-    char **keys = malloc(sizeof(char *) * json.as.object.count);
+    size_t length = 256;
+    char **keys = malloc(sizeof(char *) * length);
     if (!keys)
     {
+        if (show_error)
+            fprintf(stderr, "Failed to allocate memory before fetching keys\n");
+
+        if (stop_on_error)
+            exit(1);
+
         return NULL;
     }
+    size_t index = 0;
 
-    for (size_t i = 0; i < json.as.object.count; ++i)
+    if (json.type == OBJECT)
     {
-        keys[i] = json.as.object.entries[i]->key;
+        while (index < json.as.object.count)
+        {
+            JsonEntry *entry = json.as.object.entries[index];
+            keys[index++] = entry->key;
+
+            if (index > length)
+            {
+                length *= 2;
+                char **copy = realloc(keys, sizeof(char *) * length);
+                if (!copy)
+                {
+                    if (show_error)
+                        fprintf(stderr, "Reallocation failed\n");
+
+                    free(keys);
+
+                    if (stop_on_error)
+                        exit(1);
+
+                    return NULL;
+                }
+                keys = copy;
+            }
+        }
+
+        return keys;
     }
 
-    return keys;
+    if (show_error)
+        fprintf(stderr, "No keys found\n");
+
+    if (stop_on_error)
+        exit(1);
+
+    return NULL;
 }
 
-/* Returns existing values of json object without copy */
+/*
+ * TODO: handle depth for nested objects or arrays of objects
+ */
 JsonValue **getvalues(JsonValue json, int show_error, int stop_on_error)
 {
-    if (json.type != OBJECT)
+    if (count_elements(json) == 0)
     {
         if (show_error)
-            fprintf(stderr, "Target must be a JsonValue with OBJECT as type\n");
+            fprintf(stderr, "Object is empty\n");
 
         if (stop_on_error)
             exit(1);
@@ -1197,35 +1234,57 @@ JsonValue **getvalues(JsonValue json, int show_error, int stop_on_error)
         return NULL;
     }
 
-    JsonValue **values = malloc(sizeof(JsonValue *) * json.as.object.count);
+    size_t length = 256;
+    JsonValue **values = malloc(sizeof(JsonValue *) * length);
     if (!values)
     {
-        return NULL;
-    }
-
-    for (size_t i = 0; i < json.as.object.count; ++i)
-    {
-        values[i] = json.as.object.entries[i]->value;
-    }
-
-    return values;
-}
-
-/* Returns existing entries of json object without copy */
-JsonEntry **getentries(JsonValue json, int show_error, int stop_on_error)
-{
-    if (json.type != OBJECT)
-    {
         if (show_error)
-            fprintf(stderr, "Target must be a JsonValue with OBJECT as type\n");
+            fprintf(stderr, "Failed to allocate memory before fetching values\n");
 
         if (stop_on_error)
             exit(1);
 
         return NULL;
     }
+    size_t index = 0;
 
-    return json.as.object.entries;
+    if (json.type == OBJECT)
+    {
+        while (index < json.as.object.count)
+        {
+            JsonEntry *entry = json.as.object.entries[index];
+            values[index++] = entry->value;
+
+            if (index > length)
+            {
+                length *= 2;
+                JsonValue **copy = realloc(values, sizeof(JsonValue *) * length);
+                if (!copy)
+                {
+                    if (show_error)
+                        fprintf(stderr, "Reallocation failed\n");
+
+                    free(values);
+
+                    if (stop_on_error)
+                        exit(1);
+
+                    return NULL;
+                }
+                values = copy;
+            }
+        }
+
+        return values;
+    }
+
+    if (show_error)
+        fprintf(stderr, "No keys found\n");
+
+    if (stop_on_error)
+        exit(1);
+
+    return NULL;
 }
 
 /* Traverse struct with iterator */

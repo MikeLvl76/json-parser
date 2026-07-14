@@ -53,6 +53,14 @@ void print_cmd()
     printf("  find key\n");
     printf("   --find-key <key>             Retrieve entry by its key\n");
     printf("    -fk       <key>\n\n");
+
+    printf("  List keys\n");
+    printf("   --keys                       List keys at top level\n");
+    printf("    -ks\n\n");
+
+    printf("  List values\n");
+    printf("   --values                     List values at top level\n");
+    printf("    -vs\n\n");
 }
 
 void print_help()
@@ -80,7 +88,7 @@ int main(int argc, char **argv)
     }
 
     int show_default = 0, show_pretty = 0, show_error = 0, stop_on_error = 0,
-        as_tree = 0, tree_with_values = 0, find_by_key = 0;
+        as_tree = 0, tree_with_values = 0, find_by_key = 0, show_keys = 0, show_values = 0;
 
     char *key;
 
@@ -171,6 +179,12 @@ int main(int argc, char **argv)
                 exit(1);
             }
         }
+
+        if (check_cmd(argv[i], "--keys", "-ks"))
+            show_keys = 1;
+
+        if (check_cmd(argv[i], "--values", "-vs"))
+            show_values = 1;
     }
 
     if (show_default)
@@ -217,7 +231,7 @@ int main(int argc, char **argv)
             if (key)
             {
                 printf("Searching for \"%s\" key...\n", key);
-                JsonEntry *entry = getentry(*json, key, show_error, stop_on_error);
+                JsonEntry *entry = getentry(*json, key, show_error);
                 if (!entry)
                 {
                     fprintf(stderr, "Cannot retrieve entry by key: %s\n", key);
@@ -234,16 +248,52 @@ int main(int argc, char **argv)
             }
         }
 
+        if (show_keys)
+        {
+            char **keys = getkeys(*json, show_error, stop_on_error);
+            if (!keys)
+            {
+                fprintf(stderr, "Cannot retrieve keys\n");
+                exit(1);
+            }
+
+            printf("Keys:\n");
+            while (*keys)
+            {
+                printf("- %s\n", *keys);
+                free(*keys++);
+            }
+        }
+
+        if (show_values)
+        {
+            JsonValue **values = getvalues(*json, show_error, stop_on_error);
+            if (!values)
+            {
+                fprintf(stderr, "Cannot retrieve values\n");
+                exit(1);
+            }
+
+            printf("Values:\n");
+            while (*values)
+            {
+                dump_json(*values, indent, show_pretty);
+                printf("\n");
+                free(*values++);
+            }
+            free(values);
+        }
+
         free(json);
         count++;
         paths++;
     }
+
     for (size_t i = 0; i < count; ++i)
     {
         free(paths[i]);
     }
     free(paths);
-    exit(0);
 
     return 0;
 }
