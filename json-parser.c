@@ -1,14 +1,7 @@
-#include "json_parser.h"
+#include "json-parser.h"
 #include <time.h>
 
 #define MAX_FILES_ALLOWED 16
-
-typedef struct
-{
-    char *name;
-    char *usage;
-    char *description;
-} Arg;
 
 void print_cmd()
 {
@@ -92,13 +85,13 @@ int main(int argc, char **argv)
 
     char *key;
 
-    char **paths = malloc(sizeof(char *) * MAX_FILES_ALLOWED);
-    if (!paths)
+    char **filepaths = malloc(sizeof(char *) * MAX_FILES_ALLOWED);
+    if (!filepaths)
     {
         fprintf(stderr, "An error has occurred\n");
         exit(1);
     }
-    char **p = paths;
+    char **p = filepaths;
     int indent = 0;
 
     for (int i = 1; i < argc; ++i)
@@ -191,29 +184,29 @@ int main(int argc, char **argv)
     {
         printf("### USING DEFAULT FILE ### \n");
         srand((unsigned int)time(NULL));
-        char *default_paths[3] = {"default_dataset.json", "medium_dataset.json", "big_dataset.json"};
+        char *default_filepaths[3] = {"default_dataset.json", "medium_dataset.json", "big_dataset.json"};
         for (size_t i = 0; i < 3; ++i)
         {
-            if (!check_extension(default_paths[i], 1, 1))
+            if (!check_extension(default_filepaths[i], 1, 1))
             {
-                fprintf(stderr, "Expected \".json\" extension, got: %s\n", default_paths[i]);
+                fprintf(stderr, "Expected \".json\" extension, got: %s\n", default_filepaths[i]);
                 exit(1);
             }
         }
         int id = rand() % 3;
-        *p++ = default_paths[id];
+        *p++ = default_filepaths[id];
     }
 
     size_t count = 0;
-    while (*paths)
+    while (*filepaths)
     {
-        printf("Reading %s\n", *paths);
+        printf("Reading %s\n", *filepaths);
         printf(show_pretty ? "Pretty display: \u2714 enabled\n" : "Pretty display: \u2716 disabled\n");
         printf("Current indent: %d\n", indent);
         printf(show_error ? "Error handling: \u2714 enabled\n" : "Error handling: \u2716 disabled\n");
         printf(stop_on_error ? "Exiting on error: \u2714 enabled\n\n" : "Exiting on error: \u2716 disabled\n\n");
 
-        JsonValue *json = read_json(*paths, show_error, stop_on_error);
+        json_value_t *json = read_json(*filepaths, show_error, stop_on_error);
 
         if (as_tree)
         {
@@ -231,7 +224,7 @@ int main(int argc, char **argv)
             if (key)
             {
                 printf("Searching for \"%s\" key...\n", key);
-                JsonEntry *entry = getentry(*json, key, show_error);
+                json_entry_t *entry = getentry(*json, key, show_error);
                 if (!entry)
                 {
                     fprintf(stderr, "Cannot retrieve entry by key: %s\n", key);
@@ -267,7 +260,7 @@ int main(int argc, char **argv)
 
         if (show_values)
         {
-            JsonValue **values = getvalues(*json, show_error, stop_on_error);
+            json_value_t **values = getvalues(*json, show_error, stop_on_error);
             if (!values)
             {
                 fprintf(stderr, "Cannot retrieve values\n");
@@ -286,14 +279,14 @@ int main(int argc, char **argv)
 
         free(json);
         count++;
-        paths++;
+        filepaths++;
     }
 
     for (size_t i = 0; i < count; ++i)
     {
-        free(paths[i]);
+        free(filepaths[i]);
     }
-    free(paths);
+    free(filepaths);
 
     return 0;
 }

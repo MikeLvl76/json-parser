@@ -143,7 +143,7 @@ char *sub(const char *str, size_t start, size_t end, int show_error, int stop_on
 
     size_t len = end - start;
 
-    char *out = malloc(len + 1);
+    char *out = (char *)malloc(len + 1);
     if (!out)
     {
         if (show_error)

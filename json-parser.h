@@ -1,6 +1,6 @@
-#include "json_functions.h"
+#include "json-functions.h"
 
-JsonValue *read_json(char *filepath, int show_error, int stop_on_error)
+json_value_t *read_json(char *filepath, int show_error, int stop_on_error)
 {
 
     FILE *file = fopen(filepath, "rb");
@@ -104,7 +104,7 @@ JsonValue *read_json(char *filepath, int show_error, int stop_on_error)
         }
     }
 
-    JsonValue *json = str_to_json_value(str, show_error, stop_on_error);
+    json_value_t *json = str_to_json_value(str, show_error, stop_on_error);
 
     free(str);
 
