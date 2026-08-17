@@ -11,9 +11,9 @@ void print_cmd()
     printf("   --help                       Show general help\n");
     printf("    -h\n\n");
 
-    printf("  default\n");
-    printf("   --default                    Use default json\n");
-    printf("    -d\n\n");
+    printf("  example\n");
+    printf("   --example                    Use one default json as example\n");
+    printf("    -x\n\n");
 
     printf("  files\n");
     printf("   --files <path>               Use one or multiple JSON files provided by path\n");
@@ -80,7 +80,7 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    int show_default = 0, show_pretty = 0, show_error = 0, stop_on_error = 0,
+    int show_example = 0, show_pretty = 0, show_error = 0, stop_on_error = 0,
         as_tree = 0, tree_with_values = 0, find_by_key = 0, show_keys = 0, show_values = 0;
 
     char *key;
@@ -102,8 +102,8 @@ int main(int argc, char **argv)
             exit(1);
         }
 
-        if (check_cmd(argv[i], "--default", "-d"))
-            show_default = 1;
+        if (check_cmd(argv[i], "--example", "-x"))
+            show_example = 1;
 
         if (check_cmd(argv[i], "--files", "-f"))
         {
@@ -180,12 +180,12 @@ int main(int argc, char **argv)
             show_values = 1;
     }
 
-    if (show_default)
+    if (show_example)
     {
-        printf("### USING DEFAULT FILE ### \n");
         srand((unsigned int)time(NULL));
-        char *default_filepaths[3] = {"default_dataset.json", "medium_dataset.json", "big_dataset.json"};
-        for (size_t i = 0; i < 3; ++i)
+        char *default_filepaths[3] = {"example/default_dataset.json", "example/medium_dataset.json", "example/big_dataset.json"};
+        const size_t total_files = sizeof(default_filepaths) / sizeof(default_filepaths[0]);
+        for (size_t i = 0; i < total_files; ++i)
         {
             if (!check_extension(default_filepaths[i], 1, 1))
             {
@@ -193,7 +193,7 @@ int main(int argc, char **argv)
                 exit(1);
             }
         }
-        int id = rand() % 3;
+        size_t id = rand() % total_files;
         *p++ = default_filepaths[id];
     }
 
