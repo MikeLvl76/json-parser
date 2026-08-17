@@ -21,12 +21,12 @@ json_value_t *str_to_json_object(char *str_object, int show_error, int stop_on_e
 
 /* Manipulate struct */
 size_t count_elements(json_value_t json);
-size_t idxentry(json_value_t json, char *key, int show_error, int stop_on_error);
-json_entry_t *getentry(json_value_t json, char *key, int show_error);
+size_t get_entry_index(json_value_t json, char *key, int show_error, int stop_on_error);
+json_entry_t *get_entry(json_value_t json, char *key, int show_error);
 json_entry_t *entry_at(json_value_t json, size_t index, int show_error, int stop_on_error);
-int addentry(json_value_t *dest, json_entry_t *entry, size_t position, int show_error, int stop_on_error);
-int setentry(json_value_t *dest, char *key, json_value_t *value, int show_error, int stop_on_error);
-int rementry(json_value_t *dest, char *key, int show_error, int stop_on_error);
+int add_entry(json_value_t *dest, json_entry_t *entry, size_t position, int show_error, int stop_on_error);
+int set_entry(json_value_t *dest, char *key, json_value_t *value, int show_error, int stop_on_error);
+int remove_entry(json_value_t *dest, char *key, int show_error, int stop_on_error);
 char **getkeys(json_value_t json, int show_error, int stop_on_error);
 json_value_t **getvalues(json_value_t json, int show_error, int stop_on_error);
 
@@ -910,7 +910,7 @@ size_t count_elements(json_value_t json)
     return 0;
 }
 
-size_t idxentry(json_value_t json, char *key, int show_error, int stop_on_error)
+size_t get_entry_index(json_value_t json, char *key, int show_error, int stop_on_error)
 {
     if (!key)
     {
@@ -959,7 +959,7 @@ size_t idxentry(json_value_t json, char *key, int show_error, int stop_on_error)
 /*
  * TODO: trigger exit only when object is fully traversed if key is absent
  */
-json_entry_t *getentry(json_value_t json, char *key, int show_error)
+json_entry_t *get_entry(json_value_t json, char *key, int show_error)
 {
     if (!key)
     {
@@ -1000,7 +1000,7 @@ json_entry_t *getentry(json_value_t json, char *key, int show_error)
 
             if (entry->value->type == ARRAY || entry->value->type == OBJECT)
             {
-                json_entry_t *res = getentry(*entry->value, key, show_error);
+                json_entry_t *res = get_entry(*entry->value, key, show_error);
                 if (res)
                     return res;
             }
@@ -1013,7 +1013,7 @@ json_entry_t *getentry(json_value_t json, char *key, int show_error)
             json_value_t *value = json.as.array.items[i];
             if (value->type == ARRAY || value->type == OBJECT)
             {
-                json_entry_t *res = getentry(*value, key, show_error);
+                json_entry_t *res = get_entry(*value, key, show_error);
                 if (res)
                     return res;
             }
@@ -1043,7 +1043,7 @@ json_entry_t *entry_at(json_value_t json, size_t index, int show_error, int stop
     return json.as.object.entries[index];
 }
 
-int addentry(json_value_t *dest, json_entry_t *entry, size_t position, int show_error, int stop_on_error)
+int add_entry(json_value_t *dest, json_entry_t *entry, size_t position, int show_error, int stop_on_error)
 {
     if (!dest || dest->type != OBJECT)
     {
@@ -1078,7 +1078,7 @@ int addentry(json_value_t *dest, json_entry_t *entry, size_t position, int show_
         return 0;
     }
 
-    if (getentry(*dest, entry->key, show_error))
+    if (get_entry(*dest, entry->key, show_error))
     {
         if (show_error)
             fprintf(stderr, "Cannot add entry with same key\n");
@@ -1114,7 +1114,7 @@ int addentry(json_value_t *dest, json_entry_t *entry, size_t position, int show_
     return 1;
 }
 
-int setentry(json_value_t *dest, char *key, json_value_t *value, int show_error, int stop_on_error)
+int set_entry(json_value_t *dest, char *key, json_value_t *value, int show_error, int stop_on_error)
 {
     if (!dest || dest->type != OBJECT)
     {
@@ -1154,7 +1154,7 @@ int setentry(json_value_t *dest, char *key, json_value_t *value, int show_error,
         return 0;
     }
 
-    json_entry_t *entry = getentry(*dest, key, show_error);
+    json_entry_t *entry = get_entry(*dest, key, show_error);
     if (!entry)
     {
         return 0;
@@ -1163,7 +1163,7 @@ int setentry(json_value_t *dest, char *key, json_value_t *value, int show_error,
     return 1;
 }
 
-int rementry(json_value_t *dest, char *key, int show_error, int stop_on_error)
+int remove_entry(json_value_t *dest, char *key, int show_error, int stop_on_error)
 {
     if (!dest || dest->type != OBJECT)
     {
@@ -1187,7 +1187,7 @@ int rementry(json_value_t *dest, char *key, int show_error, int stop_on_error)
         return 0;
     }
 
-    if (!getentry(*dest, key, show_error))
+    if (!get_entry(*dest, key, show_error))
     {
         if (show_error)
             fprintf(stderr, "Cannot find entry with key:%s\n", key);
@@ -1198,7 +1198,7 @@ int rementry(json_value_t *dest, char *key, int show_error, int stop_on_error)
         return 0;
     }
 
-    size_t index = idxentry(*dest, key, show_error, stop_on_error);
+    size_t index = get_entry_index(*dest, key, show_error, stop_on_error);
     for (size_t i = index; i < dest->as.object.count - 1; ++i)
     {
         dest->as.object.entries[i] = dest->as.object.entries[i + 1];
@@ -1511,7 +1511,7 @@ json_value_t **getvalues(json_value_t json, int show_error, int stop_on_error)
 //     return count;
 // }
 //
-// json_entry_t *getentry(json_value_t json, char *key)
+// json_entry_t *get_entry(json_value_t json, char *key)
 // {
 //     if (!key)
 //     {
@@ -1553,7 +1553,7 @@ json_value_t **getvalues(json_value_t json, int show_error, int stop_on_error)
 //     return NULL;
 // }
 
-// int addentry(json_value_t *dest, json_entry_t *entry, size_t position)
+// int add_entry(json_value_t *dest, json_entry_t *entry, size_t position)
 // {
 //     if (!dest || dest->type != OBJECT)
 //     {
@@ -1573,7 +1573,7 @@ json_value_t **getvalues(json_value_t json, int show_error, int stop_on_error)
 //         return 0;
 //     }
 //
-//     if (getentry(*dest, entry->key))
+//     if (get_entry(*dest, entry->key))
 //     {
 //         printf("Cannot add entry with same key\n");
 //         return 0;
@@ -1606,7 +1606,7 @@ json_value_t **getvalues(json_value_t json, int show_error, int stop_on_error)
 //     return 0;
 // }
 
-// int setentry(json_value_t *dest, char *key, json_value_t *value)
+// int set_entry(json_value_t *dest, char *key, json_value_t *value)
 // {
 //     if (!dest || dest->type != OBJECT)
 //     {
@@ -1631,7 +1631,7 @@ json_value_t **getvalues(json_value_t json, int show_error, int stop_on_error)
 //         return 0;
 //     }
 //
-//     json_entry_t *entry = getentry(*dest, key);
+//     json_entry_t *entry = get_entry(*dest, key);
 //     if (!entry)
 //     {
 //         return 0;
@@ -1642,7 +1642,7 @@ json_value_t **getvalues(json_value_t json, int show_error, int stop_on_error)
 //     return 1;
 // }
 
-// int rementry(json_value_t *dest, char *key)
+// int remove_entry(json_value_t *dest, char *key)
 // {
 //     if (!dest || dest->type != OBJECT)
 //     {
@@ -1656,7 +1656,7 @@ json_value_t **getvalues(json_value_t json, int show_error, int stop_on_error)
 //         return 0;
 //     }
 //
-//     if (!getentry(*dest, key))
+//     if (!get_entry(*dest, key))
 //     {
 //         printf("Cannot find entry with key:%s\n", key);
 //         return 0;

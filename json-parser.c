@@ -224,7 +224,7 @@ int main(int argc, char **argv)
             if (key)
             {
                 printf("Searching for \"%s\" key...\n", key);
-                json_entry_t *entry = getentry(*json, key, show_error);
+                json_entry_t *entry = get_entry(*json, key, show_error);
                 if (!entry)
                 {
                     fprintf(stderr, "Cannot retrieve entry by key: %s\n", key);
