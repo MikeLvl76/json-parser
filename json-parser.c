@@ -193,7 +193,7 @@ int main(int argc, char **argv)
                 exit(1);
             }
         }
-        size_t id = rand() % total_files;
+        size_t id = (size_t)rand() % total_files;
         *p++ = default_filepaths[id];
     }
 
@@ -277,7 +277,7 @@ int main(int argc, char **argv)
             free(values);
         }
 
-        free(json);
+        free_json_value(json);
         count++;
         filepaths++;
     }

@@ -1,11 +1,37 @@
 #include "json-structs.h"
 #include "json-utils.h"
 
-json_value_t *alloc_value(JsonValueType type, JsonValueAs as);
-json_entry_t *alloc_entry(char *key, json_value_t *value);
+/* Alloc/free memory */
+json_value_t *init_json_value(JSON_VALUE_TYPE type, json_value_as_union_t as);
+json_entry_t *init_json_entry(char *key, json_value_t *value);
+void free_json_value(json_value_t *value);
+void free_json_entry(json_entry_t *entry);
 
-/* Init */
-json_value_t *alloc_value(JsonValueType type, JsonValueAs as)
+/* Construct JSON with stringified data from file */
+void dump_json(json_value_t *json, int indent, int prettify);
+void tree(json_value_t *root, int show_values);
+void paths(json_value_t *root);
+json_value_t *str_to_json_value(char *str, int show_error, int stop_on_error);
+json_value_t *str_to_json_int(char *str, int show_error, int stop_on_error);
+json_value_t *str_to_json_double(char *str, int show_error, int stop_on_error);
+json_value_t *str_to_json_str(char *str, int show_error, int stop_on_error);
+json_value_t *str_to_json_bool(char *str, int show_error, int stop_on_error);
+json_value_t *str_to_json_array(char *str_array, int show_error, int stop_on_error);
+json_value_t *str_to_json_object(char *str_object, int show_error, int stop_on_error);
+
+/* Manipulate struct */
+size_t count_elements(json_value_t json);
+size_t idxentry(json_value_t json, char *key, int show_error, int stop_on_error);
+json_entry_t *getentry(json_value_t json, char *key, int show_error);
+json_entry_t *entry_at(json_value_t json, size_t index, int show_error, int stop_on_error);
+int addentry(json_value_t *dest, json_entry_t *entry, size_t position, int show_error, int stop_on_error);
+int setentry(json_value_t *dest, char *key, json_value_t *value, int show_error, int stop_on_error);
+int rementry(json_value_t *dest, char *key, int show_error, int stop_on_error);
+char **getkeys(json_value_t json, int show_error, int stop_on_error);
+json_value_t **getvalues(json_value_t json, int show_error, int stop_on_error);
+
+/* Alloc/free memory */
+json_value_t *init_json_value(JSON_VALUE_TYPE type, json_value_as_union_t as)
 {
     json_value_t *value = malloc(sizeof(json_value_t));
     if (!value)
@@ -58,7 +84,7 @@ json_value_t *alloc_value(JsonValueType type, JsonValueAs as)
     return NULL;
 }
 
-json_entry_t *alloc_entry(char *key, json_value_t *value)
+json_entry_t *init_json_entry(char *key, json_value_t *value)
 {
     if (!key)
     {
@@ -85,17 +111,55 @@ json_entry_t *alloc_entry(char *key, json_value_t *value)
     return entry;
 }
 
-/* Parse JSON file */
-void dump_json(json_value_t *json, int indent, int prettify);
-void tree(json_value_t *root, int show_values);
-void paths(json_value_t *root);
-json_value_t *str_to_json_value(char *str, int show_error, int stop_on_error);
-json_value_t *str_to_json_int(char *str, int show_error, int stop_on_error);
-json_value_t *str_to_json_double(char *str, int show_error, int stop_on_error);
-json_value_t *str_to_json_str(char *str, int show_error, int stop_on_error);
-json_value_t *str_to_json_bool(char *str, int show_error, int stop_on_error);
-json_value_t *str_to_json_array(char *str_array, int show_error, int stop_on_error);
-json_value_t *str_to_json_object(char *str_object, int show_error, int stop_on_error);
+void free_json_value(json_value_t *value)
+{
+    if (value)
+    {
+        if (value->type == ARRAY && value->as.array.items)
+        {
+            size_t length = value->as.array.length;
+            for (size_t i = 0; i < length; ++i)
+            {
+                free_json_value(value->as.array.items[i]);
+            }
+            free(value->as.array.items);
+        }
+        else if (value->type == OBJECT && value->as.object.entries)
+        {
+            size_t count = value->as.object.count;
+            for (size_t i = 0; i < count; ++i)
+            {
+                free_json_entry(value->as.object.entries[i]);
+            }
+            free(value->as.object.entries);
+        }
+        else if (value->type == STRING && value->as.str)
+        {
+            free(value->as.str);
+        }
+        free(value);
+    }
+}
+
+void free_json_entry(json_entry_t *entry)
+{
+
+    if (entry)
+    {
+        if (entry->key)
+        {
+            free(entry->key);
+        }
+
+        if (entry->value)
+        {
+            free_json_value(entry->value);
+        }
+        free(entry);
+    }
+}
+
+/* Construct JSON with stringified data from file */
 
 void dump_json(json_value_t *json, int indent, int prettify)
 {
@@ -187,7 +251,7 @@ void dump_json(json_value_t *json, int indent, int prettify)
     }
 }
 
-char *type_name(JsonValueType type)
+char *type_name(JSON_VALUE_TYPE type)
 {
     switch (type)
     {
@@ -750,6 +814,8 @@ json_value_t *str_to_json_object(char *str_object, int show_error, int stop_on_e
 
             return v;
         }
+        entry->key = NULL;
+        entry->value = NULL;
 
         if (*p == '"' && (p == str_object + 1 || *(p - 1) != '\\'))
             in_str = !in_str;
@@ -820,7 +886,7 @@ json_value_t *str_to_json_object(char *str_object, int show_error, int stop_on_e
         }
 
         entry_buf[idx++] = *p;
-        free(entry);
+        free_json_entry(entry);
         p++;
     }
 
@@ -828,15 +894,6 @@ json_value_t *str_to_json_object(char *str_object, int show_error, int stop_on_e
 }
 
 /* Manipulate struct */
-size_t count_elements(json_value_t json);
-size_t idxentry(json_value_t json, char *key, int show_error, int stop_on_error);
-json_entry_t *getentry(json_value_t json, char *key, int show_error);
-json_entry_t *entry_at(json_value_t json, size_t index, int show_error, int stop_on_error);
-int addentry(json_value_t *dest, json_entry_t *entry, size_t position, int show_error, int stop_on_error);
-int setentry(json_value_t *dest, char *key, json_value_t *value, int show_error, int stop_on_error);
-int rementry(json_value_t *dest, char *key, int show_error, int stop_on_error);
-char **getkeys(json_value_t json, int show_error, int stop_on_error);
-json_value_t **getvalues(json_value_t json, int show_error, int stop_on_error);
 
 size_t count_elements(json_value_t json)
 {
@@ -1303,18 +1360,18 @@ json_value_t **getvalues(json_value_t json, int show_error, int stop_on_error)
 //         printf("Cannot allocate iterator\n");
 //         return NULL;
 //     }
-
+//
 //     if (default_value && default_value->type != ARRAY && default_value->type != OBJECT)
 //     {
 //         printf("Default json_value_t type must be ARRAY or OBJECT\n");
 //         return NULL;
 //     }
-
+//
 //     iterator->pos = default_position;
 //     iterator->value = default_value;
 //     iterator->current.item = NULL;
 //     iterator->current.entry = NULL;
-
+//
 //     return iterator;
 // }
 
@@ -1322,25 +1379,25 @@ json_value_t **getvalues(json_value_t json, int show_error, int stop_on_error)
 // {
 //     if (!iterator || !iterator->value)
 //         return 0;
-
+//
 //     if (iterator->value->type == ARRAY)
 //     {
 //         if (iterator->value->as.array.length == 0 || iterator->pos >= iterator->value->as.array.length)
 //             return 0;
-
+//
 //         if (iterator->value->as.array.items[iterator->pos])
 //             return 1;
 //     }
-
+//
 //     if (iterator->value->type == OBJECT)
 //     {
 //         if (iterator->value->as.object.count == 0 || iterator->pos >= iterator->value->as.object.count)
 //             return 0;
-
+//
 //         if (iterator->value->as.object.entries[iterator->pos])
 //             return 1;
 //     }
-
+//
 //     return 0;
 // }
 
@@ -1348,12 +1405,12 @@ json_value_t **getvalues(json_value_t json, int show_error, int stop_on_error)
 // {
 //     if (!has_next(iterator))
 //         return;
-
+//
 //     if (iterator->value->type == ARRAY)
 //     {
 //         if (iterator->value->as.array.length == 0 || iterator->pos >= iterator->value->as.array.length)
 //             return;
-
+//
 //         json_value_t *item = iterator->value->as.array.items[iterator->pos];
 //         if (item)
 //         {
@@ -1361,15 +1418,15 @@ json_value_t **getvalues(json_value_t json, int show_error, int stop_on_error)
 //             iterator->current.item = item;
 //             return;
 //         }
-
+//
 //         return;
 //     }
-
+//
 //     if (iterator->value->type == OBJECT)
 //     {
 //         if (iterator->value->as.object.count == 0 || iterator->pos >= iterator->value->as.object.count)
 //             return;
-
+//
 //         json_entry_t *entry = iterator->value->as.object.entries[iterator->pos];
 //         if (entry && entry->value)
 //         {
@@ -1378,7 +1435,7 @@ json_value_t **getvalues(json_value_t json, int show_error, int stop_on_error)
 //             return;
 //         }
 //     }
-
+//
 //     return;
 // }
 
@@ -1386,13 +1443,13 @@ json_value_t **getvalues(json_value_t json, int show_error, int stop_on_error)
 // {
 //     if (!iterator || !iterator->value || iterator->pos == 0)
 //         return;
-
+//
 //     iterator->pos = 0;
 //     iterator->value = NULL;
 //     iterator->current.item = NULL;
 //     iterator->current.entry = NULL;
 // }
-
+//
 // void dump_iterator(json_iterator_t *iterator)
 // {
 //     if (!iterator)
@@ -1400,11 +1457,11 @@ json_value_t **getvalues(json_value_t json, int show_error, int stop_on_error)
 //         printf("No iterator\n");
 //         return;
 //     }
-
+//
 //     printf("[TARGET=");
 //     dump_json(iterator->value);
 //     printf("]\n");
-
+//
 //     printf("[CURRENT_POS=%zu]\n", iterator->pos);
 //     printf("[CURRENT_ITEM=");
 //     if (iterator->current.item)
@@ -1416,7 +1473,7 @@ json_value_t **getvalues(json_value_t json, int show_error, int stop_on_error)
 //         printf("NULL");
 //     }
 //     printf("]\n");
-
+//
 //     printf("[CURRENT_ENTRY=");
 //     if (iterator->current.entry)
 //     {
@@ -1432,8 +1489,6 @@ json_value_t **getvalues(json_value_t json, int show_error, int stop_on_error)
 //     printf("]\n");
 // }
 
-// Including iterator
-
 // size_t count_elements(json_value_t json)
 // {
 //     json_iterator_t *iterator = alloc_iterator(0, &json);
@@ -1442,20 +1497,20 @@ json_value_t **getvalues(json_value_t json, int show_error, int stop_on_error)
 //         printf("Cannot count items\n");
 //         return 0;
 //     }
-
+//
 //     size_t count = 0;
-
+//
 //     while (has_next(iterator))
 //     {
 //         next(iterator);
 //         count++;
 //     }
-
+//
 //     free(iterator);
-
+//
 //     return count;
 // }
-
+//
 // json_entry_t *getentry(json_value_t json, char *key)
 // {
 //     if (!key)
@@ -1463,26 +1518,26 @@ json_value_t **getvalues(json_value_t json, int show_error, int stop_on_error)
 //         printf("Incorrect key");
 //         return NULL;
 //     }
-
+//
 //     if (json.type != OBJECT)
 //     {
 //         printf("Target must be a json_value_t with OBJECT as type\n");
 //         return NULL;
 //     }
-
+//
 //     if (count_elements(json) == 0)
 //     {
 //         printf("Object is empty\n");
 //         return NULL;
 //     }
-
+//
 //     json_iterator_t *iterator = alloc_iterator(0, &json);
 //     if (!iterator)
 //     {
 //         printf("Cannot iterate over object\n");
 //         return 0;
 //     }
-
+//
 //     while (has_next(iterator))
 //     {
 //         next(iterator);
@@ -1491,9 +1546,9 @@ json_value_t **getvalues(json_value_t json, int show_error, int stop_on_error)
 //             return iterator->current.entry;
 //         }
 //     }
-
+//
 //     free(iterator);
-
+//
 //     printf("Unknown key\n");
 //     return NULL;
 // }
@@ -1505,32 +1560,32 @@ json_value_t **getvalues(json_value_t json, int show_error, int stop_on_error)
 //         printf("Unknown object\n");
 //         return 0;
 //     }
-
+//
 //     if (!entry)
 //     {
 //         printf("Unknown entry\n");
 //         return 0;
 //     }
-
+//
 //     if (position >= count_elements(*dest))
 //     {
 //         printf("Object cannot support new entry\n");
 //         return 0;
 //     }
-
+//
 //     if (getentry(*dest, entry->key))
 //     {
 //         printf("Cannot add entry with same key\n");
 //         return 0;
 //     }
-
+//
 //     json_iterator_t *iterator = alloc_iterator(0, dest);
 //     if (!iterator)
 //     {
 //         printf("Cannot iterate over object\n");
 //         return 0;
 //     }
-
+//
 //     while (has_next(iterator))
 //     {
 //         next(iterator);
@@ -1545,9 +1600,9 @@ json_value_t **getvalues(json_value_t json, int show_error, int stop_on_error)
 //             return 1;
 //         }
 //     }
-
+//
 //     free(iterator);
-
+//
 //     return 0;
 // }
 
@@ -1558,32 +1613,32 @@ json_value_t **getvalues(json_value_t json, int show_error, int stop_on_error)
 //         printf("Unknown object\n");
 //         return 0;
 //     }
-
+//
 //     if (!key)
 //     {
 //         printf("Incorrect key");
 //         return 0;
 //     }
-
+//
 //     if (!value)
 //     {
 //         return 0;
 //     }
-
+//
 //     if (count_elements(*dest) == 0)
 //     {
 //         printf("Object is empty\n");
 //         return 0;
 //     }
-
+//
 //     json_entry_t *entry = getentry(*dest, key);
 //     if (!entry)
 //     {
 //         return 0;
 //     }
-
+//
 //     entry->value = value;
-
+//
 //     return 1;
 // }
 
@@ -1594,26 +1649,26 @@ json_value_t **getvalues(json_value_t json, int show_error, int stop_on_error)
 //         printf("Unknown object\n");
 //         return 0;
 //     }
-
+//
 //     if (!key)
 //     {
 //         printf("Incorrect key");
 //         return 0;
 //     }
-
+//
 //     if (!getentry(*dest, key))
 //     {
 //         printf("Cannot find entry with key:%s\n", key);
 //         return 0;
 //     }
-
+//
 //     json_iterator_t *iterator = alloc_iterator(0, dest);
 //     if (!iterator)
 //     {
 //         printf("Cannot iterate over object\n");
 //         return 0;
 //     }
-
+//
 //     while (has_next(iterator))
 //     {
 //         next(iterator);
@@ -1627,8 +1682,8 @@ json_value_t **getvalues(json_value_t json, int show_error, int stop_on_error)
 //             return 1;
 //         }
 //     }
-
+//
 //     free(iterator);
-
+//
 //     return 0;
 // }

@@ -15,7 +15,7 @@ typedef enum
     BOOLEAN,
     ARRAY,
     OBJECT
-} JsonValueType;
+} JSON_VALUE_TYPE;
 
 struct json_array_t
 {
@@ -39,12 +39,12 @@ typedef union
     int boolean;
     json_array_t array;
     json_object_t object;
-} JsonValueAs;
+} json_value_as_union_t;
 
 struct json_value_t
 {
-    JsonValueType type;
-    JsonValueAs as;
+    JSON_VALUE_TYPE type;
+    json_value_as_union_t as;
 };
 
 struct json_entry_t
@@ -53,13 +53,13 @@ struct json_entry_t
     json_value_t *value;
 };
 
-struct json_iterator_t
-{
-    json_value_t *value;
-    size_t pos;
-    union
-    {
-        json_value_t *item;
-        json_entry_t *entry;
-    } current;
-};
+// struct json_iterator_t
+// {
+//     json_value_t *value;
+//     size_t pos;
+//     union
+//     {
+//         json_value_t *item;
+//         json_entry_t *entry;
+//     } current;
+// };
